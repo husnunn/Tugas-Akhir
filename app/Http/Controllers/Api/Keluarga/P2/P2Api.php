@@ -51,7 +51,6 @@ class P2Api extends Controller
             return back()->with('error', 'Tidak ada survey aktif untuk hari ini.');
         }
 
-
         $today = Carbon::now();
 
         $data = P2::create([
