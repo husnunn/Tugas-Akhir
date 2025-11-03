@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Controllers\Api\Keluarga\P3\P3Api;
 use App\Http\Controllers\Api\Wilayah\WilayahApi;
 use App\Http\Controllers\Api\Survey\SurveyApi;
 
@@ -26,4 +27,14 @@ Route::group([
     // SURVEY
     Route::get('/survey/all', [SurveyApi::class, 'index']);
     Route::get('/survey/aktif', [SurveyApi::class, 'getSurveyAktif']);
+
+
+    // KELUARGA P2
+    // KELUARGA P3
+    Route::resource('/keluarga/p3', P3Api::class);
+    // KELUARGA P4
+    // KELUARGA P421
+    // KELUARGA P422
+    // KELUARGA P423
+    // KELUARGA P424
 });

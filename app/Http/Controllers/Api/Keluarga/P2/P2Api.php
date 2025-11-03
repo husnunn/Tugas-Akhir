@@ -15,7 +15,7 @@ class P2Api extends Controller
      * Tampilkan semua data P2 (Deskripsi Lokasi)
      */
     public function index()
-    {
+    { 
         $today = Carbon::today();
 
         // Ambil survey aktif
@@ -56,9 +56,8 @@ class P2Api extends Controller
 
         $data = P2::create([
             'id' => "KG-" . strtotime(date("Y-m-d H:i:s")),
-            'id_survey' => $survey->id, // default survey
-            'kode_provinsi' => $request->kode_provinsi,
-            'kode_kabupaten' => $request->kode_kabupaten,
+            'no_kk' => $request->no_kk,
+            'nik_kk' => $request->nik_kk,
             'kode_kecamatan' => $request->kode_kecamatan,
             'kode_desa' => $request->kode_desa,
             'rt_rw' => $request->rt_rw,

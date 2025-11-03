@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class KgP3M extends Model
 {
-      protected $table = 'kg_p3';
+    protected $table = 'kg_p3';
     protected $primaryKey = 'id';
     public $incrementing = false;
     public $timestamps = false;
@@ -46,6 +46,6 @@ class KgP3M extends Model
     public function scopeCari($query, $keyword)
     {
         return $query->where('no_kk', 'like', "%{$keyword}%")
-                     ->orWhere('nik_kk', 'like', "%{$keyword}%");
+            ->orWhere('nik_kk', 'like', "%{$keyword}%");
     }
 }
