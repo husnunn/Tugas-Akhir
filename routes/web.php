@@ -32,7 +32,7 @@ use App\Http\Controllers\Desa\P9\P923Controller;
 use App\Http\Controllers\Desa\P9\P932Controller;
 use App\Http\Controllers\Desa\P9\P941Controller;
 use App\Http\Controllers\Desa\P10\P10Controller;
-use App\Http\Controllers\Keluarga\KeluargaController;
+use App\Http\Controllers\Keluarga\P2\KgP2;
 use App\Http\Controllers\Individu\IndividuController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Session\SessionController;
@@ -95,43 +95,9 @@ Route::middleware('auth')->group(function () {
     // Kirim id_survey dan id_desa
     Route::post('/set-session', [DesaController::class, 'setSession'])->name('session.set');
     Route::get('/set-session/{id}/{form}', [SessionController::class, 'set'])->name('set.session');
-
-
-    // Route::get('/desa/{px}/modal/{id}', function ($px, $id) {
-    //     $view = "pages.desa.forms.{$px}";
-    //     if (!view()->exists($view)) {
-    //         abort(404, 'Form tidak ditemukan.');
-    //     }
-
-    //     $data = [];
-
-    //     // ambil data P3 berdasarkan id_desa_p2
-    //     $idP3 = P3::where('id_desa_p2', $id)->first();
-
-    //     if ($idP3) {
-    //         session(['id_desa_p3' => $idP3->id]);
-    //     }
-
-    //     if ($px === 'p3-pegawai') {
-    //         $data['idP3'] = $idP3;
-    //         $data['pegawai'] = $idP3
-    //             ? PegawaiLainnya::where('id_desa_p3', $idP3->id)->get()
-    //             : collect();
-    //     }
-
-    //     if ($px === 'p3-bpd') {
-    //         $data['idP3'] = $idP3;
-    //         $data['bpd'] = $idP3
-    //             ? AnggotaBpd::where('id_desa_p3', $idP3->id)->get()
-    //             : collect();
-    //     }
-
-    //     return view($view, $data);
-    // });
-
+    // DESA P3
     Route::resource('/desa-p3', P3Controller::class);
     // Pegawai
-    // Route::resource('/p3-pegawai', PegawaiController::class);
     Route::get('/desa-p3Pegawai/{id_p3}/p3Pegawai', [PegawaiController::class, 'index'])
         ->name('desa-p3Pegawai.index');
     Route::get('/desa-p2/{id_desa}/p3Pegawai', [PegawaiController::class, 'fromP2'])
@@ -142,9 +108,7 @@ Route::middleware('auth')->group(function () {
         ->name('desa-p3Pegawai.update');
     Route::delete('/desa-p3Pegawai/{id}', [PegawaiController::class, 'destroy'])
         ->name('desa-p3Pegawai.destroy');
-
     // BPD
-    // Route::resource('/p3-bpd', BpdController::class);
     Route::get('/desa-p3Bpd/{id_p3}/p3Bpd', [BpdController::class, 'index'])
         ->name('desa-p3Bpd.index');
     Route::get('/desa-p2/{id_desa}/p3Bpd', [BpdController::class, 'fromP2'])
@@ -159,7 +123,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('desa-p4', P4Controller::class);
     Route::get('/desa-p4/{id}', [P4Controller::class, 'show'])->name('desa-p4.show');
     Route::resource('desa-p5', P5Controller::class);
-    // Route::resource('desa-p501', P5Controller::class);
     // P501
     Route::get('/desa-p5/{id_p5}/p501', [P501Controller::class, 'index'])->name('desa-p501.index');
     Route::get('/desa-p2/{id_desa}/p501', [P501Controller::class, 'fromP2'])->name('desa-p501.fromP2');
@@ -178,17 +141,23 @@ Route::middleware('auth')->group(function () {
     Route::post('/desa-p503/store', [P503Controller::class, 'store'])->name('desa-p503.store');
     Route::delete('/desa-p503/{id}', [P503Controller::class, 'destroy'])->name('desa-p503.destroy');
     Route::put('/desa-p503/{id}', [P503Controller::class, 'update'])->name('desa-p503.update');
-
+    // P601
     Route::resource('desa-p601', P601Controller::class);
+    // P602
     Route::resource('desa-p602', P602Controller::class);
+    // P603
     Route::resource('desa-p603', P603Controller::class);
+    // P7
     Route::resource('desa-p7', P7Controller::class);
+    // P705
     Route::get('/desa-p7/{id_p7}/p705', [P705Controller::class, 'index'])->name('desa-p705.index');
     Route::get('/desa-p2/{id_desa}/p705', [P705Controller::class, 'fromP2'])->name('desa-p705.fromP2');
     Route::post('/desa-p705/store', [P705Controller::class, 'store'])->name('desa-p705.store');
     Route::put('/desa-p705/{id}', [P705Controller::class, 'update'])->name('desa-p705.update');
     Route::delete('/desa-p705/{id}', [P705Controller::class, 'destroy'])->name('desa-p705.destroy');
+    // P8
     Route::resource('desa-p8', P8Controller::class);
+    // P9
     Route::resource('desa-p9', P9Controller::class);
     // P914
     Route::get('/desa-p9/{id_p9}/p914', [P914Controller::class, 'index'])->name('desa-p914.index');
@@ -214,5 +183,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/desa-p941/store', [P941Controller::class, 'store'])->name('desa-p941.store');
     Route::put('/desa-p941/{id}', [P941Controller::class, 'update'])->name('desa-p941.update');
     Route::delete('/desa-p941/{id}', [P941Controller::class, 'destroy'])->name('desa-p941.destroy');
+    // P10
     Route::resource('desa-p10', P10Controller::class);
+
+    // KG P2
+    // Route::resource('keluarga/p2', KgP2::class);
+    // KG P3
+    Route::resource('keluarga/p3', P10Controller::class);
 });

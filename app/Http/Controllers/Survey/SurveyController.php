@@ -40,7 +40,7 @@ class SurveyController extends Controller
 
         return redirect()->back()->with('success', 'Survey berhasil ditambahkan!');
     }
-
+ 
     public function show(string $id)
     {
         $survey = Survey::findOrFail($id);
