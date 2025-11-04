@@ -3,16 +3,16 @@
 @section('content')
     <div class="container">
 
-        {{-- Tombol Tambah Keluarga --}}
-        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modaltambahkeluarga">
-            + Tambah Keluarga
+        {{-- Tombol Tambah individu --}}
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modaltambahindividu">
+            + Tambah Individu
         </button>
         {{-- <a href="/coba">Halaman COBA</a> --}}
 
-        <!-- Data Keluarga -->
+        <!-- Data individu -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Keluarga</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Data Individu P1</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -20,7 +20,8 @@
                         <thead>
                             <tr>
                                 <th>Tanggal Survey</th>
-                                <th>Nama Kepala Keluarga</th>
+                                <th>Nama </th>
+                                <th>NIK </th>
                                 <th>Tambah Data</th>
                                 <th>Aksi</th>
                             </tr>
@@ -38,7 +39,8 @@
                                         @endif
                                         {{-- kjhshdjkshd --}}
                                     </td>
-                                    <td>{{ $item->nama_kpl_keluarga }}</td>
+                                    <td>{{ $item->nama }}</td>
+                                    <td>{{ $item->nik }}</td>
                                     <td>
                                         {{-- P3-P4 --}}
                                         <div class="btn-group" role="group"
@@ -51,52 +53,11 @@
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="#">
                                                         P3
-                                                        @if (
-                                                            \App\Models\Keluarga\P3\KgP3M::whereHas('p2', function ($q) use ($item) {
-                                                                $q->where('id_survey', $item->id_survey);
-                                                            })->exists())
+                                                        {{-- @if (\App\Models\individu\P3\KgP3M::whereHas('p2', function ($q) use ($item) {
+        $q->where('id_survey', $item->id_survey);
+    })->exists())
                                                             <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                    <a class="dropdown-item" href="#">
-                                                        P4
-                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
-        $q->where('id_survey', $item->id_survey);
-    })->exists())
-                                                        <i class="fas fa-check text-success ml-2"></i>
-                                                    @endif --}}
-                                                    </a>
-                                                    <a class="dropdown-item" href="#">
-                                                        P421
-                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
-        $q->where('id_survey', $item->id_survey);
-    })->exists())
-                                                        <i class="fas fa-check text-success ml-2"></i>
-                                                    @endif --}}
-                                                    </a>
-                                                    <a class="dropdown-item" href="#">
-                                                        P422
-                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
-        $q->where('id_survey', $item->id_survey);
-    })->exists())
-                                                        <i class="fas fa-check text-success ml-2"></i>
-                                                    @endif --}}
-                                                    </a>
-                                                    <a class="dropdown-item" href="#">
-                                                        P423
-                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
-        $q->where('id_survey', $item->id_survey);
-    })->exists())
-                                                        <i class="fas fa-check text-success ml-2"></i>
-                                                    @endif --}}
-                                                    </a>
-                                                    <a class="dropdown-item" href="#">
-                                                        P424
-                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
-        $q->where('id_survey', $item->id_survey);
-    })->exists())
-                                                        <i class="fas fa-check text-success ml-2"></i>
-                                                    @endif --}}
+                                                        @endif --}}
                                                     </a>
                                                 </div>
                                             </div>
@@ -106,7 +67,7 @@
                                     <td>
                                         <!-- Tombol Edit -->
                                         <button class="btn btn-warning btn-sm" data-toggle="modal"
-                                            data-target="#modalEditKeluarga">
+                                            data-target="#modalEditindividu">
                                             <i class="bi bi-pencil-square"></i> Edit
                                         </button>
 
@@ -129,130 +90,331 @@
 
 
 
-    <div class="modal fade" id="modaltambahkeluarga" aria-labelledby="modaltambahkeluargaLabel" aria-hidden="true">
+    <div class="modal fade" id="modaltambahindividu" aria-labelledby="modaltambahindividuLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modaltambahkeluargaLabel">Tambah Data Keluarga P2</h5>
+                    <h5 class="modal-title" id="modaltambahindividuLabel">Tambah Data individu P1</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kg-p2.store') }}" method="post">
+                    <form action="{{ route('idv-p1.store') }}" method="post">
                         @csrf
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="mb-3">
-                                    <label>Kode Provinsi<span class="text-danger">*</span></label>
-                                    <select id="cboprovinsi" class="form-control select2" onchange="ambilKab()"
-                                        name="kode_provinsi" required>
-                                        <option value="">-- Pilih Provinsi --</option>
-                                    </select>
+                                    <label>No KK<span class="text-danger">*</span></label>
+                                    <input type="number" name="no_kk" class="form-control"
+                                        placeholder="Masukkan Nomer KK" required>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="mb-3">
-                                    <label>Kode Kabupaten<span class="text-danger">*</span></label>
-                                    <select id="cbokabupaten" class="form-control select2" onchange="ambilKec()"
-                                        name="kode_kabupaten" required>
-                                        <option value="">-- Pilih Kabupaten --</option>
-                                    </select>
+                                    <label>NIK<span class="text-danger">*</span></label>
+                                    <input type="number" name="nik" class="form-control"
+                                        placeholder="Masukkan Nomer Induk Kependudukan" required>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="mb-3">
-                                    <label>Kode Kecamatan<span class="text-danger">*</span></label>
-                                    <select id="cbokecamatan" class="form-control select2" onchange="ambilDesa()"
-                                        name="kode_kecamatan" required>
-                                        <option value="">-- Pilih Kecamatan --</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="mb-3">
-                                    <label>Kode Desa<span class="text-danger">*</span></label>
-                                    <select id="cbodesa" class="form-control select2" name="kode_desa" required>
-                                        <option value="">-- Pilih Desa --</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <div class="mb-3">
-                                    <label>RT</label>
-                                    <input type="number" name="rt" class="form-control" placeholder="Contoh: 005"
+                                    <label>Nama Lengkap<span class="text-danger">*</span></label>
+                                    <input type="text" name="nama" class="form-control" placeholder="Nama Lengkap"
                                         required>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="mb-3">
-                                    <label>RW</label>
-                                    <input type="number" name="rw" class="form-control" placeholder="Contoh: 005"
-                                        required>
+                                    <label>Jenis Kelamin</label>
+                                    <select id="jenis_kelamin" class="form-control" name="jenis_kelamin">
+                                        <option value="" selected disabled>-- Pilih Opsi --</option>
+                                        <option value="1">Laki Laki</option>
+                                        <option value="2">Perempuan</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <div class="mb-3">
-                                    <label>Nama Kepala Keluarga<span class="text-danger">*</span></label>
-                                    <input type="text" name="nama_kpl_keluarga" class="form-control" required>
+                                    <label>Tempat Lahir</label>
+                                    <input type="text" name="tempat_lahir" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <div class="mb-3">
-                                    <label>Nomer Kartu Keluarga<span class="text-danger">*</span></label>
-                                    <input type="number" min="0" name="no_kk" class="form-control" required>
+                                    <label>Tanggal Lahir</label>
+                                    <input type="date" name="tgl_lahir" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label>Status Pernikahan</label>
+                                    <select id="status_pernikahan" class="form-control" name="status_pernikahan">
+                                        <option value="" selected disabled>-- Pilih Opsi --</option>
+                                        <option value="1">Kawin</option>
+                                        <option value="2">Belum Kawin</option>
+                                        <option value="3">Duda/Janda</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label>Agama</label>
+                                    <select id="status_pernikahan" class="form-control" name="agama">
+                                        <option value="" selected disabled>-- Pilih Opsi --</option>
+                                        <option value="1">Islam</option>
+                                        <option value="2">Kristen</option>
+                                        <option value="3">Katholik</option>
+                                        <option value="4">Hindu</option>
+                                        <option value="5">Budha</option>
+                                        <option value="6">Konghucu</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label>Suku Bangsa</label>
+                                    <input type="text" name="suku_bangsa" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label>Warganegara</label>
+                                    <select id="status_pernikahan" class="form-control" name="warganegara">
+                                        <option value="" selected disabled>-- Pilih Opsi --</option>
+                                        <option value="1">WNI</option>
+                                        <option value="2">WNA</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
                                 <div class="mb-3">
                                     <label>Nomer HP</label>
                                     <input type="number" name="no_hp" class="form-control">
                                 </div>
                             </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label>Nomer Whatsapp</label>
+                                    <input type="number" name="no_wa" class="form-control">
+                                </div>
+                            </div>
                             <div class="col-sm-3">
                                 <div class="mb-3">
-                                    <label>Nomer Telepon Rumah</label>
-                                    <input type="number" name="telp_rumah" class="form-control">
+                                    <label>Email</label>
+                                    <input type="url" name="email" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-sm-12">
+                            <div class="col-sm-3">
                                 <div class="mb-3">
-                                    <label>Alamat</label>
-                                    <textarea name="alamat" id="alamat" class="form-control" cols="50" rows="7"></textarea>
+                                    <label>Facebook</label>
+                                    <input type="url" name="facebook" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <div class="mb-3">
-                                    <label>Meteran Rumah</label>
-                                    <select id="meteran_rumah" class="form-control" name="meteran_rumah">
-                                        <option value="" selected disabled>-- Pilih Opsi --</option>
-                                        <option value="1">Punya Sendiri</option>
-                                        <option value="2">Menumpang</option>
-                                    </select>
+                                    <label>Twitter</label>
+                                    <input type="url" name="twitter" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <div class="mb-3">
-                                    <label>Nomer Meteran Rumah<span class="text-danger">*</span></label>
-                                    <input type="number" name="no_meteran" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="mb-3">
-                                    <label>Daya Meteran Rumah<span class="text-danger">*</span></label>
-                                    <select id="daya_meteran_rumah" class="form-control" name="daya_meteran_rumah">
-                                        <option value="" selected disabled>-- Pilih Opsi --</option>
-                                        <option value="450">450 VA</option>
-                                        <option value="900">900</option>
-                                        <option value="1.300">1.300 VA</option>
-                                        <option value="2.200">2.200 VA</option>
-                                    </select>
+                                    <label>Instagram</label>
+                                    <input type="url" name="instagram" class="form-control">
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Simpan Keluarga</button>
+                        <button type="submit" class="btn btn-primary w-100">Simpan individu</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Edit Individu P1 --}}
+    <div class="modal fade" id="modalEditindividu" aria-labelledby="modalEditindividuLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditindividuLabel">
+                        Edit Data Individu: {{ $data[0]->nama }}
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    @foreach ($data as $item)
+                        <form action="{{ route('idv-p1.update', $item->id) }}" method="POST">
+
+                            @csrf
+                            @method('PUT')
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label>No KK<span class="text-danger">*</span></label>
+                                        <input type="number" name="no_kk" class="form-control"
+                                            value="{{ $item->no_kk ?? '' }}" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label>NIK<span class="text-danger">*</span></label>
+                                        <input type="number" name="nik" class="form-control"
+                                            value="{{ $item->nik ?? '' }}" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label>Nama Lengkap<span class="text-danger">*</span></label>
+                                        <input type="text" name="nama" class="form-control"
+                                            value="{{ $item->nama ?? '' }}" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label>Jenis Kelamin</label>
+                                        <select id="jenis_kelamin" class="form-control" name="jenis_kelamin">
+                                            <option value="" disabled>-- Pilih Opsi --</option>
+                                            <option value="1" {{ $item->jenis_kelamin == 1 ? 'selected' : '' }}>
+                                                Laki-laki</option>
+                                            <option value="2" {{ $item->jenis_kelamin == 2 ? 'selected' : '' }}>
+                                                Perempuan</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label>Tempat Lahir</label>
+                                        <input type="text" name="tempat_lahir" class="form-control"
+                                            value="{{ $item->tempat_lahir ?? '' }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label>Tanggal Lahir</label>
+                                        <input type="date" name="tgl_lahir" class="form-control"
+                                            value="{{ $item->tgl_lahir ?? '' }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label>Status Pernikahan</label>
+                                        <select class="form-control" name="status_pernikahan">
+                                            <option value="" disabled>-- Pilih Opsi --</option>
+                                            <option value="1" {{ $item->status_pernikahan == 1 ? 'selected' : '' }}>
+                                                Kawin</option>
+                                            <option value="2" {{ $item->status_pernikahan == 2 ? 'selected' : '' }}>
+                                                Belum Kawin</option>
+                                            <option value="3" {{ $item->status_pernikahan == 3 ? 'selected' : '' }}>
+                                                Janda/Duda</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label>Agama</label>
+                                        <select class="form-control" name="agama">
+                                            <option value="" disabled>-- Pilih Opsi --</option>
+                                            <option value="1" {{ $item->agama == 1 ? 'selected' : '' }}>Islam
+                                            </option>
+                                            <option value="2" {{ $item->agama == 2 ? 'selected' : '' }}>Kristen
+                                            </option>
+                                            <option value="3" {{ $item->agama == 3 ? 'selected' : '' }}>Katholik
+                                            </option>
+                                            <option value="4" {{ $item->agama == 4 ? 'selected' : '' }}>Hindu
+                                            </option>
+                                            <option value="5" {{ $item->agama == 5 ? 'selected' : '' }}>Budha
+                                            </option>
+                                            <option value="6" {{ $item->agama == 6 ? 'selected' : '' }}>Konghucu
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label>Suku Bangsa</label>
+                                        <input type="text" name="suku_bangsa" class="form-control"
+                                            value="{{ $item->suku_bangsa ?? '' }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label>Warganegara</label>
+                                        <select class="form-control" name="warganegara">
+                                            <option value="" disabled>-- Pilih Opsi --</option>
+                                            <option value="1" {{ $item->warganegara == 1 ? 'selected' : '' }}>WNI
+                                            </option>
+                                            <option value="2" {{ $item->warganegara == 2 ? 'selected' : '' }}>WNA
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label>Nomer HP</label>
+                                        <input type="number" name="no_hp" class="form-control"
+                                            value="{{ $item->no_hp ?? '' }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label>Nomer Whatsapp</label>
+                                        <input type="number" name="no_wa" class="form-control"
+                                            value="{{ $item->no_wa ?? '' }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="mb-3">
+                                        <label>Email</label>
+                                        <input type="url" name="url_email_pribadi" class="form-control"
+                                            value="{{ $item->url_email_pribadi ?? '' }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="mb-3">
+                                        <label>Facebook</label>
+                                        <input type="url" name="url_facebook_pribadi" class="form-control"
+                                            value="{{ $item->url_facebook_pribadi ?? '' }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="mb-3">
+                                        <label>Twitter</label>
+                                        <input type="url" name="url_twitter_pribadi" class="form-control"
+                                            value="{{ $item->url_twitter_pribadi ?? '' }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="mb-3">
+                                        <label>Instagram</label>
+                                        <input type="url" name="url_instagram_pribadi" class="form-control"
+                                            value="{{ $item->url_instagram_pribadi ?? '' }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 mt-3">
+                                Simpan Perubahan
+                            </button>
+                        </form>
+                    @endforeach
                 </div>
             </div>
         </div>

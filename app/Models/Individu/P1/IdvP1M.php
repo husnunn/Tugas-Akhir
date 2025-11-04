@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class IdvP1M extends Model
 {
-
+    protected $primaryKey = 'id';
+    public $incrementing = false; 
     protected $table = 'individu_p1';
 
     protected $fillable = [
@@ -26,10 +27,10 @@ class IdvP1M extends Model
         'warganegara',
         'no_hp',
         'no_wa',
-        'email',
-        'facebook',
-        'twitter',
-        'instagram',
+        'url_email_pribadi',
+        'url_facebook_pribadi',
+        'url_twitter_pribadi',
+        'url_instagram_pribadi',
         'id_buat',
         'id_update',
         'tgl_buat',

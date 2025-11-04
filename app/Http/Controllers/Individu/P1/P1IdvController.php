@@ -8,7 +8,6 @@ use App\Models\Individu\P1\IdvP1M;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Survey\Survey;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -20,24 +19,16 @@ class P1IdvController extends Controller
         $survey = Survey::whereDate('tgl_mulai', '<=', $today)
             ->whereDate('tgl_akhir', '>=', $today)
             ->get();
+
         $data = IdvP1M::with('survey')->get();
+        // dd($data);
         return view('pages.individu.individu', compact('data', 'survey'));
     }
 
-    public function show_survey()
-    {
-        $today = Carbon::today();
-
-        $survey = Survey::whereDate('tgl_mulai', '<=', $today)
-            ->whereDate('tgl_akhir', '>=', $today)
-            ->get();
-        $keluarga = IdvP1M::all();
-
-        return view('pages.keluarga.forms.p2', compact('keluarga', 'survey'));
-    }
 
     public function store(Request $request)
     {
+        $userId = Auth::user()->id;
         // Ambil tanggal hari ini
         $today = Carbon::today()->toDateString();
 
@@ -48,45 +39,40 @@ class P1IdvController extends Controller
         if (!$survey) {
             return back()->with('error', 'Tidak ada survey aktif untuk hari ini.');
         }
-        $userId = Auth::user()->id;
         $request->validate([
-            'kode_provinsi' => 'required|string',
-            'kode_kabupaten' => 'required|string',
-            'kode_kecamatan' => 'required|string',
-            'kode_desa' => 'required|string',
+            'no_kk' => 'required|string',
+            'nik' => 'required|string',
         ]);
 
-        // // Validasi lanjutan sesuai aturan kondisional
-        if ($request->filled('meteran_rumah') && !$request->filled('no_meteran')) {
-            return back()->withErrors(['no_meteran' => 'Nomer Meteran Rumah wajib diisi jika Meteran Rumah diisi.'])->withInput();
-        }
-        if ($request->filled('meteran_rumah') && !$request->filled('daya_meteran_rumah')) {
-            return back()->withErrors(['daya_meteran_rumah' => 'Daya Meteran Rumah wajib diisi jika Meteran Rumah diisi.'])->withInput();
-        }
-
         try {
-            $keluarga = IdvP1M::create([
-                'id' => "DS-" . strtotime(date("Y-m-d H:i:s")),
-                'id_survey' => $survey->id,
+            $individu = IdvP1M::create([
+                'id' => "IDV-" . strtotime(date("Y-m-d H:i:s")),
                 'id_buat' => $userId,
+                'id_survey' => $survey->id,
                 'tgl_buat' => now(),
                 'tgl_update' => now(),
 
                 // Data dari form
-                'kode_provinsi' => $request->kode_provinsi,
-                'kode_kabupaten' => $request->kode_kabupaten,
-                'kode_kecamatan' => $request->kode_kecamatan,
-                'kode_desa' => $request->kode_desa,
-                'rt' => $request->rt,
-                'rw' => $request->rw,
-                'nama_kpl_keluarga' => $request->nama_kpl_keluarga,
                 'no_kk' => $request->no_kk,
+                'nik' => $request->nik,
+                'nama' => $request->nama,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tgl_lahir' => $request->tgl_lahir,
+                'status_pernikahan' => $request->status_pernikahan,
+                'agama' => $request->agama,
+                'suku_bangsa' => $request->suku_bangsa,
+                'warganegara' => $request->warganegara,
                 'no_hp' => $request->no_hp,
-                'telp_rumah' => $request->telp_rumah,
-                'alamat' => $request->alamat,
+                'no_wa' => $request->no_wa,
+                'url_email_pribadi' => $request->email,
+                'url_facebook_pribadi' => $request->facebook,
+                'url_twitter_pribadi' => $request->twitter,
+                'url_instagram_pribadi' => $request->instagram,
             ]);
 
-            return redirect()->back()->with('success', 'Data keluarga berhasil ditambahkan!');
+            return redirect()->back()->with('success', 'Data individu berhasil ditambahkan!');
         } catch (\Throwable $e) {
             DB::rollBack();
             dd('Error:', $e->getMessage());
@@ -103,6 +89,7 @@ class P1IdvController extends Controller
 
     public function update(Request $request, $id)
     {
+        // dd($id);
         $data = IdvP1M::find($id);
 
         if (!$data) {
@@ -117,52 +104,13 @@ class P1IdvController extends Controller
             ['id_update' => Auth::user()->id, 'tgl_update' => Carbon::now()]
         ));
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Data keluarga berhasil diperbarui',
-            'data' => $data
-        ]);
+        return redirect()->back()->with('success', 'Data individu berhasil diperbarui');
     }
 
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $p2 = IdvP1M::findOrFail($id);
+        IdvP1M::findOrFail($id)->delete();
 
-        // Ambil semua kolom kecuali primary key dan id_survey
-        $dataP2 = $p2->toArray();
-        unset($dataP2['id'], $dataP2['id_survey']);
-
-        // Cek apakah semua nilainya NULL atau kosong
-        $isEmpty = true;
-        foreach ($dataP2 as $value) {
-            if (!is_null($value) && $value !== '') {
-                $isEmpty = false;
-                break;
-            }
-        }
-
-        // Kalau ada isi → blok hapus
-        if (!$isEmpty) {
-            return back()->with('error', 'Data keluarga P2 tidak dapat dihapus karena masih memiliki data isian.');
-        }
-
-        // Kalau kosong → hapus aman
-        $p2->delete();
-
-        return back()->with('success', 'Data keluarga P2 berhasil dihapus karena tidak memiliki isian.');
+        return redirect()->back()->with('success', 'Data individu P1 berhasil dihapus.');
     }
-
-    // public function setSession(Request $request)
-    // {
-    //     try {
-    //         session([
-    //             'id_keluarga' => $request->id_keluarga,
-    //             'id_survey' => $request->id_survey
-    //         ]);
-
-    //         return response()->json(['status' => 'ok']);
-    //     } catch (\Exception $e) {
-    //         return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-    //     }
-    // }
 }
