@@ -30,7 +30,7 @@ class KgP3M extends Model
     {
         return $this->belongsTo(\App\Models\Keluarga\P2\KgP2M::class, 'id_kg_p2', 'id');
     }
-
+ 
     /**
      * Relasi ke tabel P4 (Permukiman)
      * Satu keluarga (P3) bisa punya satu data permukiman (P4)

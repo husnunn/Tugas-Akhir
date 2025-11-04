@@ -11,7 +11,7 @@ class KgP2M extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     public $timestamps = false;
- 
+
     protected $fillable = [
         'id',
         'id_survey',
@@ -39,9 +39,29 @@ class KgP2M extends Model
      * Relasi ke tabel P3 (Deskripsi Keluarga)
      * Satu lokasi (P2) bisa punya banyak keluarga (P3)
      */
-    public function p3()
+    public function p3() 
     {
         return $this->hasMany(\App\Models\Keluarga\P3\KgP3M::class, 'id_kg_p2', 'id');
+    }
+    public function p4()
+    {
+        return $this->hasMany(\App\Models\Keluarga\P4\KgP4M::class, 'id_kg_p2', 'id');
+    }
+    public function p421()
+    {
+        return $this->hasMany(\App\Models\Keluarga\P4\KgP421M::class, 'id_kg_p2', 'id');
+    }
+    public function p422()
+    {
+        return $this->hasMany(\App\Models\Keluarga\P4\KgP422M::class, 'id_kg_p2', 'id');
+    }
+    public function p423()
+    {
+        return $this->hasMany(\App\Models\Keluarga\P4\KgP423M::class, 'id_kg_p2', 'id');
+    }
+    public function p424()
+    {
+        return $this->hasMany(\App\Models\Keluarga\P4\KgP424M::class, 'id_kg_p2', 'id');
     }
 
     /**
@@ -62,5 +82,4 @@ class KgP2M extends Model
     {
         return $this->belongsTo(Survey::class, 'id_survey');
     }
-    
 }

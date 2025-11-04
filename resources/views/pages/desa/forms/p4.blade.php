@@ -6,7 +6,6 @@
         <h5>Form P4 - Musyawarah Desa </h5>
         <form action="{{ route('desa-p4.store') }}" method="POST" enctype="multipart/form-data" class="mb-5">
             @csrf
-
             <!-- Bulan ke -->
             <div class="mb-3">
                 <label>Bulan ke (Musyawarah Desa Tahun Sebelumnya)</label>

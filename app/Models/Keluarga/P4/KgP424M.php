@@ -14,7 +14,7 @@ class KgP424M extends Model
     protected $fillable = [
         'id',
         'id_kg_p2',
-        'id_master_apst',
+        'id_master_akses_sarpras',
         'jenis_transportasi',
         'penggunaan_transportasi',
         'waktu_tempuh',
@@ -42,6 +42,6 @@ class KgP424M extends Model
      */
     public function masterApst()
     {
-        return $this->belongsTo(\App\Models\Master\MasterApstM::class, 'id_master_apst', 'id');
+        return $this->belongsTo(\App\Models\Master\MasterApstM::class, 'id_master_akses_sarpras', 'id');
     }
 }

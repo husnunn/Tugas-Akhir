@@ -37,7 +37,7 @@ class KgP421M extends Model
      * Relasi ke master pendidikan
      * Untuk mendapatkan nama jenjang pendidikan (PAUD, SD, SMP, dst)
      */
-    public function masterPendidikan()
+    public function pendidikan()
     {
         return $this->belongsTo(\App\Models\Master\MasterPendidikanM::class, 'id_master_pendidikan', 'id');
     }

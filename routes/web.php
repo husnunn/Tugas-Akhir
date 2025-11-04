@@ -33,6 +33,11 @@ use App\Http\Controllers\Desa\P10\P10Controller;
 use App\Http\Controllers\Individu\P1\P1IdvController;
 use App\Http\Controllers\Keluarga\P2\P2KgController;
 use App\Http\Controllers\Keluarga\P3\P3KgController;
+use App\Http\Controllers\Keluarga\P4\P4KgController;
+use App\Http\Controllers\Keluarga\P4\P421KgController;
+use App\Http\Controllers\Keluarga\P4\P422KgController;
+use App\Http\Controllers\Keluarga\P4\P423KgController;
+use App\Http\Controllers\Keluarga\P4\P424KgController;
 
 
 Route::get('/', [LoginController::class, 'showLogin'])->name('login');
@@ -197,7 +202,31 @@ Route::middleware('auth')->group(function () {
     Route::post('/kg-p3/store', [P3KgController::class, 'store'])->name('kg-p3.store');
     Route::put('/kg-p3/{id}', [P3KgController::class, 'update'])->name('kg-p3.update');
     Route::delete('/kg-p3/{id}', [P3KgController::class, 'destroy'])->name('kg-p3.destroy');
-    // Route::resource('keluarga/p3', P10Controller::class);
+    // KG P4
+    Route::get('/kg-p4', [P4KgController::class, 'index'])->name('kg-p4.index');
+    Route::post('/kg-p4/store', [P4KgController::class, 'store'])->name('kg-p4.store');
+    Route::put('/kg-p4/{id}', [P4KgController::class, 'update'])->name('kg-p4.update');
+    Route::delete('/kg-p4/{id}', [P4KgController::class, 'destroy'])->name('kg-p4.destroy');
+    // KG P421
+    Route::get('/kg-p421', [P421KgController::class, 'index'])->name('kg-p421.index');
+    Route::post('/kg-p421/store', [P421KgController::class, 'store'])->name('kg-p421.store');
+    Route::put('/kg-p421/{id}', [P421KgController::class, 'update'])->name('kg-p421.update');
+    Route::delete('/kg-p421/{id}', [P421KgController::class, 'destroy'])->name('kg-p421.destroy');
+    // KG P422
+    Route::get('/kg-p422', [P422KgController::class, 'index'])->name('kg-p422.index');
+    Route::post('/kg-p422/store', [P422KgController::class, 'store'])->name('kg-p422.store');
+    Route::put('/kg-p422/{id}', [P422KgController::class, 'update'])->name('kg-p422.update');
+    Route::delete('/kg-p422/{id}', [P422KgController::class, 'destroy'])->name('kg-p422.destroy');
+    // KG P423
+    Route::get('/kg-p423', [P423KgController::class, 'index'])->name('kg-p423.index');
+    Route::post('/kg-p423/store', [P423KgController::class, 'store'])->name('kg-p423.store');
+    Route::put('/kg-p423/{id}', [P423KgController::class, 'update'])->name('kg-p423.update');
+    Route::delete('/kg-p423/{id}', [P423KgController::class, 'destroy'])->name('kg-p423.destroy');
+    // KG P424
+    Route::get('/kg-p424', [P424KgController::class, 'index'])->name('kg-p424.index');
+    Route::post('/kg-p424/store', [P424KgController::class, 'store'])->name('kg-p424.store');
+    Route::put('/kg-p424/{id}', [P424KgController::class, 'update'])->name('kg-p424.update');
+    Route::delete('/kg-p424/{id}', [P424KgController::class, 'destroy'])->name('kg-p424.destroy');
 
 
 

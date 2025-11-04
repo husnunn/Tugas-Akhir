@@ -42,7 +42,7 @@ class P3KgController extends Controller
 
         try {
             $keluarga = KgP3M::create([
-                'id' => "KG-" . strtotime(date("Y-m-d H:i:s")),
+                'id' => "KGP3-" . strtotime(date("Y-m-d H:i:s")),
                 'id_buat' => $userId,
                 'tgl_buat' => now(),
                 'tgl_update' => now(),

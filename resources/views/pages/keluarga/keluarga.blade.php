@@ -60,46 +60,55 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-
-                                                    <a class="dropdown-item" href="#">
+                                                    <a class="dropdown-item"
+                                                        style="display: flex; justify-content: space-between"
+                                                        href="{{ route('setkg.session', ['id' => $item->id, 'form' => 'kgp4']) }}"
+                                                        data-id="{{ $item->id }}"
+                                                        data-id_survey="{{ $item->id_survey }}">
                                                         P4
-                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
-        $q->where('id_survey', $item->id_survey);
-    })->exists())
-                                                        <i class="fas fa-check text-success ml-2"></i>
-                                                    @endif --}}
+                                                        @if ($item->p4->isNotEmpty())
+                                                            <i class="fas fa-check text-success ml-2"></i>
+                                                        @endif
                                                     </a>
-                                                    <a class="dropdown-item" href="#">
+                                                    <a class="dropdown-item"
+                                                        style="display: flex; justify-content: space-between"
+                                                        href="{{ route('setkg.session', ['id' => $item->id, 'form' => 'kgp421']) }}"
+                                                        data-id="{{ $item->id }}"
+                                                        data-id_survey="{{ $item->id_survey }}">
                                                         P421
-                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
-        $q->where('id_survey', $item->id_survey);
-    })->exists())
-                                                        <i class="fas fa-check text-success ml-2"></i>
-                                                    @endif --}}
+                                                        @if ($item->p421->isNotEmpty())
+                                                            <i class="fas fa-check text-success ml-2"></i>
+                                                        @endif
                                                     </a>
-                                                    <a class="dropdown-item" href="#">
+                                                    <a class="dropdown-item"
+                                                        style="display: flex; justify-content: space-between"
+                                                        href="{{ route('setkg.session', ['id' => $item->id, 'form' => 'kgp422']) }}"
+                                                        data-id="{{ $item->id }}"
+                                                        data-id_survey="{{ $item->id_survey }}">
                                                         P422
-                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
-        $q->where('id_survey', $item->id_survey);
-    })->exists())
-                                                        <i class="fas fa-check text-success ml-2"></i>
-                                                    @endif --}}
+                                                        @if ($item->p422->isNotEmpty())
+                                                            <i class="fas fa-check text-success ml-2"></i>
+                                                        @endif
                                                     </a>
-                                                    <a class="dropdown-item" href="#">
+                                                    <a class="dropdown-item"
+                                                        style="display: flex; justify-content: space-between"
+                                                        href="{{ route('setkg.session', ['id' => $item->id, 'form' => 'kgp423']) }}"
+                                                        data-id="{{ $item->id }}"
+                                                        data-id_survey="{{ $item->id_survey }}">
                                                         P423
-                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
-        $q->where('id_survey', $item->id_survey);
-    })->exists())
-                                                        <i class="fas fa-check text-success ml-2"></i>
-                                                    @endif --}}
+                                                        @if ($item->p423->isNotEmpty())
+                                                            <i class="fas fa-check text-success ml-2"></i>
+                                                        @endif
                                                     </a>
-                                                    <a class="dropdown-item" href="#">
+                                                    <a class="dropdown-item"
+                                                        style="display: flex; justify-content: space-between"
+                                                        href="{{ route('setkg.session', ['id' => $item->id, 'form' => 'kgp424']) }}"
+                                                        data-id="{{ $item->id }}"
+                                                        data-id_survey="{{ $item->id_survey }}">
                                                         P424
-                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
-        $q->where('id_survey', $item->id_survey);
-    })->exists())
-                                                        <i class="fas fa-check text-success ml-2"></i>
-                                                    @endif --}}
+                                                        @if ($item->p424->isNotEmpty())
+                                                            <i class="fas fa-check text-success ml-2"></i>
+                                                        @endif
                                                     </a>
                                                 </div>
                                             </div>

@@ -14,7 +14,7 @@ class KgP423M extends Model
     protected $fillable = [
         'id',
         'id_kg_p2',
-        'id_master_nakes',
+        'id_master_tenkes',
         'jarak',
         'waktu_tempuh',
         'kemudahan',
@@ -39,6 +39,6 @@ class KgP423M extends Model
      */
     public function masterNakes()
     {
-        return $this->belongsTo(\App\Models\Master\MasterNakesm::class, 'id_master_nakes', 'id');
+        return $this->belongsTo(\App\Models\Master\MasterNakesm::class, 'id_master_tenkes', 'id');
     }
 }

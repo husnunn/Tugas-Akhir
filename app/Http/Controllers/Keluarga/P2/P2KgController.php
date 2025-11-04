@@ -65,7 +65,7 @@ class P2KgController extends Controller
 
         try {
             $keluarga = KgP2M::create([
-                'id' => "KG-" . strtotime(date("Y-m-d H:i:s")),
+                'id' => "KGP2-" . strtotime(date("Y-m-d H:i:s")),
                 'id_survey' => $survey->id,
                 'id_buat' => $userId,
                 'tgl_buat' => now(),

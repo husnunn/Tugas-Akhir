@@ -58,7 +58,7 @@ class KgP4M extends Model
     {
         return $this->belongsTo(\App\Models\Keluarga\P2\KgP2M::class, 'id_kg_p2', 'id');
     }
-
+ 
     /**
      * Relasi ke tabel pendidikan (kg_p421)
      * Satu permukiman bisa punya banyak akses pendidikan
