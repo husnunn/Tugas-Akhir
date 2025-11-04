@@ -4,7 +4,7 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    <i class="fas fa-globe"></i>
                 </div>
                 <div class="sidebar-brand-text mx-3">SDGs Desa</div>
             </a>
@@ -36,13 +36,13 @@
                     <i class="fas fa-table"></i>
                     <span>Rukun Tetangga (RT)</span></a>
             </li>
-            <li class="nav-item {{ request()->is('keluarga') ? 'active' : '' }}">
-                <a class="nav-link" href="/keluarga">
+            <li class="nav-item {{ request()->is('kg-p2.index') ? 'active' : '' }}">
+                <a class="nav-link" href="/kg-p2">
                     <i class="fas fa-table"></i>
                     <span>Keluarga</span></a>
             </li>
-            <li class="nav-item {{ request()->is('individu') ? 'active' : '' }}">
-                <a class="nav-link" href="/individu">
+            <li class="nav-item {{ request()->is('idv-p1.index') ? 'active' : '' }}">
+                <a class="nav-link" href="/idv-p1">
                     <i class="fas fa-table"></i>
                     <span>Individu</span></a>
             </li>

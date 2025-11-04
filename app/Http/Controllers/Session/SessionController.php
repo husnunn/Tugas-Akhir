@@ -5,17 +5,21 @@ namespace App\Http\Controllers\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Desa\DesaP2;
+use App\Models\Keluarga\P2\KgP2M;
 
 class SessionController extends Controller
 {
     public function set($id, $form)
     {
         $p2 = DesaP2::findOrFail($id);
+        $p2kg = KgP2M::findOrFail($id);
 
         // Simpan ke session
         session([
             'id_survey' => $p2->id_survey,
+            'id_survey_kg' => $p2kg->id_survey,
             'id_desa'   => $p2->id,
+            'id_kg_p2'   => $p2kg->id,
         ]);
 
         // Tentukan route tujuan berdasarkan form
@@ -30,6 +34,35 @@ class SessionController extends Controller
             'p8'  => 'desa-p8.index',
             'p9'  => 'desa-p9.index',
             'p10' => 'desa-p10.index',
+            'kgp3' => 'kg-p3.index',
+            'kgp4' => 'kg-p4.index',
+            'kgp421' => 'kg-p421.index',
+            'kgp422' => 'kg-p422.index',
+            'kgp423' => 'kg-p423.index',
+            'kgp424' => 'kg-p424.index',
+            default => 'dashboard',
+        };
+
+        return redirect()->route($redirectRoute);
+    }
+    public function setkg($id, $form)
+    {
+        $p2kg = KgP2M::findOrFail($id);
+
+        // Simpan ke session
+        session([
+            'id_survey' => $p2kg->id_survey,
+            'id_kg_p2'   => $p2kg->id,
+        ]);
+
+        // Tentukan route tujuan berdasarkan form
+        $redirectRoute = match ($form) {
+            'kgp3' => 'kg-p3.index',
+            'kgp4' => 'kg-p4.index',
+            'kgp421' => 'kg-p421.index',
+            'kgp422' => 'kg-p422.index',
+            'kgp423' => 'kg-p423.index',
+            'kgp424' => 'kg-p424.index',
             default => 'dashboard',
         };
 

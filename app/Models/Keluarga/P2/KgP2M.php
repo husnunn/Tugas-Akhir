@@ -11,7 +11,7 @@ class KgP2M extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     public $timestamps = false;
-
+ 
     protected $fillable = [
         'id',
         'id_survey',
@@ -62,4 +62,5 @@ class KgP2M extends Model
     {
         return $this->belongsTo(Survey::class, 'id_survey');
     }
+    
 }

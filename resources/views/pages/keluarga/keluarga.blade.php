@@ -21,105 +21,108 @@
                         <thead>
                             <tr>
                                 <th>Tanggal Survey</th>
-                                <th>Nama Keluarga</th>
+                                <th>Nama Kepala Keluarga</th>
                                 <th>Tambah Data</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($data as $item) --}}
-                            <tr>
-                                <td>
-                                    {{-- @if ($d->survey)
-                                            {{ \Carbon\Carbon::parse($d->survey->tgl_mulai)->format('d M Y') }}
+                            @foreach ($data as $item)
+                                <tr>
+                                    <td>
+                                        @if ($item->survey)
+                                            {{ \Carbon\Carbon::parse($item->survey->tgl_mulai)->format('d M Y') }}
                                             s/d
-                                            {{ \Carbon\Carbon::parse($d->survey->tgl_akhir)->format('d M Y') }}
+                                            {{ \Carbon\Carbon::parse($item->survey->tgl_akhir)->format('d M Y') }}
                                         @else
                                             <em>Tidak ada survey aktif</em>
-                                        @endif --}}
-                                    kjhshdjkshd
-                                </td>
-                                <td>hjgsdhgjd</td>
-                                <td>
-                                    {{-- P3-P4 --}}
-                                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                        <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-secondary dropdown-toggle btn-sm"
-                                                data-toggle="dropdown" aria-expanded="false">
-                                                P3-P424
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">
-                                                    P3
-                                                    {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($d) {
-        $q->where('id_survey', $d->id_survey);
+                                        @endif
+                                        {{-- kjhshdjkshd --}}
+                                    </td>
+                                    <td>{{ $item->nama_kpl_keluarga }}</td>
+                                    <td>
+                                        {{-- P3-P4 --}}
+                                        <div class="btn-group" role="group"
+                                            aria-label="Button group with nested dropdown">
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm"
+                                                    data-toggle="dropdown" aria-expanded="false">
+                                                    P3-P424
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item"
+                                                        style="display: flex; justify-content: space-between"
+                                                        href="{{ route('setkg.session', ['id' => $item->id, 'form' => 'kgp3']) }}"
+                                                        data-id="{{ $item->id }}"
+                                                        data-id_survey="{{ $item->id_survey }}">
+                                                        P3
+                                                        @if ($item->p3->isNotEmpty())
+                                                            <i class="fas fa-check text-success ml-2"></i>
+                                                        @endif
+                                                    </a>
+
+                                                    <a class="dropdown-item" href="#">
+                                                        P4
+                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
+        $q->where('id_survey', $item->id_survey);
     })->exists())
                                                         <i class="fas fa-check text-success ml-2"></i>
                                                     @endif --}}
-                                                </a>
-                                                <a class="dropdown-item" href="#">
-                                                    P4
-                                                    {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($d) {
-        $q->where('id_survey', $d->id_survey);
+                                                    </a>
+                                                    <a class="dropdown-item" href="#">
+                                                        P421
+                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
+        $q->where('id_survey', $item->id_survey);
     })->exists())
                                                         <i class="fas fa-check text-success ml-2"></i>
                                                     @endif --}}
-                                                </a>
-                                                <a class="dropdown-item" href="#">
-                                                    P421
-                                                    {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($d) {
-        $q->where('id_survey', $d->id_survey);
+                                                    </a>
+                                                    <a class="dropdown-item" href="#">
+                                                        P422
+                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
+        $q->where('id_survey', $item->id_survey);
     })->exists())
                                                         <i class="fas fa-check text-success ml-2"></i>
                                                     @endif --}}
-                                                </a>
-                                                <a class="dropdown-item" href="#">
-                                                    P422
-                                                    {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($d) {
-        $q->where('id_survey', $d->id_survey);
+                                                    </a>
+                                                    <a class="dropdown-item" href="#">
+                                                        P423
+                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
+        $q->where('id_survey', $item->id_survey);
     })->exists())
                                                         <i class="fas fa-check text-success ml-2"></i>
                                                     @endif --}}
-                                                </a>
-                                                <a class="dropdown-item" href="#">
-                                                    P423
-                                                    {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($d) {
-        $q->where('id_survey', $d->id_survey);
+                                                    </a>
+                                                    <a class="dropdown-item" href="#">
+                                                        P424
+                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
+        $q->where('id_survey', $item->id_survey);
     })->exists())
                                                         <i class="fas fa-check text-success ml-2"></i>
                                                     @endif --}}
-                                                </a>
-                                                <a class="dropdown-item" href="#">
-                                                    P424
-                                                    {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($d) {
-        $q->where('id_survey', $d->id_survey);
-    })->exists())
-                                                        <i class="fas fa-check text-success ml-2"></i>
-                                                    @endif --}}
-                                                </a>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
+                                    </td>
 
-                                <td>
-                                    <!-- Tombol Edit -->
-                                    <button class="btn btn-warning btn-sm" data-toggle="modal"
-                                        data-target="#modalEditKeluarga">
-                                        <i class="bi bi-pencil-square"></i> Edit
-                                    </button>
-
-                                    <!-- Tombol Hapus -->
-                                    <form action="" method="POST" style="display:inline;" @csrf @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                        <i class="bi bi-trash"></i> Hapus
+                                    <td>
+                                        <!-- Tombol Edit -->
+                                        <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                            data-target="#modalEditKeluarga">
+                                            <i class="bi bi-pencil-square"></i> Edit
                                         </button>
-                                    </form>
-                                </td>
-                            </tr>
 
-                            {{-- @endforeach --}}
+                                        <!-- Tombol Hapus -->
+                                        <form action="" method="POST" style="display:inline;" @csrf @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                            <i class="bi bi-trash"></i> Hapus
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -139,7 +142,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post">
+                    <form action="{{ route('kg-p2.store') }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-sm-6">
@@ -192,19 +195,25 @@
                                         required>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <div class="mb-3">
                                     <label>Nama Kepala Keluarga<span class="text-danger">*</span></label>
                                     <input type="text" name="nama_kpl_keluarga" class="form-control" required>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label>Nomer Kartu Keluarga<span class="text-danger">*</span></label>
+                                    <input type="number" min="0" name="no_kk" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
                                 <div class="mb-3">
                                     <label>Nomer HP</label>
                                     <input type="number" name="no_hp" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <div class="mb-3">
                                     <label>Nomer Telepon Rumah</label>
                                     <input type="number" name="telp_rumah" class="form-control">
@@ -250,131 +259,132 @@
                 </div>
             </div>
         </div>
-    @endsection
-    @push('scripts')
-        {{-- Script untuk Wilayah --}}
-        <script>
-            function toggleRequired(condition, selector) {
-                $(selector).prop('required', condition);
-                if (condition) $(selector).closest('.mb-3').show();
-                else $(selector).closest('.mb-3').hide();
-            }
+    </div>
+@endsection
+@push('scripts')
+    {{-- Script untuk Wilayah --}}
+    <script>
+        function toggleRequired(condition, selector) {
+            $(selector).prop('required', condition);
+            if (condition) $(selector).closest('.mb-3').show();
+            else $(selector).closest('.mb-3').hide();
+        }
 
-            $(document).ready(function() {
+        $(document).ready(function() {
 
-                // Trigger ketika select berubah
-                $('select[name="meteran_rumah"]').on('change', function() {
-                    const hasValue = $(this).val() === '1';
+            // Trigger ketika select berubah
+            $('select[name="meteran_rumah"]').on('change', function() {
+                const hasValue = $(this).val() === '1';
 
-                    toggleRequired(hasValue, 'input[name="no_meteran"]');
-                    toggleRequired(hasValue, 'select[name="daya_meteran_rumah"]');
-                });
-
-                // Kondisi awal: hidden
-                toggleRequired(false, 'input[name="no_meteran"]');
-                toggleRequired(false, 'select[name="daya_meteran_rumah"]');
+                toggleRequired(hasValue, 'input[name="no_meteran"]');
+                toggleRequired(hasValue, 'select[name="daya_meteran_rumah"]');
             });
-        </script>
 
-        {{-- Script untuk Wilayah --}}
-        <script>
-            function ambilProvinsi() {
-                $.ajax({
-                    url: "{{ URL::to('provinces') }}",
-                    method: "get",
-                    contentType: "application/json",
-                    dataType: "json",
-                    success: function(response) {
-                        let dt = "";
-                        $.each(response, function(i, kolom) {
-                            let kode = kolom.kode;
-                            let nama = kolom.nama;
-                            dt += `<option value="${kode}">${nama}</option>`;
-                        });
-                        $("#cboprovinsi").html(`<option value="">-- Pilih Salah Satu --</option>${dt}`);
-                    },
-                    error: function(error) {
-                        console.log("error", error);
-                    }
-                });
-            }
+            // Kondisi awal: hidden
+            toggleRequired(false, 'input[name="no_meteran"]');
+            toggleRequired(false, 'select[name="daya_meteran_rumah"]');
+        });
+    </script>
 
-            function ambilKab() {
-                let kodeProv = $("#cboprovinsi").val();
-                if (kodeProv == "") {
-                    $("#cbokabupaten").html(`<option value="">-- Pilih Salah Satu --</option>`);
-                    return;
+    {{-- Script untuk Wilayah --}}
+    <script>
+        function ambilProvinsi() {
+            $.ajax({
+                url: "{{ URL::to('provinces') }}",
+                method: "get",
+                contentType: "application/json",
+                dataType: "json",
+                success: function(response) {
+                    let dt = "";
+                    $.each(response, function(i, kolom) {
+                        let kode = kolom.kode;
+                        let nama = kolom.nama;
+                        dt += `<option value="${kode}">${nama}</option>`;
+                    });
+                    $("#cboprovinsi").html(`<option value="">-- Pilih Salah Satu --</option>${dt}`);
+                },
+                error: function(error) {
+                    console.log("error", error);
                 }
-                $.ajax({
-                    url: `{{ URL::to('kabupaten') }}/${kodeProv}`,
-                    method: "get",
-                    contentType: "application/json",
-                    dataType: "json",
-                    success: function(response) {
-                        let dt = "";
-                        $.each(response, function(i, kolom) {
-                            let kode = kolom.kode;
-                            let nama = kolom.nama;
-                            dt += `<option value="${kode}">${nama}</option>`;
-                        });
-                        $("#cbokabupaten").html(`<option value="">-- Pilih Kabupaten --</option>${dt}`);
-                    },
-                    error: function(error) {
-                        console.log("error", error);
-                    }
-                });
-            }
+            });
+        }
 
-            function ambilKec() {
-                let kodeKab = $("#cbokabupaten").val();
-                if (kodeKab == "") {
-                    $("#cbokabupaten").html(`<option value="">-- Pilih Salah Satu --</option>`);
-                    return;
-                }
-                $.ajax({
-                    url: `{{ URL::to('kecamatan') }}/${kodeKab}`,
-                    method: "get",
-                    contentType: "application/json",
-                    dataType: "json",
-                    success: function(response) {
-                        let dt = "";
-                        $.each(response, function(i, kolom) {
-                            let kode = kolom.kode;
-                            let nama = kolom.nama;
-                            dt += `<option value="${kode}">${nama}</option>`;
-                        });
-                        $("#cbokecamatan").html(`<option value="">-- Pilih Kecamatan --</option>${dt}`);
-                    },
-                    error: function(error) {
-                        console.log("error", error);
-                    }
-                });
+        function ambilKab() {
+            let kodeProv = $("#cboprovinsi").val();
+            if (kodeProv == "") {
+                $("#cbokabupaten").html(`<option value="">-- Pilih Salah Satu --</option>`);
+                return;
             }
+            $.ajax({
+                url: `{{ URL::to('kabupaten') }}/${kodeProv}`,
+                method: "get",
+                contentType: "application/json",
+                dataType: "json",
+                success: function(response) {
+                    let dt = "";
+                    $.each(response, function(i, kolom) {
+                        let kode = kolom.kode;
+                        let nama = kolom.nama;
+                        dt += `<option value="${kode}">${nama}</option>`;
+                    });
+                    $("#cbokabupaten").html(`<option value="">-- Pilih Kabupaten --</option>${dt}`);
+                },
+                error: function(error) {
+                    console.log("error", error);
+                }
+            });
+        }
 
-            function ambilDesa() {
-                let kodeKec = $("#cbokecamatan").val();
-                if (kodeKec == "") {
-                    $("#cbokecamatan").html(`<option value="">-- Pilih Salah Satu --</option>`);
-                    return;
-                }
-                $.ajax({
-                    url: `{{ URL::to('desa') }}/${kodeKec}`,
-                    method: "get",
-                    contentType: "application/json",
-                    dataType: "json",
-                    success: function(response) {
-                        let dt = "";
-                        $.each(response, function(i, kolom) {
-                            let kode = kolom.kode;
-                            let nama = kolom.nama;
-                            dt += `<option value="${kode}">${nama}</option>`;
-                        });
-                        $("#cbodesa").html(`<option value="">-- Pilih Desa --</option>${dt}`);
-                    },
-                    error: function(error) {
-                        console.log("error", error);
-                    }
-                });
+        function ambilKec() {
+            let kodeKab = $("#cbokabupaten").val();
+            if (kodeKab == "") {
+                $("#cbokabupaten").html(`<option value="">-- Pilih Salah Satu --</option>`);
+                return;
             }
-        </script>
-    @endpush
+            $.ajax({
+                url: `{{ URL::to('kecamatan') }}/${kodeKab}`,
+                method: "get",
+                contentType: "application/json",
+                dataType: "json",
+                success: function(response) {
+                    let dt = "";
+                    $.each(response, function(i, kolom) {
+                        let kode = kolom.kode;
+                        let nama = kolom.nama;
+                        dt += `<option value="${kode}">${nama}</option>`;
+                    });
+                    $("#cbokecamatan").html(`<option value="">-- Pilih Kecamatan --</option>${dt}`);
+                },
+                error: function(error) {
+                    console.log("error", error);
+                }
+            });
+        }
+
+        function ambilDesa() {
+            let kodeKec = $("#cbokecamatan").val();
+            if (kodeKec == "") {
+                $("#cbokecamatan").html(`<option value="">-- Pilih Salah Satu --</option>`);
+                return;
+            }
+            $.ajax({
+                url: `{{ URL::to('desa') }}/${kodeKec}`,
+                method: "get",
+                contentType: "application/json",
+                dataType: "json",
+                success: function(response) {
+                    let dt = "";
+                    $.each(response, function(i, kolom) {
+                        let kode = kolom.kode;
+                        let nama = kolom.nama;
+                        dt += `<option value="${kode}">${nama}</option>`;
+                    });
+                    $("#cbodesa").html(`<option value="">-- Pilih Desa --</option>${dt}`);
+                },
+                error: function(error) {
+                    console.log("error", error);
+                }
+            });
+        }
+    </script>
+@endpush

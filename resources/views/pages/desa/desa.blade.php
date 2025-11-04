@@ -49,7 +49,7 @@
                                                     P3-P502
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item "
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('set.session', ['id' => $d->id, 'form' => 'p3']) }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P3
@@ -57,7 +57,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('desa-p3Pegawai.fromP2', $d->id_survey) }}">
                                                         Pegawai
                                                         @if (
@@ -67,7 +67,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('desa-p3Bpd.fromP2', $d->id_survey) }}">
                                                         BPD
                                                         @if (
@@ -77,14 +77,13 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-
-                                                    <a class="dropdown-item "
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('set.session', ['id' => $d->id, 'form' => 'p4']) }}">P4
                                                         @if (\App\Models\Desa\P4\P4::where('id_survey', $d->id_survey)->exists())
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item "
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('set.session', ['id' => $d->id, 'form' => 'p5']) }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P5
@@ -92,7 +91,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('desa-p501.fromP2', $d->id_survey) }}">
                                                         Peraturan Desa
                                                         @if (
@@ -102,7 +101,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('desa-p502.fromP2', $d->id_survey) }}">
                                                         Peraturan KepDes
                                                         @if (
@@ -124,7 +123,7 @@
                                                     P503-P8
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item"
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('desa-p503.fromP2', $d->id_survey) }}">
                                                         SK KepDes
                                                         @if (
@@ -134,7 +133,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item "
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('set.session', ['id' => $d->id, 'form' => 'p601']) }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P601
@@ -142,7 +141,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item "
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('set.session', ['id' => $d->id, 'form' => 'p602']) }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P602
@@ -150,7 +149,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item "
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('set.session', ['id' => $d->id, 'form' => 'p603']) }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P603
@@ -158,7 +157,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item "
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('set.session', ['id' => $d->id, 'form' => 'p7']) }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P7
@@ -166,7 +165,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('desa-p705.fromP2', $d->id_survey) }}">
                                                         P705
                                                         @if (
@@ -176,7 +175,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item "
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('set.session', ['id' => $d->id, 'form' => 'p8']) }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P8
@@ -196,7 +195,7 @@
                                                     P9-P10
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item "
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('set.session', ['id' => $d->id, 'form' => 'p9']) }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P9
@@ -204,7 +203,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('desa-p914.fromP2', $d->id_survey) }}">
                                                         P914
                                                         @if (
@@ -214,7 +213,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('desa-p923.fromP2', $d->id_survey) }}">
                                                         P923
                                                         @if (
@@ -224,7 +223,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('desa-p932.fromP2', $d->id_survey) }}">
                                                         P932
                                                         @if (
@@ -234,7 +233,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('desa-p941.fromP2', $d->id_survey) }}">
                                                         P941
                                                         @if (
@@ -244,7 +243,7 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item "
+                                                    <a class="dropdown-item" style="display: flex; justify-content: space-between"
                                                         href="{{ route('set.session', ['id' => $d->id, 'form' => 'p10']) }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P10

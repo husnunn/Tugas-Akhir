@@ -1,201 +1,262 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Form Lengkap</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
-        </a>
-        
+    <div class="container">
+
+        {{-- Tombol Tambah Keluarga --}}
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modaltambahkeluarga">
+            + Tambah Keluarga
+        </button>
+        {{-- <a href="/coba">Halaman COBA</a> --}}
+
+        <!-- Data Keluarga -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Data Keluarga</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table display" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Tanggal Survey</th>
+                                <th>Nama Kepala Keluarga</th>
+                                <th>Tambah Data</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($data as $item)
+                                <tr>
+                                    <td>
+                                        @if ($item->survey)
+                                            {{ \Carbon\Carbon::parse($item->survey->tgl_mulai)->format('d M Y') }}
+                                            s/d
+                                            {{ \Carbon\Carbon::parse($item->survey->tgl_akhir)->format('d M Y') }}
+                                        @else
+                                            <em>Tidak ada survey aktif</em>
+                                        @endif
+                                        {{-- kjhshdjkshd --}}
+                                    </td>
+                                    <td>{{ $item->nama_kpl_keluarga }}</td>
+                                    <td>
+                                        {{-- P3-P4 --}}
+                                        <div class="btn-group" role="group"
+                                            aria-label="Button group with nested dropdown">
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm"
+                                                    data-toggle="dropdown" aria-expanded="false">
+                                                    P3-P424
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="#">
+                                                        P3
+                                                        @if (
+                                                            \App\Models\Keluarga\P3\KgP3M::whereHas('p2', function ($q) use ($item) {
+                                                                $q->where('id_survey', $item->id_survey);
+                                                            })->exists())
+                                                            <i class="fas fa-check text-success ml-2"></i>
+                                                        @endif
+                                                    </a>
+                                                    <a class="dropdown-item" href="#">
+                                                        P4
+                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
+        $q->where('id_survey', $item->id_survey);
+    })->exists())
+                                                        <i class="fas fa-check text-success ml-2"></i>
+                                                    @endif --}}
+                                                    </a>
+                                                    <a class="dropdown-item" href="#">
+                                                        P421
+                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
+        $q->where('id_survey', $item->id_survey);
+    })->exists())
+                                                        <i class="fas fa-check text-success ml-2"></i>
+                                                    @endif --}}
+                                                    </a>
+                                                    <a class="dropdown-item" href="#">
+                                                        P422
+                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
+        $q->where('id_survey', $item->id_survey);
+    })->exists())
+                                                        <i class="fas fa-check text-success ml-2"></i>
+                                                    @endif --}}
+                                                    </a>
+                                                    <a class="dropdown-item" href="#">
+                                                        P423
+                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
+        $q->where('id_survey', $item->id_survey);
+    })->exists())
+                                                        <i class="fas fa-check text-success ml-2"></i>
+                                                    @endif --}}
+                                                    </a>
+                                                    <a class="dropdown-item" href="#">
+                                                        P424
+                                                        {{-- @if (\App\Models\Keluarga\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($item) {
+        $q->where('id_survey', $item->id_survey);
+    })->exists())
+                                                        <i class="fas fa-check text-success ml-2"></i>
+                                                    @endif --}}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <!-- Tombol Edit -->
+                                        <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                            data-target="#modalEditKeluarga">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </button>
+
+                                        <!-- Tombol Hapus -->
+                                        <form action="" method="POST" style="display:inline;" @csrf @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                            <i class="bi bi-trash"></i> Hapus
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-                    <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border small" placeholder="Cari Data..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
+
+
+    <div class="modal fade" id="modaltambahkeluarga" aria-labelledby="modaltambahkeluargaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modaltambahkeluargaLabel">Tambah Data Keluarga P2</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('kg-p2.store') }}" method="post">
+                        @csrf
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label>Kode Provinsi<span class="text-danger">*</span></label>
+                                    <select id="cboprovinsi" class="form-control select2" onchange="ambilKab()"
+                                        name="kode_provinsi" required>
+                                        <option value="">-- Pilih Provinsi --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label>Kode Kabupaten<span class="text-danger">*</span></label>
+                                    <select id="cbokabupaten" class="form-control select2" onchange="ambilKec()"
+                                        name="kode_kabupaten" required>
+                                        <option value="">-- Pilih Kabupaten --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label>Kode Kecamatan<span class="text-danger">*</span></label>
+                                    <select id="cbokecamatan" class="form-control select2" onchange="ambilDesa()"
+                                        name="kode_kecamatan" required>
+                                        <option value="">-- Pilih Kecamatan --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label>Kode Desa<span class="text-danger">*</span></label>
+                                    <select id="cbodesa" class="form-control select2" name="kode_desa" required>
+                                        <option value="">-- Pilih Desa --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label>RT</label>
+                                    <input type="number" name="rt" class="form-control" placeholder="Contoh: 005"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label>RW</label>
+                                    <input type="number" name="rw" class="form-control" placeholder="Contoh: 005"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label>Nama Kepala Keluarga<span class="text-danger">*</span></label>
+                                    <input type="text" name="nama_kpl_keluarga" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label>Nomer Kartu Keluarga<span class="text-danger">*</span></label>
+                                    <input type="number" min="0" name="no_kk" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label>Nomer HP</label>
+                                    <input type="number" name="no_hp" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label>Nomer Telepon Rumah</label>
+                                    <input type="number" name="telp_rumah" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="mb-3">
+                                    <label>Alamat</label>
+                                    <textarea name="alamat" id="alamat" class="form-control" cols="50" rows="7"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label>Meteran Rumah</label>
+                                    <select id="meteran_rumah" class="form-control" name="meteran_rumah">
+                                        <option value="" selected disabled>-- Pilih Opsi --</option>
+                                        <option value="1">Punya Sendiri</option>
+                                        <option value="2">Menumpang</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label>Nomer Meteran Rumah<span class="text-danger">*</span></label>
+                                    <input type="number" name="no_meteran" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label>Daya Meteran Rumah<span class="text-danger">*</span></label>
+                                    <select id="daya_meteran_rumah" class="form-control" name="daya_meteran_rumah">
+                                        <option value="" selected disabled>-- Pilih Opsi --</option>
+                                        <option value="450">450 VA</option>
+                                        <option value="900">900</option>
+                                        <option value="1.300">1.300 VA</option>
+                                        <option value="2.200">2.200 VA</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
+                        <button type="submit" class="btn btn-primary w-100">Simpan Keluarga</button>
                     </form>
-        </div>
-        <div class="card-body">
-            <form method="POST" enctype="multipart/form-data">
-                @csrf
-
-                <!-- Text Input -->
-                <div class="form-group row">
-                    <label for="text_input" class="col-sm-2 col-form-label">Text Input</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="text_input" name="text_input" placeholder="Masukkan teks">
-                    </div>
                 </div>
-
-                <!-- Email Input -->
-                <div class="form-group row">
-                    <label for="email_input" class="col-sm-2 col-form-label">Email Input</label>
-                    <div class="col-sm-10">
-                        <input type="email" class="form-control" id="email_input" name="email_input" placeholder="Masukkan email">
-                    </div>
-                </div>
-
-                <!-- Password Input -->
-                <div class="form-group row">
-                    <label for="password_input" class="col-sm-2 col-form-label">Password</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" id="password_input" name="password_input" placeholder="Masukkan password">
-                    </div>
-                </div>
-
-                <!-- Number Input -->
-                <div class="form-group row">
-                    <label for="number_input" class="col-sm-2 col-form-label">Number Input</label>
-                    <div class="col-sm-10">
-                        <input type="number" class="form-control" id="number_input" name="number_input" placeholder="Masukkan angka">
-                    </div>
-                </div>
-
-                <!-- Date Input -->
-                <div class="form-group row">
-                    <label for="date_input" class="col-sm-2 col-form-label">Date Input</label>
-                    <div class="col-sm-10">
-                        <input type="date" class="form-control" id="date_input" name="date_input">
-                    </div>
-                </div>
-
-                <!-- Time Input -->
-                <div class="form-group row">
-                    <label for="time_input" class="col-sm-2 col-form-label">Time Input</label>
-                    <div class="col-sm-10">
-                        <input type="time" class="form-control" id="time_input" name="time_input">
-                    </div>
-                </div>
-
-                <!-- File Upload -->
-                <div class="form-group row">
-                    <label for="file_input" class="col-sm-2 col-form-label">File Upload</label>
-                    <div class="col-sm-10">
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="file_input" name="file_input">
-                            <label class="custom-file-label" for="file_input">Pilih file</label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Textarea -->
-                <div class="form-group row">
-                    <label for="textarea_input" class="col-sm-2 col-form-label">Textarea</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control" id="textarea_input" name="textarea_input" rows="3"></textarea>
-                    </div>
-                </div>
-
-                <!-- Select Dropdown -->
-                <div class="form-group row">
-                    <label for="select_input" class="col-sm-2 col-form-label">Select Dropdown</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" id="select_input" name="select_input">
-                            <option value="">Pilih opsi</option>
-                            <option value="1">Opsi 1</option>
-                            <option value="2">Opsi 2</option>
-                            <option value="3">Opsi 3</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Multiple Select -->
-                <div class="form-group row">
-                    <label for="multiple_select" class="col-sm-2 col-form-label">Multiple Select</label>
-                    <div class="col-sm-10">
-                        <select multiple class="form-control" id="multiple_select" name="multiple_select[]">
-                            <option value="1">Opsi 1</option>
-                            <option value="2">Opsi 2</option>
-                            <option value="3">Opsi 3</option>
-                            <option value="4">Opsi 4</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Radio Buttons -->
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Radio Buttons</label>
-                    <div class="col-sm-10">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radio_input" id="radio1" value="1" checked>
-                            <label class="form-check-label" for="radio1">
-                                Opsi 1
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radio_input" id="radio2" value="2">
-                            <label class="form-check-label" for="radio2">
-                                Opsi 2
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Checkboxes -->
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Checkboxes</label>
-                    <div class="col-sm-10">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="checkbox1" name="checkbox_input[]" value="1">
-                            <label class="form-check-label" for="checkbox1">
-                                Opsi 1
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="checkbox2" name="checkbox_input[]" value="2">
-                            <label class="form-check-label" for="checkbox2">
-                                Opsi 2
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Color Picker -->
-                <div class="form-group row">
-                    <label for="color_input" class="col-sm-2 col-form-label">Color Picker</label>
-                    <div class="col-sm-10">
-                        <input type="color" class="form-control" id="color_input" name="color_input" value="#563d7c">
-                    </div>
-                </div>
-
-                <!-- Range Slider -->
-                <div class="form-group row">
-                    <label for="range_input" class="col-sm-2 col-form-label">Range Slider</label>
-                    <div class="col-sm-10">
-                        <input type="range" class="form-control-range" id="range_input" name="range_input" min="0" max="100">
-                    </div>
-                </div>
-
-                <!-- Hidden Input -->
-                <input type="hidden" name="hidden_input" value="hidden_value">
-
-                <!-- Submit Button -->
-                <div class="form-group row">
-                    <div class="col-sm-10 offset-sm-2">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        <button type="reset" class="btn btn-secondary">Reset</button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-
-    <!-- Script untuk menampilkan nama file yang dipilih -->
-    <script>
-        document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-            var fileName = document.getElementById("file_input").files[0].name;
-            var nextSibling = e.target.nextElementSibling;
-            nextSibling.innerText = fileName;
-        });
-    </script>
 @endsection
+@push('scripts')
+@endpush

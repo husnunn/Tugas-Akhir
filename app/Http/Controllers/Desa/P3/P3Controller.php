@@ -15,14 +15,12 @@ class P3Controller extends Controller
 {
     public function index()
     {
-        // dd(session()->all());
         $idSurvey = session('id_survey'); // dari session yang diset sebelumnya
 
         if (!$idSurvey) {
             return redirect()->route('desa-p2.index')->with('error', 'Data P2 belum dipilih.');
         }
 
-        // Ambil data P5 yang sesuai dengan id_desa_p2
         $data = P3::where('id_survey', $idSurvey)->get();
         return view('pages.desa.forms.p3', compact('data'));
     }
@@ -31,27 +29,13 @@ class P3Controller extends Controller
     {
         $idDesap2 = session('id_desa');
         $idSurvey = session('id_survey');
-        // dd($request->all());
-        // dd([ 
-        //     'id_survey_session' => session('id_survey'),
-        //     'id_desa_session' => session('id_desa'),
-        //     'request' => $request->all()
-        // ]);
-
-        // $request->validate([
-        //     'id' => 'required|string|max:25',
-        // ]);
 
         try {
-            // dd([
-            //     'id_desa' => $idDesa,
-            //     'id_survey' => $idSurvey,
-            // ]);
+
             DB::beginTransaction();
 
             $p3 = P3::create([
                 'id' => "DSP3-" . strtotime(date("Y-m-d H:i:s")),
-                // 'id_desa_p2' => $idDesap2,
                 'id_survey' => $idSurvey,
                 'nik_kades' => $request->nik_kades,
                 'nama_kades' => $request->nama_kades,

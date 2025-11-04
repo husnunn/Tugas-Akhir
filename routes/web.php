@@ -2,24 +2,22 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
-use App\Http\Controllers\Desa\DesaController;
-use App\Http\Controllers\Jabatan\JabatanController;
+use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\Session\SessionController;
 use App\Http\Controllers\Survey\SurveyController;
+use App\Http\Controllers\Jabatan\JabatanController;
 use App\Http\Controllers\Master\MasterLembagaController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Desa\DesaController;
 use App\Http\Controllers\Desa\P3\P3Controller;
-use App\Models\Desa\P3\P3;
 use App\Http\Controllers\Desa\P3\PegawaiController;
-use App\Models\Desa\P3\PegawaiLainnya;
 use App\Http\Controllers\Desa\P3\BpdController;
-use App\Models\Desa\P3\AnggotaBpd;
 use App\Http\Controllers\Desa\P4\P4Controller;
 use App\Http\Controllers\Desa\P5\P5Controller;
 use App\Http\Controllers\Desa\P5\P501Controller;
 use App\Http\Controllers\Desa\P5\P502Controller;
 use App\Http\Controllers\Desa\P5\P503Controller;
-use App\Http\Controllers\Desa\P6\P6Controller;
 use App\Http\Controllers\Desa\P6\P601Controller;
 use App\Http\Controllers\Desa\P6\P602Controller;
 use App\Http\Controllers\Desa\P6\P603Controller;
@@ -32,10 +30,9 @@ use App\Http\Controllers\Desa\P9\P923Controller;
 use App\Http\Controllers\Desa\P9\P932Controller;
 use App\Http\Controllers\Desa\P9\P941Controller;
 use App\Http\Controllers\Desa\P10\P10Controller;
-use App\Http\Controllers\Keluarga\P2\KgP2;
-use App\Http\Controllers\Individu\IndividuController;
-use App\Http\Controllers\WilayahController;
-use App\Http\Controllers\Session\SessionController;
+use App\Http\Controllers\Individu\P1\P1IdvController;
+use App\Http\Controllers\Keluarga\P2\P2KgController;
+use App\Http\Controllers\Keluarga\P3\P3KgController;
 
 
 Route::get('/', [LoginController::class, 'showLogin'])->name('login');
@@ -95,6 +92,9 @@ Route::middleware('auth')->group(function () {
     // Kirim id_survey dan id_desa
     Route::post('/set-session', [DesaController::class, 'setSession'])->name('session.set');
     Route::get('/set-session/{id}/{form}', [SessionController::class, 'set'])->name('set.session');
+    // Kirim id_survey dan id_desa
+    Route::post('/set-session', [DesaController::class, 'setSession'])->name('session.set');
+    Route::get('/setkg-session/{id}/{form}', [SessionController::class, 'setkg'])->name('setkg.session');
     // DESA P3
     Route::resource('/desa-p3', P3Controller::class);
     // Pegawai
@@ -187,7 +187,23 @@ Route::middleware('auth')->group(function () {
     Route::resource('desa-p10', P10Controller::class);
 
     // KG P2
-    // Route::resource('keluarga/p2', KgP2::class);
+    Route::get('/kg-p2', [P2KgController::class, 'index'])->name('kg-p2.index');
+    Route::post('/kg-p2/store', [P2KgController::class, 'store'])->name('kg-p2.store');
+    Route::put('/kg-p2/{id}', [P2KgController::class, 'update'])->name('kg-p2.update');
+    Route::delete('/kg-p2/{id}', [P2KgController::class, 'destroy'])->name('kg-p2.destroy');
+    // Route::resource('/keluarga/p2', P2KgController::class);
     // KG P3
-    Route::resource('keluarga/p3', P10Controller::class);
+    Route::get('/kg-p3', [P3KgController::class, 'index'])->name('kg-p3.index');
+    Route::post('/kg-p3/store', [P3KgController::class, 'store'])->name('kg-p3.store');
+    Route::put('/kg-p3/{id}', [P3KgController::class, 'update'])->name('kg-p3.update');
+    Route::delete('/kg-p3/{id}', [P3KgController::class, 'destroy'])->name('kg-p3.destroy');
+    // Route::resource('keluarga/p3', P10Controller::class);
+
+
+
+    // INDIVIDU P1 
+    Route::get('/idv-p1', [P1IdvController::class, 'index'])->name('idv-p1.index');
+    Route::post('/idv-p1/store', [P1IdvController::class, 'store'])->name('idv-p1.store');
+    Route::put('/idv-p1/{id}', [P1IdvController::class, 'update'])->name('idv-p1.update');
+    Route::delete('/idv-p1/{id}', [P1IdvController::class, 'destroy'])->name('idv-p1.destroy');
 });
