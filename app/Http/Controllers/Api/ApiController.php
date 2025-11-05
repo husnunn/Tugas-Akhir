@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ApiController extends Controller
 {
-     public function showLogin()
+    public function showLogin()
     {
         return view('pages.login'); // menampilkan Blade login kamu
     }
@@ -32,17 +32,17 @@ class ApiController extends Controller
         if ($validator->fails()) {
             $errorMessage = $validator->errors()->first();
             $response = [
-            "status" => false,
-            "message" => $errorMessage,    
+                "status" => false,
+                "message" => $errorMessage,
             ];
             return response()->json($response, 401);
         }
 
         $fotoPath = null;
-            if ($request->hasFile('foto')) {
-                $fotoPath = $request->file('foto')->store('foto_users', 'public'); 
-                // akan tersimpan di storage/app/public/foto_users
-            }
+        if ($request->hasFile('foto')) {
+            $fotoPath = $request->file('foto')->store('foto_users', 'public');
+            // akan tersimpan di storage/app/public/foto_users
+        }
 
         $id = strtotime(date("Y-m-d H:i:s"));
         User::create([
@@ -60,10 +60,9 @@ class ApiController extends Controller
             "status" => true,
             "message" => "Berhasil Daftar"
         ]);
-        
     }
 
-   public function login(Request $request)
+    public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
             "username" => "required",
@@ -103,11 +102,31 @@ class ApiController extends Controller
             ], 403);
         }
 
+        if ($user->is_logged_in) {
+            return response()->json([
+                "status" => false,
+                "message" => "User ini sudah login di perangkat lain.",
+            ], 403);
+        }
+
+        // 🔥 Set user sebagai sedang login
+        $user->is_logged_in = true;
+        $user->save();
+
         $token = $user->createToken("adminbaru2")->plainTextToken;
         return response()->json([
             "status" => true,
             "message" => "Login Berhasil",
             "token" => $token,
+            "user" => [
+                "id" => $user->id,
+                "username" => $user->username,
+                "hp" => $user->hp,
+                "email" => $user->email ?? null,
+                "nama" => $user->nama ?? null,
+                "jabatan" => $user->jabatan ? $user->jabatan->nama_jabatan : null,
+                "status" => $user->status,
+            ]
         ]);
     }
 
@@ -122,13 +141,20 @@ class ApiController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        request()->user()->tokens()->delete();
+        $user = $request->user();
+
+        // Hapus semua token aktif user ini
+        $user->tokens()->delete();
+
+        // Tandai sudah logout
+        $user->is_logged_in = false;
+        $user->save();
 
         return response()->json([
-            "status"=> true,
-            "message"=> "Berhasil Logout"
+            "status" => true,
+            "message" => "Berhasil Logout"
         ]);
     }
 
@@ -136,10 +162,10 @@ class ApiController extends Controller
     {
         $tokenInfo = request()->user()->createToken("tokenbaru-admin");
         $newToken = $tokenInfo->plainTextToken;
-         return response()->json([
-            "status"=> true,
-            "message"=> "Token Diperbarui",
-            "access_token"=> $newToken
+        return response()->json([
+            "status" => true,
+            "message" => "Token Diperbarui",
+            "access_token" => $newToken
         ]);
     }
 }

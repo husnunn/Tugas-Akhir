@@ -12,14 +12,11 @@ class SessionController extends Controller
     public function set($id, $form)
     {
         $p2 = DesaP2::findOrFail($id);
-        $p2kg = KgP2M::findOrFail($id);
 
         // Simpan ke session
         session([
             'id_survey' => $p2->id_survey,
-            'id_survey_kg' => $p2kg->id_survey,
             'id_desa'   => $p2->id,
-            'id_kg_p2'   => $p2kg->id,
         ]);
 
         // Tentukan route tujuan berdasarkan form
@@ -27,24 +24,20 @@ class SessionController extends Controller
             'p3'  => 'desa-p3.index',
             'p4'  => 'desa-p4.index',
             'p5'  => 'desa-p5.index',
-            'p601'  => 'desa-p601.index',
-            'p602'  => 'desa-p602.index',
-            'p603'  => 'desa-p603.index',
+            'p601' => 'desa-p601.index',
+            'p602' => 'desa-p602.index',
+            'p603' => 'desa-p603.index',
             'p7'  => 'desa-p7.index',
             'p8'  => 'desa-p8.index',
             'p9'  => 'desa-p9.index',
             'p10' => 'desa-p10.index',
-            'kgp3' => 'kg-p3.index',
-            'kgp4' => 'kg-p4.index',
-            'kgp421' => 'kg-p421.index',
-            'kgp422' => 'kg-p422.index',
-            'kgp423' => 'kg-p423.index',
-            'kgp424' => 'kg-p424.index',
+            // jangan sertakan 'kgp...' di sini karena itu khusus keluarga
             default => 'dashboard',
         };
 
         return redirect()->route($redirectRoute);
     }
+
     public function setkg($id, $form)
     {
         $p2kg = KgP2M::findOrFail($id);
@@ -55,7 +48,6 @@ class SessionController extends Controller
             'id_kg_p2'   => $p2kg->id,
         ]);
 
-        // Tentukan route tujuan berdasarkan form
         $redirectRoute = match ($form) {
             'kgp3' => 'kg-p3.index',
             'kgp4' => 'kg-p4.index',

@@ -24,6 +24,7 @@ class User extends Authenticatable // Ubah ini!
         'password',
         'foto',
         'id_buat',
+        'is_logged_in'
     ];
 
     protected $hidden = [

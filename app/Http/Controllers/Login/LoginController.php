@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-     public function showLogin()
+    public function showLogin()
     {
         return view('pages.login'); // menampilkan Blade login kamu
     }
 
-   public function login(Request $request)
+    public function login(Request $request)
     {
-        $isWebRequest = !$request->expectsJson(); // Deteksi apakah request dari form biasa
+        $isWebRequest = !$request->expectsJson();
 
         $validator = Validator::make($request->all(), [
             "username" => "required",
@@ -29,17 +29,14 @@ class LoginController extends Controller
             if ($isWebRequest) {
                 return back()->withErrors($validator)->withInput();
             }
-
             return response()->json([
                 "status" => false,
                 "message" => $validator->errors()->first()
             ], 401);
         }
 
-        // Ambil user berdasarkan username
         $user = User::where("username", $request->username)->first();
 
-        // Cek username dan password
         if (!$user || !Hash::check($request->password, $user->password)) {
             $errorMsg = 'Username atau password salah.';
             return $isWebRequest
@@ -47,7 +44,6 @@ class LoginController extends Controller
                 : response()->json(['status' => false, 'message' => $errorMsg], 401);
         }
 
-        // 🔥 Tambahkan cek status di sini
         if ($user->status === 'N') {
             $errorMsg = 'Akun Anda tidak aktif. Hubungi admin.';
             return $isWebRequest
@@ -55,20 +51,40 @@ class LoginController extends Controller
                 : response()->json(['status' => false, 'message' => $errorMsg], 403);
         }
 
-        // Jika web request
-        if ($isWebRequest) {
-            Auth::login($user);
-            return redirect()->intended('/dashboard'); // arahkan sesuai kebutuhan
+        // 🚫 Cek apakah user sudah login di tempat lain
+        if ($user->is_logged_in) {
+            $errorMsg = 'Akun ini sedang aktif di perangkat lain.';
+            return $isWebRequest
+                ? back()->withErrors(['username' => $errorMsg])->withInput()
+                : response()->json(['status' => false, 'message' => $errorMsg], 403);
         }
 
-        // Jika API request, buat token
+        // ✅ Tandai user sudah login
+        $user->is_logged_in = true;
+        $user->save();
+
+        if ($isWebRequest) {
+            Auth::login($user);
+            return redirect()->intended('/dashboard');
+        }
+
         $token = $user->createToken("adminbaru2")->plainTextToken;
         return response()->json([
             "status" => true,
             "message" => "Login Berhasil",
-            "token" => $token
+            "token" => $token,
+            "user" => [
+                "id" => $user->id,
+                "username" => $user->username,
+                "hp" => $user->hp,
+                "email" => $user->email ?? null,
+                "nama" => $user->nama ?? null,
+                "jabatan" => $user->jabatan ? $user->jabatan->nama_jabatan : null,
+                "status" => $user->status,
+            ]
         ]);
     }
+
 
     public function getdatauser()
     {
@@ -79,12 +95,14 @@ class LoginController extends Controller
             "data" => $userData
         ]);
     }
-
     public function logout(Request $request)
     {
         if ($request->expectsJson()) {
-            // Logout dari API token
-            $request->user()->tokens()->delete();
+            // Logout dari API
+            $user = $request->user();
+            $user->tokens()->delete();
+            $user->is_logged_in = false;
+            $user->save();
 
             return response()->json([
                 "status" => true,
@@ -92,22 +110,30 @@ class LoginController extends Controller
             ]);
         }
 
-        // Logout dari session (web)
+        // Logout dari web
+        $user = Auth::user();
+        if ($user) {
+            $user->is_logged_in = false;
+            $user->save();
+        }
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect('/login')->with('success', 'Anda telah logout.');
     }
+
+
 
     public function refreshToken()
     {
         $tokenInfo = request()->user()->createToken("tokenbaru-admin");
         $newToken = $tokenInfo->plainTextToken;
-         return response()->json([
-            "status"=> true,
-            "message"=> "Token Diperbarui",
-            "access_token"=> $newToken
+        return response()->json([
+            "status" => true,
+            "message" => "Token Diperbarui",
+            "access_token" => $newToken
         ]);
     }
 }
