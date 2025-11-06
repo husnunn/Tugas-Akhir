@@ -21,7 +21,7 @@ class P421KgController extends Controller
 
         $data = KgP421M::with('pendidikan')
             ->where('id_kg_p2', $idKgP2)
-            ->get();
+            ->get(); 
 
         $datap2 = KgP2M::find($idKgP2);
         $masterPendidikan = MasterPendidikanM::all();

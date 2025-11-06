@@ -83,6 +83,7 @@ class P2KgController extends Controller
                 'no_hp' => $request->no_hp,
                 'telp_rumah' => $request->telp_rumah,
                 'alamat' => $request->alamat,
+                'meteran_rumah' => $request->meteran_rumah,
             ]);
 
             return redirect()->back()->with('success', 'Data keluarga berhasil ditambahkan!');
@@ -127,28 +128,24 @@ class P2KgController extends Controller
     {
         $p2 = KgP2M::findOrFail($id);
 
-        // Ambil semua kolom kecuali primary key dan id_survey
-        $dataP2 = $p2->toArray();
-        unset($dataP2['id'], $dataP2['id_survey']);
+        // 🔹 Cek apakah individu ini punya data di tabel lain
+        $hasP3   = \App\Models\Keluarga\P3\KgP3M::where('id_kg_p2', $id)->exists();
+        $hasP4 = \App\Models\Keluarga\P4\KgP4M::where('id_kg_p2', $id)->exists();
+        $hasP421   = \App\Models\Keluarga\P4\KgP421M::where('id_kg_p2', $id)->exists();
+        $hasP422 = \App\Models\Keluarga\P4\KgP422M::where('id_kg_p2', $id)->exists();
+        $hasP423 = \App\Models\Keluarga\P4\KgP423M::where('id_kg_p2', $id)->exists();
+        $hasP424 = \App\Models\Keluarga\P4\KgP424M::where('id_kg_p2', $id)->exists();
 
-        // Cek apakah semua nilainya NULL atau kosong
-        $isEmpty = true;
-        foreach ($dataP2 as $value) {
-            if (!is_null($value) && $value !== '') {
-                $isEmpty = false;
-                break;
-            }
+        // Jika salah satu punya data, blok hapus
+        if ($hasP3 || $hasP3 || $hasP4 || $hasP421 || $hasP422 || $hasP423 || $hasP424) {
+            return back()->with('error', 'Data Keluarga P2 tidak dapat dihapus karena masih memiliki data pada tabel P3,P4,P421,P422,P423,P424.');
         }
 
-        // Kalau ada isi → blok hapus
-        if (!$isEmpty) {
-            return back()->with('error', 'Data keluarga P2 tidak dapat dihapus karena masih memiliki data isian.');
-        }
 
-        // Kalau kosong → hapus aman
+        // 🔹 Kalau aman → hapus
         $p2->delete();
 
-        return back()->with('success', 'Data keluarga P2 berhasil dihapus karena tidak memiliki isian.');
+        return back()->with('success', 'Data Keluarga P2 berhasil dihapus karena tidak memiliki isian dan tidak terkait dengan tabel lain.');
     }
 
     // public function setSession(Request $request)

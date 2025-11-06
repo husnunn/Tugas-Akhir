@@ -30,7 +30,6 @@ use App\Http\Controllers\Desa\P9\P923Controller;
 use App\Http\Controllers\Desa\P9\P932Controller;
 use App\Http\Controllers\Desa\P9\P941Controller;
 use App\Http\Controllers\Desa\P10\P10Controller;
-use App\Http\Controllers\Individu\P1\P1IdvController;
 use App\Http\Controllers\Keluarga\P2\P2KgController;
 use App\Http\Controllers\Keluarga\P3\P3KgController;
 use App\Http\Controllers\Keluarga\P4\P4KgController;
@@ -38,7 +37,13 @@ use App\Http\Controllers\Keluarga\P4\P421KgController;
 use App\Http\Controllers\Keluarga\P4\P422KgController;
 use App\Http\Controllers\Keluarga\P4\P423KgController;
 use App\Http\Controllers\Keluarga\P4\P424KgController;
-
+use App\Http\Controllers\Individu\P1\P1IdvController;
+use App\Http\Controllers\Individu\P2\P204IdvController;
+use App\Http\Controllers\Individu\P2\P2IdvController;
+use App\Http\Controllers\Individu\P4\P401IdvController;
+use App\Http\Controllers\Individu\P4\P402IdvController;
+use App\Http\Controllers\Individu\P4\P4IdvController;
+use App\Http\Controllers\Individu\P5\P5IdvController;
 
 Route::get('/', [LoginController::class, 'showLogin'])->name('login');
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
@@ -83,7 +88,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/kecamatan/{regencyCode}', [WilayahController::class, 'districts']);
     Route::get('/desa/{districtCode}', [WilayahController::class, 'villages']);
 
-
     // Tampilkan list desa
     Route::get('/desa-p2', [DesaController::class, 'index'])->name('desa-p2.index');
     // Simpan data baru
@@ -97,9 +101,11 @@ Route::middleware('auth')->group(function () {
     // Kirim id_survey dan id_desa
     Route::post('/set-session', [DesaController::class, 'setSession'])->name('session.set');
     Route::get('/set-session/{id}/{form}', [SessionController::class, 'set'])->name('set.session');
-    // Kirim id_survey dan id_desa
-    Route::post('/set-session', [DesaController::class, 'setSession'])->name('session.set');
+    // Kirim id_survey dan id_kg
     Route::get('/setkg-session/{id}/{form}', [SessionController::class, 'setkg'])->name('setkg.session');
+    // Kirim id_survey dan id_individu
+    Route::get('/session/setidv/{id}/{form}', [SessionController::class, 'setidv'])->name('session.setidv');
+
     // DESA P3
     Route::resource('/desa-p3', P3Controller::class);
     // Pegawai
@@ -235,4 +241,34 @@ Route::middleware('auth')->group(function () {
     Route::post('/idv-p1/store', [P1IdvController::class, 'store'])->name('idv-p1.store');
     Route::put('/idv-p1/{id}', [P1IdvController::class, 'update'])->name('idv-p1.update');
     Route::delete('/idv-p1/{id}', [P1IdvController::class, 'destroy'])->name('idv-p1.destroy');
+    // INDIVIDU P2 
+    Route::get('/idv-p2', [P2IdvController::class, 'index'])->name('idv-p2.index');
+    Route::post('/idv-p2/store', [P2IdvController::class, 'store'])->name('idv-p2.store');
+    Route::put('/idv-p2/{id}', [P2IdvController::class, 'update'])->name('idv-p2.update');
+    Route::delete('/idv-p2/{id}', [P2IdvController::class, 'destroy'])->name('idv-p2.destroy');
+    // INDIVIDU P204 
+    Route::get('/idv-p204', [P204IdvController::class, 'index'])->name('idv-p204.index');
+    Route::post('/idv-p204/store', [P204IdvController::class, 'store'])->name('idv-p204.store');
+    Route::put('/idv-p204/{id}', [P204IdvController::class, 'update'])->name('idv-p204.update');
+    Route::delete('/idv-p204/{id}', [P204IdvController::class, 'destroy'])->name('idv-p204.destroy');
+    // INDIVIDU P4 
+    Route::get('/idv-p4', [P4IdvController::class, 'index'])->name('idv-p4.index');
+    Route::post('/idv-p4/store', [P4IdvController::class, 'store'])->name('idv-p4.store');
+    Route::put('/idv-p4/{id}', [P4IdvController::class, 'update'])->name('idv-p4.update');
+    Route::delete('/idv-p4/{id}', [P4IdvController::class, 'destroy'])->name('idv-p4.destroy');
+    // INDIVIDU P401 
+    Route::get('/idv-p401', [P401IdvController::class, 'index'])->name('idv-p401.index');
+    Route::post('/idv-p401/store', [P401IdvController::class, 'store'])->name('idv-p401.store');
+    Route::put('/idv-p401/{id}', [P401IdvController::class, 'update'])->name('idv-p401.update');
+    Route::delete('/idv-p401/{id}', [P401IdvController::class, 'destroy'])->name('idv-p401.destroy');
+    // INDIVIDU P402 
+    Route::get('/idv-p402', [P402IdvController::class, 'index'])->name('idv-p402.index');
+    Route::post('/idv-p402/store', [P402IdvController::class, 'store'])->name('idv-p402.store');
+    Route::put('/idv-p402/{id}', [P402IdvController::class, 'update'])->name('idv-p402.update');
+    Route::delete('/idv-p402/{id}', [P402IdvController::class, 'destroy'])->name('idv-p402.destroy');
+    // INDIVIDU P5 
+    Route::get('/idv-p5', [P5IdvController::class, 'index'])->name('idv-p5.index');
+    Route::post('/idv-p5/store', [P5IdvController::class, 'store'])->name('idv-p5.store');
+    Route::put('/idv-p5/{id}', [P5IdvController::class, 'update'])->name('idv-p5.update');
+    Route::delete('/idv-p5/{id}', [P5IdvController::class, 'destroy'])->name('idv-p5.destroy');
 });

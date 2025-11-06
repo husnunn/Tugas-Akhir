@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Individu\P4;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class P401IdvController extends Controller
+class P401IdvApi extends Controller
 {
     //
 }

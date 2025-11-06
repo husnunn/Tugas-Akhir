@@ -55,6 +55,7 @@ class P2Api extends Controller
 
         $data = P2::create([
             'id' => "KG-" . strtotime(date("Y-m-d H:i:s")),
+            'id_survey' => $survey,
             'no_kk' => $request->no_kk,
             'nik_kk' => $request->nik_kk,
             'kode_kecamatan' => $request->kode_kecamatan,
