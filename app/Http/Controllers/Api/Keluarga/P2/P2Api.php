@@ -15,7 +15,7 @@ class P2Api extends Controller
      * Tampilkan semua data P2 (Deskripsi Lokasi)
      */
     public function index()
-    { 
+    {
         $today = Carbon::today();
 
         // Ambil survey aktif
@@ -38,11 +38,8 @@ class P2Api extends Controller
      */
     public function store(Request $request)
     {
-
-        // Ambil tanggal hari ini
         $today = Carbon::today()->toDateString();
 
-        // Cari survey yang aktif di hari ini
         $survey = Survey::whereDate('tgl_mulai', '<=', $today)
             ->whereDate('tgl_akhir', '>=', $today)
             ->first();
@@ -51,24 +48,40 @@ class P2Api extends Controller
             return back()->with('error', 'Tidak ada survey aktif untuk hari ini.');
         }
 
-        $today = Carbon::now();
+        $validated = $request->validate([
+            'kode_provinsi' => 'required|string',
+            'kode_kabupaten' => 'required|string',
+            'kode_kecamatan' => 'required|string',
+            'kode_desa' => 'required|string',
+
+            'meteran_rumah' => 'required|in:0,1',
+
+            'no_meteran' => 'required_if:meteran_rumah,1|nullable|string',
+            'daya_meteran_rumah' => 'required_if:meteran_rumah,1|nullable|string',
+        ]);
 
         $data = P2::create([
-            'id' => "KG-" . strtotime(date("Y-m-d H:i:s")),
-            'id_survey' => $survey,
+            'id' => "KGP2-" . strtotime(date("Y-m-d H:i:s")),
+            'id_survey' => $survey->id,
             'no_kk' => $request->no_kk,
             'nik_kk' => $request->nik_kk,
-            'kode_kecamatan' => $request->kode_kecamatan,
-            'kode_desa' => $request->kode_desa,
-            'rt_rw' => $request->rt_rw,
+            'kode_provinsi' => $validated['kode_provinsi'],
+            'kode_kabupaten' => $validated['kode_kabupaten'],
+            'kode_kecamatan' => $validated['kode_kecamatan'],
+            'kode_desa' => $validated['kode_desa'],
+            'rt' => $request->rt,
+            'rw' => $request->rw,
             'nama_kpl_keluarga' => $request->nama_kpl_keluarga,
             'alamat' => $request->alamat,
             'no_hp' => $request->no_hp,
             'telp_rumah' => $request->telp_rumah,
+            'meteran_rumah' => $request->meteran_rumah,
+            'no_meteran' => $request->no_meteran,
+            'daya_meteran_rumah' => $request->daya_meteran_rumah,
             'id_buat' => Auth::user()->id,
             'id_update' => Auth::user()->id,
-            'tgl_buat' => $today,
-            'tgl_update' => $today
+            'tgl_buat' => now(),
+            'tgl_update' => now(),
         ]);
 
         return response()->json([
@@ -77,6 +90,7 @@ class P2Api extends Controller
             'data' => $data
         ]);
     }
+
 
     /**
      * Tampilkan detail P2 berdasarkan ID

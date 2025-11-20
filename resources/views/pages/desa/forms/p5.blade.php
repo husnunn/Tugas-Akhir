@@ -55,7 +55,7 @@
 
                         @endphp
                         <tbody>
-                            @forelse ($data as $item)
+                            @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->rpjm_berlaku }}</td>
                                     <td>{{ $rkpDesa[$item->rkp_desa] ?? '-' }}</td>
@@ -67,7 +67,7 @@
                                         <form action="{{ route('desa-p5.destroy', $item->id) }}" method="POST"
                                             class="d-inline" onsubmit="return confirm('Hapus Data ini?')">
                                             @csrf
-                                             @method('DELETE')
+                                            @method('DELETE')
                                             <button class="btn btn-danger btn-sm">Hapus</button>
                                         </form>
                                     </td>
@@ -75,7 +75,7 @@
                                 {{-- Modal Edit Data --}}
                                 <div class="modal fade" id="modalEditData{{ $item->id }}"
                                     aria-labelledby="modalEditDataLabel{{ $item->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="modalEditDataLabel{{ $item->id }}">Edit
@@ -99,8 +99,12 @@
                                                     <div class="form-group">
                                                         <label>RKP Desa</label>
                                                         <select name="rkp_desa" class="form-control" required>
-                                                            <option value="1"{{$item->rkp_desa == '1' ? 'selected' : ''}}>Ada</option>
-                                                            <option value="2"{{$item->rkp_desa == '2' ? 'selected' : ''}}>Tidak Ada</option>
+                                                            <option
+                                                                value="1"{{ $item->rkp_desa == '1' ? 'selected' : '' }}>
+                                                                Ada</option>
+                                                            <option
+                                                                value="2"{{ $item->rkp_desa == '2' ? 'selected' : '' }}>
+                                                                Tidak Ada</option>
                                                         </select>
                                                     </div>
                                                     <button class="btn btn-primary">Simpan Perubahan</button>
@@ -109,22 +113,17 @@
                                         </div>
                                     </div>
                                 </div>
-                            @empty
+                                {{-- @empty
                                 <tr>
                                     <td colspan="6">Belum ada Data Regulasi Desa.</td>
-                                </tr>
-                            @endforelse
+                                </tr> --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
 @push('scripts')
-    <script>
-        let table = new DataTable('#dataTable', {
-            responsive: true
-        });
-    </script>
+@endpush

@@ -71,7 +71,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($data as $p)
+                @foreach ($data as $p)
                     <tr>
                         <td>{{ $p->anggota_ke }}</td>
                         <td>{{ $p->nik_anggota_bpd }}</td>
@@ -94,7 +94,7 @@
                     {{-- Modal Edit Data --}}
                     <div class="modal fade" id="modalEditData{{ $p->id }}"
                         aria-labelledby="modalEditDataLabel{{ $p->id }}" aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
+                        <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="modalEditDataLabel{{ $p->id }}">Edit
@@ -155,20 +155,16 @@
                             </div>
                         </div>
                     </div>
-                @empty
+                {{-- @empty
                     <tr>
                         <td colspan="5" class="text-center text-muted">Belum ada Data Anggota BPD.</td>
-                    </tr>
-                @endforelse
+                    </tr> --}}
+                @endforeach
             </tbody>
         </table>
 
     </div>
 @endsection
 @push('scripts')
-    <script>
-        let table = new DataTable('#tableBPD', {
-            responsive: true,
 
-        });
-    </script>
+@endpush

@@ -29,6 +29,7 @@ class PegawaiController extends Controller
         // Jika belum ada data, mulai dari 1
         $nextNumber = $lastNumber ? $lastNumber + 1 : 1;
         PegawaiLainnya::create([
+            'id' => "DSP3PG-" . strtotime(date("Y-m-d H:i:s")),
             'id_desa_p3'                => $idDesaP3,
             'id_survey'                 => $idSurvey,
             'pegawai_ke'                => $nextNumber,

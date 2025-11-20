@@ -28,9 +28,18 @@ class P503Controller extends Controller
 
         try {
             DB::beginTransaction();
-
+            $request->validate([
+                'dokumen_sk_kepdes' => 'required|file|mimes:pdf',
+            ]);
+            $idOtomatis = "DSP503-" . strtotime(date("Y-m-d H:i:s"));
+            if ($request->hasFile('dokumen_sk_kepdes')) {
+                $file = $request->file('dokumen_sk_kepdes');
+                $filename = $idOtomatis . '.pdf';
+                // Simpan ke folder public/dokumen/musyawarah/
+                $file->move(public_path('dokumen/p5/sk_kepdes'), $filename);
+            }
             P503::create([
-                'id' => "DSP503-" . strtotime(date("Y-m-d H:i:s")),
+                'id' => $idOtomatis,
                 'id_desa_p5' => $idDesaP5,
                 'id_survey' => $idSurvey,
                 'no_dokumen' => $request->no_dokumen,
@@ -53,6 +62,24 @@ class P503Controller extends Controller
     public function update(Request $request, $id)
     {
         $dataUtama = P503::findOrFail($id);
+        $request->validate([
+            'dokumen_sk_kepdes' => 'nullable|file|mimes:pdf',
+        ]);
+
+        if ($request->hasFile('dokumen_sk_kepdes')) {
+
+            if ($dataUtama->dokumen_sk_kepdes) {
+                $oldPath = public_path('dokumen/p5/sk_kepdes/' . $dataUtama->dokumen_sk_kepdes);
+
+                if (file_exists($oldPath)) {
+                    unlink($oldPath); // hapus file
+                }
+            }
+
+            $file = $request->file('dokumen_sk_kepdes');
+            $filename = $id . ".pdf";
+            $file->move(public_path('dokumen/p5/sk_kepdes'), $filename);
+        }
         $dataUtama->update($request->all());
 
         return redirect()->back()->with('success', 'Data utama P503 berhasil diperbarui.');

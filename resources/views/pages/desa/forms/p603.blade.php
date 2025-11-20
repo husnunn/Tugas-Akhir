@@ -51,13 +51,13 @@
                     </tr>
                 </thead>
                 @php
-                $satuanVolume = [
-                                '1' => 'Unit',
-                                '2' => 'Hektar',
-                            ];
+                    $satuanVolume = [
+                        '1' => 'Unit',
+                        '2' => 'Hektar',
+                    ];
                 @endphp
                 <tbody>
-                    @forelse ($data as $index => $item)
+                    @foreach ($data as $index => $item)
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $item->aset }}</td>
@@ -71,6 +71,8 @@
                                 </button>
                                 <form action="{{ route('desa-p603.destroy', $item->id) }}" method="POST" class="d-inline"
                                     onsubmit="return confirm('Hapus Data ini?')">
+                                    @csrf
+                                    @method('DELETE')
                                     <button class="btn btn-danger btn-sm">Hapus</button>
                                 </form>
                             </td>
@@ -78,7 +80,7 @@
                         {{-- Modal Edit Data --}}
                         <div class="modal fade" id="modalEditData{{ $item->id }}"
                             aria-labelledby="modalEditDataLabel{{ $item->id }}" aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="modalEditDataLabel{{ $item->id }}">Edit
@@ -123,19 +125,15 @@
                                 </div>
                             </div>
                         </div>
-                    @empty
+                        {{-- @empty
                         <tr>
                             <td colspan="6">Belum ada Data.</td>
-                        </tr>
-                    @endforelse
+                        </tr> --}}
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 @endsection
 @push('scripts')
-    <script>
-        let table = new DataTable('#dataTable', {
-            responsive: true
-        });
-    </script>
+@endpush

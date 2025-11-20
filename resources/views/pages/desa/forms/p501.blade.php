@@ -9,17 +9,14 @@
             <input type="hidden" name="id_desa_p5" value="{{ $p5->id }}">
             <div id="p501-wrapper">
                 <div class="row">
-                    <div class="col-sm">
+                    <div class="col-sm-4">
                         <input type="text" name="no_dokumen" class="form-control mb-2" placeholder="No Dokumen" required>
                     </div>
-                    <div class="col-sm">
+                    <div class="col-sm-4">
                         <input type="text" name="bulan" class="form-control mb-2" placeholder="Bulan (Angka)"
                             maxlength="5" required>
                     </div>
-                    <div class="col-sm">
-                        <input type="text" name="tentang" class="form-control mb-2" placeholder="Tentang" required>
-                    </div>
-                    <div class="col-sm">
+                    <div class="col-sm-4">
                         {{-- <label for="fileUpload" class="font-weight-bold">Unggah Dokumen</label> --}}
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="fileUpload" name="dokumen_peraturan_desa">
@@ -27,6 +24,10 @@
                                 Dokumen</label>
                         </div>
                     </div>
+                    <div class="col-sm-12">
+                        <input type="text" name="tentang" class="form-control mb-2" placeholder="Tentang" required>
+                    </div>
+
                 </div>
             </div>
             {{-- ====== Tombol Aksi ====== --}}
@@ -57,7 +58,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($data as $index => $item)
+                            @foreach ($data as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->no_dokumen }}</td>
@@ -79,7 +80,7 @@
                                 {{-- Modal Edit Data --}}
                                 <div class="modal fade" id="modalEditData{{ $item->id }}"
                                     aria-labelledby="modalEditDataLabel{{ $item->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="modalEditDataLabel{{ $item->id }}">Edit
@@ -90,10 +91,31 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
+                                                {{-- === PREVIEW PDF (jika file ada) === --}}
+                                                @php
+                                                    $filePath = public_path(
+                                                        'dokumen/p5/peraturan_desa/' . $item->id . '.pdf',
+                                                    );
+                                                @endphp
+
+                                                @if (file_exists($filePath))
+                                                    <div class="mb-3">
+                                                        <h6>Dokumen Saat Ini:</h6>
+
+                                                        <a href="{{ asset('dokumen/p5/peraturan_desa/' . $item->id . '.pdf') }}"
+                                                            target="_blank" class="btn btn-sm btn-info mt-2">
+                                                            Lihat / Download Dokumen
+                                                        </a>
+                                                    </div>
+                                                @else
+                                                    <p class="text-danger">Dokumen belum diunggah.</p>
+                                                @endif
+                                                {{-- === END PREVIEW === --}}
                                                 <form action="{{ route('desa-p501.update', $item->id) }}" method="POST"
                                                     enctype="multipart/form-data">
                                                     @csrf @method('PUT')
                                                     <div class="row">
+
                                                         <div class="col-sm">
                                                             <input type="text" name="no_dokumen"
                                                                 value="{{ $item->no_dokumen }}" class="form-control mb-2"
@@ -126,11 +148,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            @empty
+                                {{-- @empty
                                 <tr>
                                     <td colspan="6">Belum ada Data Peraturan Desa.</td>
-                                </tr>
-                            @endforelse
+                                </tr> --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -139,19 +161,12 @@
     </div>
 @endsection
 @push('scripts')
-    <script>
-        let table = new DataTable('#dataTable', {
-            responsive: true
-        });
-    </script>
     {{-- STYLE INPUT FILE --}}
     <script>
-        let table = new DataTable('#dataTable', {
-            responsive: true
-        });
         document.querySelector('.custom-file-input').addEventListener('change', function(e) {
             var fileName = document.getElementById("fileUpload").files[0].name;
             var nextSibling = e.target.nextElementSibling
             nextSibling.innerText = fileName
         })
     </script>
+@endpush

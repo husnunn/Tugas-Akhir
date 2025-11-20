@@ -33,7 +33,7 @@
             <span>Desa</span></a>
     </li>
 
-    <li class="nav-item {{ request()->is('data-rt') ? 'active' : '' }}">
+    {{-- <li class="nav-item {{ request()->is('data-rt') ? 'active' : '' }}">
         <a class="nav-link" href="/data-rt">
             <i class="fas fa-users"></i>
             <span>Rukun Tetangga (RT)</span></a>
@@ -49,7 +49,7 @@
         <a class="nav-link" href="/idv-p1">
             <i class="fas fa-user"></i>
             <span>Individu</span></a>
-    </li>
+    </li> --}}
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

@@ -28,19 +28,19 @@ class P501Controller extends Controller
 
         try {
             DB::beginTransaction();
-            // Simpan file jika ada
-            $filePath = null;
+            $request->validate([
+                'dokumen_peraturan_desa' => 'required|file|mimes:pdf',
+            ]);
+            $idOtomatis = "DSP501-" . strtotime(date("Y-m-d H:i:s"));
             if ($request->hasFile('dokumen_peraturan_desa')) {
                 $file = $request->file('dokumen_peraturan_desa');
-
-                // Buat nama unik
-                $fileName = time() . '_' . $file->getClientOriginalName();
-
-                // Simpan ke folder public/storage/dokumen_peraturan_desa
-                $filePath = $file->storeAs('desa/p501/dokumen_peraturan_desa', $fileName, 'public');
+                $filename = $idOtomatis . '.pdf';
+                // Simpan ke folder public/dokumen/musyawarah/
+                $file->move(public_path('dokumen/p5/peraturan_desa'), $filename);
             }
+
             P501::create([
-                'id' => "DSP501-" . strtotime(date("Y-m-d H:i:s")),
+                'id' => $idOtomatis,
                 'id_desa_p5' => $idDesaP5,
                 'id_survey' => $idSurvey,
                 'no_dokumen' => $request->no_dokumen,
@@ -64,6 +64,27 @@ class P501Controller extends Controller
     public function update(Request $request, $id)
     {
         $dataUtama = P501::findOrFail($id);
+
+        $request->validate([
+            'dokumen_peraturan_desa' => 'nullable|file|mimes:pdf',
+        ]);
+
+        if ($request->hasFile('dokumen_peraturan_desa')) {
+
+            if ($dataUtama->dokumen_peraturan_desa) {
+                $oldPath = public_path('dokumen/p5/peraturan_desa/' . $dataUtama->dokumen_peraturan_desa);
+
+                if (file_exists($oldPath)) {
+                    unlink($oldPath); // hapus file
+                }
+            }
+
+            $file = $request->file('dokumen_peraturan_desa');
+            $filename = $id . ".pdf";
+            $file->move(public_path('dokumen/p5/peraturan_desa'), $filename);
+
+        }
+
         $dataUtama->update($request->all());
 
         return redirect()->back()->with('success', 'Data utama P501 berhasil diperbarui.');

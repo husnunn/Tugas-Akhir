@@ -24,6 +24,7 @@ class P7 extends Model
         'blm_kk',
         'nama_pdesa',
         'jk_pdesa',
+        'hp_pdesa',
         'id_buat',
         'id_update',
         'tgl_buat',

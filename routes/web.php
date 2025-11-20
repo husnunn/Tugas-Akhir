@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\WilayahController;
@@ -76,7 +77,8 @@ Route::middleware('auth')->group(function () {
 
 
     // Dashboard & halaman statis
-    Route::get('/dashboard', fn() => view('pages.dashboard'))->name('dashboard');
+    // Route::get('/dashboard', fn() => view('pages.dashboard'))->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'dashboard']);
     Route::get('/coba', fn() => view('pages.desa.forms.coba'))->name('coba');
     Route::get('/keluarga', fn() => view('pages.keluarga.keluarga'))->name('keluarga.index');
     Route::get('/individu', fn() => view('pages.individu.individu'))->name('individu.index');
@@ -105,6 +107,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/setkg-session/{id}/{form}', [SessionController::class, 'setkg'])->name('setkg.session');
     // Kirim id_survey dan id_individu
     Route::get('/session/setidv/{id}/{form}', [SessionController::class, 'setidv'])->name('session.setidv');
+    
+    Route::get('/desa/export/pdf/{id_survey}', [\App\Http\Controllers\Desa\ExportPdfController::class, 'export'])
+    ->name('desa.export.pdf');
 
     // DESA P3
     Route::resource('/desa-p3', P3Controller::class);
@@ -234,7 +239,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/kg-p424/{id}', [P424KgController::class, 'update'])->name('kg-p424.update');
     Route::delete('/kg-p424/{id}', [P424KgController::class, 'destroy'])->name('kg-p424.destroy');
 
-
+ 
 
     // INDIVIDU P1 
     Route::get('/idv-p1', [P1IdvController::class, 'index'])->name('idv-p1.index');

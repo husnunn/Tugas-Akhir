@@ -92,7 +92,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($data as $index => $item)
+                            @foreach ($data as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->sarana_yg_digunakan }}</td>
@@ -115,7 +115,7 @@
                                 {{-- Modal Edit Data --}}
                                 <div class="modal fade" id="modalEditData{{ $item->id }}"
                                     aria-labelledby="modalEditDataLabel{{ $item->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="modalEditDataLabel{{ $item->id }}">Edit
@@ -136,11 +136,19 @@
                                                                     Digunakan Menuju Kantor Desa Ke</label>
                                                                 <select name="sarana_yg_digunakan" class="form-control"
                                                                     required>
-                                                                    <option value="kantor camat"{{$item->sarana_yg_digunakan == 'kantor camat' ? 'selected' : ''}}>kantor camat</option>
-                                                                    <option value="kantor bupati"{{$item->sarana_yg_digunakan == 'kantor bupati' ? 'selected' : ''}}>kantor bupati</option>
-                                                                    <option value="kantor camat lain terdekat"{{$item->sarana_yg_digunakan == 'kantor camat lain terdekat' ? 'selected' : ''}}>kantor camat
+                                                                    <option
+                                                                        value="kantor camat"{{ $item->sarana_yg_digunakan == 'kantor camat' ? 'selected' : '' }}>
+                                                                        kantor camat</option>
+                                                                    <option
+                                                                        value="kantor bupati"{{ $item->sarana_yg_digunakan == 'kantor bupati' ? 'selected' : '' }}>
+                                                                        kantor bupati</option>
+                                                                    <option
+                                                                        value="kantor camat lain terdekat"{{ $item->sarana_yg_digunakan == 'kantor camat lain terdekat' ? 'selected' : '' }}>
+                                                                        kantor camat
                                                                         lain terdekat</option>
-                                                                    <option value="kantor bupati lain terdekat" {{$item->sarana_yg_digunakan == 'kantor bupati lain terdekat' ? 'selected' : ''}}>kantor
+                                                                    <option value="kantor bupati lain terdekat"
+                                                                        {{ $item->sarana_yg_digunakan == 'kantor bupati lain terdekat' ? 'selected' : '' }}>
+                                                                        kantor
                                                                         bupati lain terdekat</option>
                                                                 </select>
                                                             </div>
@@ -150,21 +158,37 @@
                                                                 Transportasi</label>
                                                             <select name="sarana_transportasi" class="form-control"
                                                                 required>
-                                                                <option value="1"{{$item->sarana_transportasi == '1' ? 'selected' : ''}}>Angkutan umum</option>
-                                                                <option value="2"{{$item->sarana_transportasi == '2' ? 'selected' : ''}}>Kendaraan pribadi</option>
-                                                                <option value="3"{{$item->sarana_transportasi == '3' ? 'selected' : ''}}>Sepeda, becak, bentor, delman
+                                                                <option
+                                                                    value="1"{{ $item->sarana_transportasi == '1' ? 'selected' : '' }}>
+                                                                    Angkutan umum</option>
+                                                                <option
+                                                                    value="2"{{ $item->sarana_transportasi == '2' ? 'selected' : '' }}>
+                                                                    Kendaraan pribadi</option>
+                                                                <option
+                                                                    value="3"{{ $item->sarana_transportasi == '3' ? 'selected' : '' }}>
+                                                                    Sepeda, becak, bentor, delman
                                                                 </option>
-                                                                <option value="4"{{$item->sarana_transportasi == '4' ? 'selected' : ''}}>Jalan kaki, lainnya</option>
+                                                                <option
+                                                                    value="4"{{ $item->sarana_transportasi == '4' ? 'selected' : '' }}>
+                                                                    Jalan kaki, lainnya</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-sm-4">
                                                             <label for="angkutan_umum">Jenis Angkutan Umum (jika
                                                                 dipilih)</label>
                                                             <select name="angkutan_umum" class="form-control" required>
-                                                                <option value="1"{{$item->angkutan_umum == '1' ? 'selected' : ''}}>Angkot</option>
-                                                                <option value="2"{{$item->angkutan_umum == '2' ? 'selected' : ''}}>Bus</option>
-                                                                <option value="3"{{$item->angkutan_umum == '3' ? 'selected' : ''}}>Ojek</option>
-                                                                <option value="4"{{$item->angkutan_umum == '4' ? 'selected' : ''}}>Lainnya</option>
+                                                                <option
+                                                                    value="1"{{ $item->angkutan_umum == '1' ? 'selected' : '' }}>
+                                                                    Angkot</option>
+                                                                <option
+                                                                    value="2"{{ $item->angkutan_umum == '2' ? 'selected' : '' }}>
+                                                                    Bus</option>
+                                                                <option
+                                                                    value="3"{{ $item->angkutan_umum == '3' ? 'selected' : '' }}>
+                                                                    Ojek</option>
+                                                                <option
+                                                                    value="4"{{ $item->angkutan_umum == '4' ? 'selected' : '' }}>
+                                                                    Lainnya</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-sm-4">
@@ -172,28 +196,39 @@
                                                                 Utama</label>
                                                             <select name="angkutan_umum_utama" class="form-control"
                                                                 required>
-                                                                <option value="1"{{$item->angkutan_umum_utama == '1' ? 'selected' : ''}}>Angkot</option>
-                                                                <option value="2"{{$item->angkutan_umum_utama == '2' ? 'selected' : ''}}>Bus</option>
-                                                                <option value="3"{{$item->angkutan_umum_utama == '3' ? 'selected' : ''}}>Ojek</option>
-                                                                <option value="4"{{$item->angkutan_umum_utama == '4' ? 'selected' : ''}}>Lainnya</option>
+                                                                <option
+                                                                    value="1"{{ $item->angkutan_umum_utama == '1' ? 'selected' : '' }}>
+                                                                    Angkot</option>
+                                                                <option
+                                                                    value="2"{{ $item->angkutan_umum_utama == '2' ? 'selected' : '' }}>
+                                                                    Bus</option>
+                                                                <option
+                                                                    value="3"{{ $item->angkutan_umum_utama == '3' ? 'selected' : '' }}>
+                                                                    Ojek</option>
+                                                                <option
+                                                                    value="4"{{ $item->angkutan_umum_utama == '4' ? 'selected' : '' }}>
+                                                                    Lainnya</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-sm-4">
                                                             <label for="jarak_tempuh">Jarak Tempuh (km)</label>
-                                                            <input type="number" step="0.01" name="jarak_tempuh" value="{{$item->jarak_tempuh}}"
-                                                                class="form-control" required>
+                                                            <input type="number" step="0.01" name="jarak_tempuh"
+                                                                value="{{ $item->jarak_tempuh }}" class="form-control"
+                                                                required>
                                                         </div>
 
                                                         <div class="col-sm-4">
                                                             <label for="waktu_tempuh">Waktu Tempuh (menit)</label>
-                                                            <input type="number" name="waktu_tempuh" value="{{$item->waktu_tempuh}}"
-                                                                class="form-control" required>
+                                                            <input type="number" name="waktu_tempuh"
+                                                                value="{{ $item->waktu_tempuh }}" class="form-control"
+                                                                required>
                                                         </div>
 
                                                         <div class="col-sm-4">
                                                             <label for="biaya">Biaya Transportasi (Rp)</label>
-                                                            <input type="number" step="1000" name="biaya" value="{{$item->biaya}}"
-                                                                class="form-control" required>
+                                                            <input type="number" step="1000" name="biaya"
+                                                                value="{{ $item->biaya }}" class="form-control"
+                                                                required>
                                                         </div>
                                                     </div>
                                                     <button class="btn btn-primary">Simpan Perubahan</button>
@@ -202,22 +237,18 @@
                                         </div>
                                     </div>
                                 </div>
-                            @empty
+                                {{-- @empty
                                 <tr>
                                     <td colspan="5">Belum ada Data Transportasi Desa.</td>
-                                </tr>
-                            @endforelse
+                                </tr> --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
 @push('scripts')
-    <script>
-        let table = new DataTable('#dataTable', {
-            responsive: true
-        });
-    </script>
+
+@endpush

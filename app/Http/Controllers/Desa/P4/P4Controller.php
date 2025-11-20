@@ -88,33 +88,33 @@ class P4Controller extends Controller
     {
         $dataUtama = P4::findOrFail($id);
 
-        $request->validate([
-            'bulan_ke' => 'required|max:5',
-            'agenda_musyawarah' => 'required|string',
-            'tgl_musyawarah' => 'required|date',
-            'dokumen_musyawarah' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-        ]);
+        // $request->validate([
+        //     'bulan_ke' => 'required|max:5',
+        //     'agenda_musyawarah' => 'required|string',
+        //     'tgl_musyawarah' => 'required|date',
+        //     'dokumen_musyawarah' => 'nullable|file|mimes:pdf',
+        // ]);
 
         try {
             DB::beginTransaction();
 
-            $filePath = $dataUtama->dokumen_musyawarah; // path lama
+            $request->validate([
+                'dokumen_musyawarah' => 'nullable|file|mimes:pdf',
+            ]);
 
-            // Jika user upload file baru
             if ($request->hasFile('dokumen_musyawarah')) {
-                $file = $request->file('dokumen_musyawarah');
-                $fileName = time() . '_' . $file->getClientOriginalName();
 
-                // Simpan ke folder desa/p4/dokumen_musyawarah
-                $newPath = $file->storeAs('desa/p4/dokumen_musyawarah', $fileName, 'public');
+                if ($dataUtama->dokumen_musyawarah) {
+                    $oldPath = public_path('dokumen/musyawarah/' . $dataUtama->dokumen_musyawarah);
 
-                // Hapus file lama jika ada
-                if ($filePath && Storage::disk('public')->exists($filePath)) {
-                    Storage::disk('public')->delete($filePath);
+                    if (file_exists($oldPath)) {
+                        unlink($oldPath); // hapus file
+                    }
                 }
 
-                // Update path ke file baru
-                $filePath = $newPath;
+                $file = $request->file('dokumen_musyawarah');
+                $filename = $id . ".pdf";
+                $file->move(public_path('dokumen/musyawarah'), $filename);
             }
 
             // Update data utama
@@ -122,7 +122,7 @@ class P4Controller extends Controller
                 'bulan_ke' => $request->bulan_ke,
                 'agenda_musyawarah' => base64_encode($request->agenda_musyawarah),
                 'tgl_musyawarah' => $request->tgl_musyawarah,
-                'dokumen_musyawarah' => $filePath,
+                // 'dokumen_musyawarah' => $filePath,
                 'id_update' => Auth::user()->id,
                 'tgl_update' => now(),
             ]);

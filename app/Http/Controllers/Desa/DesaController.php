@@ -93,7 +93,7 @@ class DesaController extends Controller
                 ->value('nama');
 
             $desa = DesaP2::create([
-                'id' => "DS-" . strtotime(date("Y-m-d H:i:s")),
+                'id' => "DSP2-" . strtotime(date("Y-m-d H:i:s")),
                 'id_survey' => $survey->id,
                 'id_buat' => $userId,
                 'tgl_buat' => now(),

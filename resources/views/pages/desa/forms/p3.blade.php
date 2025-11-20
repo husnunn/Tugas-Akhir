@@ -161,20 +161,20 @@
                 <!-- Kepala BPD -->
                 <div class="row">
                     <div class="col-sm">
-                        <div class="mb-3"><label>NIK Kepala BPD</label><input type="text" name="nik_kpl_bpd"
+                        <div class="mb-3"><label>NIK Kepala Seksi Pelayanan</label><input type="text" name="nik_kepsek_pelayanan"
                                 class="form-control" maxlength="20"></div>
                     </div>
                     <div class="col-sm">
-                        <div class="mb-3"><label>Nama Kepala BPD</label><input type="text" name="nama_kpl_bpd"
+                        <div class="mb-3"><label>Nama Kepala Seksi Pelayanan</label><input type="text" name="nama_kepsek_pelayanan"
                                 class="form-control" maxlength="100"></div>
                     </div>
                     <div class="col-sm">
-                        <div class="mb-3"><label>Nomer HP Kepala BPD</label><input type="text" name="hp_kpl_bpd"
+                        <div class="mb-3"><label>Nomer HP Kepala Pelayanan</label><input type="text" name="hp_kepsek_pelayanan"
                                 class="form-control" maxlength="20"></div>
                     </div>
                     <div class="col-sm">
-                        <div class="mb-3"><label>Awal Jabatan Kepala BPD</label><input type="date"
-                                name="awal_jabatan_kpl_bpd" class="form-control"></div>
+                        <div class="mb-3"><label>Awal Jabatan Kepala Seksi Pelayanan</label><input type="date"
+                                name="awal_jabatan_kepsek_pelayanan" class="form-control"></div>
                     </div>
                 </div>
 
@@ -203,7 +203,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($data as $item)
+                            @foreach ($data as $item)
                                 <tr>
                                     <td>
                                         <div class="row">
@@ -336,7 +336,7 @@
                                                                     class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                                     Kepala BPD</div>
                                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                                    {{ $item->nama_kpl_bpd }}</div>
+                                                                    {{ $item->nama_kepsek_pelayanan }}</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -361,7 +361,7 @@
                                 {{-- Modal Edit Data --}}
                                 <div class="modal fade" id="modalEditData{{ $item->id }}"
                                     aria-labelledby="modalEditDataLabel{{ $item->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="modalEditDataLabel{{ $item->id }}">Edit
@@ -613,28 +613,28 @@
                                                     <!-- Kepala BPD -->
                                                     <div class="row">
                                                         <div class="col-sm">
-                                                            <div class="mb-3"><label>NIK Kepala BPD</label><input
-                                                                    type="text" name="nik_kpl_bpd"
-                                                                    value="{{ $item->nik_kpl_bpd }}" class="form-control"
+                                                            <div class="mb-3"><label>NIK Kepala Seksi Pelayanan</label><input
+                                                                    type="text" name="nik_kepsek_pelayanan"
+                                                                    value="{{ $item->nik_kepsek_pelayanan }}" class="form-control"
                                                                     maxlength="20"></div>
                                                         </div>
                                                         <div class="col-sm">
-                                                            <div class="mb-3"><label>Nama Kepala BPD</label><input
-                                                                    type="text" name="nama_kpl_bpd"
-                                                                    value="{{ $item->nama_kpl_bpd }}"
+                                                            <div class="mb-3"><label>Nama Kepala Seksi Pelayanan</label><input
+                                                                    type="text" name="nama_kepsek_pelayanan"
+                                                                    value="{{ $item->nama_kepsek_pelayanan }}"
                                                                     class="form-control" maxlength="100"></div>
                                                         </div>
                                                         <div class="col-sm">
-                                                            <div class="mb-3"><label>Nomer HP Kepala BPD</label><input
-                                                                    type="text" name="hp_kpl_bpd"
-                                                                    value="{{ $item->hp_kpl_bpd }}" class="form-control"
+                                                            <div class="mb-3"><label>Nomer HP Kepala Pelayanan</label><input
+                                                                    type="text" name="hp_kepsek_pelayanan"
+                                                                    value="{{ $item->hp_kepsek_pelayanan }}" class="form-control"
                                                                     maxlength="20"></div>
-                                                         </div>
+                                                        </div>
                                                         <div class="col-sm">
                                                             <div class="mb-3"><label>Awal Jabatan Kepala
                                                                     BPD</label><input type="date"
-                                                                    name="awal_jabatan_kpl_bpd"
-                                                                    value="{{ $item->awal_jabatan_kpl_bpd }}"
+                                                                    name="awal_jabatan_kepsek_pelayanan"
+                                                                    value="{{ $item->awal_jabatan_kepsek_pelayanan }}"
                                                                     class="form-control">
                                                             </div>
                                                         </div>
@@ -646,11 +646,11 @@
                                     </div>
                                 </div>
 
-                            @empty
+                                {{-- @empty
                                 <tr>
                                     <td colspan="6">Belum ada Data Pemerintahan Desa.</td>
-                                </tr>
-                            @endforelse
+                                </tr> --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -659,18 +659,4 @@
     </div>
 @endsection
 @push('scripts')
-    <script>
-        let table = new DataTable('#dataTable', {
-            responsive: true,
-            "autoWidth": false,
-            "columnDefs": [{
-                    "targets": 0,
-                    "orderable": false
-                },
-                {
-                    "targets": 1,
-                    "orderable": false
-                }
-            ]
-        });
-    </script>
+@endpush

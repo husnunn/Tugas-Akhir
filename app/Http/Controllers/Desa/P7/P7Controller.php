@@ -55,6 +55,7 @@ class P7Controller extends Controller
                 'blm_kk'  => $request->blm_kk,
                 'nama_pdesa'  => $request->nama_pdesa,
                 'jk_pdesa'  => $request->jk_pdesa,
+                'hp_pdesa'  => $request->hp_pdesa,
                 'id_buat' => Auth::user()->id,
                 'tgl_buat' => now(),
             ]);

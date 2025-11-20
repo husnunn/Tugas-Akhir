@@ -25,7 +25,7 @@
 
             <div class="row">
                 @foreach ($pengeluaranFields as $name => $label)
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <div class="form-group">
                             <label>{{ $label }} (Rp)</label>
                             <input type="number" step="any" name="{{ $name }}" class="form-control" required>
@@ -63,7 +63,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($data as $index=>$item)
+                            @foreach ($data as $index=>$item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>Rp.{{ number_format($item->anggaran_pengeluaran, 0, ',', '.') }}</td>
@@ -84,7 +84,7 @@
                                 {{-- Modal Edit Data --}}
                                 <div class="modal fade" id="modalEditData{{ $item->id }}"
                                     aria-labelledby="modalEditDataLabel{{ $item->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="modalEditDataLabel{{ $item->id }}">Edit
@@ -112,7 +112,7 @@
                                                     @endphp
                                                     <div class="row">
                                                         @foreach ($pengeluaranFields as $name => $label)
-                                                            <div class="col-sm-4">
+                                                            <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <label>{{ $label }} (Rp)</label>
                                                                     <input type="number" step="any"
@@ -129,11 +129,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            @empty
+                            {{-- @empty
                                 <tr>
                                     <td colspan="6">Belum ada Data.</td>
-                                </tr>
-                            @endforelse
+                                </tr> --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -142,8 +142,4 @@
     </div>
 @endsection
 @push('scripts')
-    <script>
-        let table = new DataTable('#dataTable', {
-            responsive: true
-        });
-    </script>
+@endpush

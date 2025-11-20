@@ -67,7 +67,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($data as $index => $item)
+                            @foreach ($data as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->pihak_kerjasama }}</td>
@@ -76,7 +76,7 @@
                                     <td>{{ $item->jml_jiwa }}</td>
                                     <td>Rp.{{ number_format($item->nilai_kerjasama, 0, ',', '.') }}</td>
                                     <td>
-                                       <button type="button" class="btn btn-sm btn-warning btn-edit-data"
+                                        <button type="button" class="btn btn-sm btn-warning btn-edit-data"
                                             data-toggle="modal" data-target="#modalEditData{{ $item->id }}">
                                             Edit
                                         </button>
@@ -89,7 +89,7 @@
                                 {{-- Modal Edit Data --}}
                                 <div class="modal fade" id="modalEditData{{ $item->id }}"
                                     aria-labelledby="modalEditDataLabel{{ $item->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="modalEditDataLabel{{ $item->id }}">Edit
@@ -105,34 +105,44 @@
                                                     @csrf @method('PUT')
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <input type="text" name="pihak_kerjasama" value="{{$item->pihak_kerjasama}}"
-                                                                class="form-control mb-2"
-                                                                 required>
+                                                            <input type="text" name="pihak_kerjasama"
+                                                                value="{{ $item->pihak_kerjasama }}"
+                                                                class="form-control mb-2" required>
                                                         </div>
                                                         <div class="col-sm">
                                                             <select name="lingkup_kerjasama" class="form-control mb-2"
                                                                 required>
-                                                                <option value="1"{{$item->lingkup_kerjasama == '1' ? 'selected' : ''}}>Antardesa</option>
-                                                                <option value="2"{{$item->lingkup_kerjasama == '2' ? 'selected' : ''}}>Pemerintah Daerah</option>
-                                                                <option value="3"{{$item->lingkup_kerjasama == '3' ? 'selected' : ''}}>Pemerintah Pusat</option>
-                                                                <option value="4"{{$item->lingkup_kerjasama == '4' ? 'selected' : ''}}>Swasta</option>
-                                                                <option value="5"{{$item->lingkup_kerjasama == '5' ? 'selected' : ''}}>Lembaga Internasional</option>
+                                                                <option
+                                                                    value="1"{{ $item->lingkup_kerjasama == '1' ? 'selected' : '' }}>
+                                                                    Antardesa</option>
+                                                                <option
+                                                                    value="2"{{ $item->lingkup_kerjasama == '2' ? 'selected' : '' }}>
+                                                                    Pemerintah Daerah</option>
+                                                                <option
+                                                                    value="3"{{ $item->lingkup_kerjasama == '3' ? 'selected' : '' }}>
+                                                                    Pemerintah Pusat</option>
+                                                                <option
+                                                                    value="4"{{ $item->lingkup_kerjasama == '4' ? 'selected' : '' }}>
+                                                                    Swasta</option>
+                                                                <option
+                                                                    value="5"{{ $item->lingkup_kerjasama == '5' ? 'selected' : '' }}>
+                                                                    Lembaga Internasional</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-sm">
-                                                            <input type="text" name="akhir_kerjasama" value="{{$item->akhir_kerjasama}}"
-                                                                class="form-control mb-2"
-                                                                maxlength="4" required>
+                                                            <input type="text" name="akhir_kerjasama"
+                                                                value="{{ $item->akhir_kerjasama }}"
+                                                                class="form-control mb-2" maxlength="4" required>
                                                         </div>
                                                         <div class="col-sm">
-                                                            <input type="number" name="jml_jiwa" value="{{$item->jml_jiwa}}"
-                                                                class="form-control mb-2" 
+                                                            <input type="number" name="jml_jiwa"
+                                                                value="{{ $item->jml_jiwa }}" class="form-control mb-2"
                                                                 required>
                                                         </div>
                                                         <div class="col-sm">
-                                                            <input type="number" step="any" name="nilai_kerjasama" value="{{$item->nilai_kerjasama}}"
-                                                                class="form-control mb-2"
-                                                                 required>
+                                                            <input type="number" step="any" name="nilai_kerjasama"
+                                                                value="{{ $item->nilai_kerjasama }}"
+                                                                class="form-control mb-2" required>
                                                         </div>
                                                     </div>
                                                     <button class="btn btn-primary">Simpan Perubahan</button>
@@ -141,11 +151,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            @empty
+                                {{-- @empty
                                 <tr>
                                     <td colspan="6">Belum ada Data.</td>
-                                </tr>
-                            @endforelse
+                                </tr> --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -154,8 +164,4 @@
     </div>
 @endsection
 @push('scripts')
-    <script>
-        let table = new DataTable('#dataTable', {
-            responsive: true
-        });
-    </script>
+@endpush

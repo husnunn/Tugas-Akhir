@@ -76,19 +76,26 @@
                     </div>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <div class="form-group">
                         <label>Nama Pendamping Desa</label>
                         <input type="text" name="nama_pdesa" class="form-control" maxlength="100" required>
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <div class="form-group">
                         <label>Jenis Kelamin Pendamping Desa</label>
                         <select name="jk_pdesa" class="form-control" required>
                             <option value="1">Laki-laki</option>
                             <option value="2">Perempuan</option>
                         </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Nomer HP Pendamping Desa</label>
+                        <input type="number" name="hp_pdesa" class="form-control"
+                            maxlength="15" required>
                     </div>
                 </div>
             </div>
@@ -141,7 +148,7 @@
                             ];
                         @endphp
                         <tbody>
-                            @forelse ($data as $item)
+                            @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $teknologiOptions[$item->teknologi] ?? '-' }}</td>
                                     <td>{{ $internetOptions[$item->internet] ?? '-' }}</td>
@@ -162,7 +169,7 @@
                                 {{-- Modal Edit Data --}}
                                 <div class="modal fade" id="modalEditData{{ $item->id }}"
                                     aria-labelledby="modalEditDataLabel{{ $item->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="modalEditDataLabel{{ $item->id }}">Edit
@@ -273,7 +280,7 @@
                                                                     required>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-4">
                                                             <div class="form-group">
                                                                 <label>Nama Pendamping Desa</label>
                                                                 <input type="text" name="nama_pdesa"
@@ -281,7 +288,7 @@
                                                                     maxlength="100" required>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-4">
                                                             <div class="form-group">
                                                                 <label>Jenis Kelamin Pendamping Desa</label>
                                                                 <select name="jk_pdesa" class="form-control" required>
@@ -294,6 +301,14 @@
                                                                 </select>
                                                             </div>
                                                         </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>Nomer HP Pendamping Desa</label>
+                                                                <input type="number" name="hp_pdesa"
+                                                                    value="{{ $item->hp_pdesa }}" class="form-control"
+                                                                    maxlength="15" required>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <button class="btn btn-primary">Simpan Perubahan</button>
                                                 </form>
@@ -301,11 +316,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            @empty
+                                {{-- @empty
                                 <tr>
                                     <td colspan="6">Belum ada Data Layanan dan Kerja Sama Desa.</td>
-                                </tr>
-                            @endforelse
+                                </tr> --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -345,11 +360,6 @@
             kerjasamaIndex++;
         }
     </script> --}}
-
 @endsection
 @push('scripts')
-    <script>
-        let table = new DataTable('#dataTable', {
-            responsive: true
-        });
-    </script>
+@endpush

@@ -23,13 +23,14 @@ class BpdController extends Controller
     {
         $idDesaP3 = $request->id_desa_p3;
         $idSurvey = session('id_survey');
-
+ 
         // Cari nomor urut terakhir untuk desa P3 ini
         $lastNumber = AnggotaBpd::where('id_desa_p3', $idDesaP3)
             ->max('anggota_ke');
         // Jika belum ada data, mulai dari 1
         $nextNumber = $lastNumber ? $lastNumber + 1 : 1;
         AnggotaBpd::create([
+            'id' => "DSP3BPD-" . strtotime(date("Y-m-d H:i:s")),
             'id_desa_p3' => $idDesaP3,
             'anggota_ke' => $nextNumber,
             'nik_anggota_bpd' => $request->nik_anggota_bpd,

@@ -28,19 +28,19 @@ class P502Controller extends Controller
 
         try {
             DB::beginTransaction();
-            // Simpan file jika ada
-            $filePath = null;
+            $request->validate([
+                'dokumen_peraturan_kepdes' => 'required|file|mimes:pdf',
+            ]);
+            $idOtomatis = "DSP502-" . strtotime(date("Y-m-d H:i:s"));
             if ($request->hasFile('dokumen_peraturan_kepdes')) {
                 $file = $request->file('dokumen_peraturan_kepdes');
-
-                // Buat nama unik
-                $fileName = time() . '_' . $file->getClientOriginalName();
-
-                // Simpan ke folder public/storage/dokumen_peraturan_kepdes
-                $filePath = $file->storeAs('desa/p502/dokumen_peraturan_kepdes', $fileName, 'public');
+                $filename = $idOtomatis . '.pdf';
+                // Simpan ke folder public/dokumen/musyawarah/
+                $file->move(public_path('dokumen/p5/peraturan_kepdes'), $filename);
             }
+
             P502::create([
-                'id'                        => "DSP502-" . strtotime(date("Y-m-d H:i:s")),
+                'id'                        => $idOtomatis,
                 'id_desa_p5'                => $idDesaP5,
                 'id_survey'                 => $idSurvey,
                 'no_dokumen'                => $request->no_dokumen,
@@ -61,9 +61,27 @@ class P502Controller extends Controller
         }
     }
 
-        public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $dataUtama = P502::findOrFail($id);
+        $request->validate([
+            'dokumen_peraturan_kepdes' => 'nullable|file|mimes:pdf',
+        ]);
+
+        if ($request->hasFile('dokumen_peraturan_kepdes')) {
+
+            if ($dataUtama->dokumen_peraturan_kepdes) {
+                $oldPath = public_path('dokumen/p5/peraturan_kepdes/' . $dataUtama->dokumen_peraturan_kepdes);
+
+                if (file_exists($oldPath)) {
+                    unlink($oldPath); // hapus file
+                }
+            }
+
+            $file = $request->file('dokumen_peraturan_kepdes');
+            $filename = $id . ".pdf";
+            $file->move(public_path('dokumen/p5/peraturan_kepdes'), $filename);
+        }
         $dataUtama->update($request->all());
 
         return redirect()->back()->with('success', 'Data utama P502 berhasil diperbarui.');

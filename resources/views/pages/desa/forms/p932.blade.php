@@ -64,7 +64,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($data as $item)
+                            @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->direksi_ke }}</td>
                                     <td>{{ $item->nama_direksi }}</td>
@@ -84,7 +84,7 @@
                                 {{-- Modal Edit Data --}}
                                 <div class="modal fade" id="modalEditData{{ $item->id }}"
                                     aria-labelledby="modalEditDataLabel{{ $item->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="modalEditDataLabel{{ $item->id }}">Edit
@@ -102,28 +102,32 @@
                                                         <div class="col-sm">
                                                             <div class="mb-3">
                                                                 <label>direksi ke-</label>
-                                                                <input type="number" name="direksi_ke" value="{{$item->direksi_ke}}" class="form-control"
+                                                                <input type="number" name="direksi_ke"
+                                                                    value="{{ $item->direksi_ke }}" class="form-control"
                                                                     required readonly>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm">
                                                             <div class="mb-3">
                                                                 <label>Nama direksi Desa</label>
-                                                                <input type="text" name="nama_direksi" value="{{$item->nama_direksi}}"
-                                                                    class="form-control" maxlength="100" required>
+                                                                <input type="text" name="nama_direksi"
+                                                                    value="{{ $item->nama_direksi }}" class="form-control"
+                                                                    maxlength="100" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm">
                                                             <div class="mb-3">
                                                                 <label>NIK direksi Desa</label>
-                                                                <input type="text" name="nik_direksi" value="{{$item->nik_direksi}}"
-                                                                    class="form-control" maxlength="20" required>
+                                                                <input type="text" name="nik_direksi"
+                                                                    value="{{ $item->nik_direksi }}" class="form-control"
+                                                                    maxlength="20" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm">
                                                             <div class="mb-3">
                                                                 <label>HP direksi Desa</label>
-                                                                <input type="text" name="hp_direksi" value="{{$item->hp_direksi}}" class="form-control"
+                                                                <input type="text" name="hp_direksi"
+                                                                    value="{{ $item->hp_direksi }}" class="form-control"
                                                                     maxlength="20" required>
                                                             </div>
                                                         </div>
@@ -134,11 +138,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            @empty
+                                {{-- @empty
                                 <tr>
                                     <td colspan="5">Belum ada Data Direksi.</td>
-                                </tr>
-                            @endforelse
+                                </tr> --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -147,8 +151,4 @@
     </div>
 @endsection
 @push('scripts')
-    <script>
-        let table = new DataTable('#dataTable', {
-            responsive: true
-        });
-    </script>
+@endpush

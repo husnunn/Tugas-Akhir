@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <h5 class="mb-3">Form P5 Individu</h5>
-        <form action="{{ route('idv-p5.store') }}" method="POST">
+        <form action="{{ route('idv-p5.store') }}" class="mb-5" method="POST">
             @csrf
             <div class="row">
 
@@ -97,9 +97,14 @@
 
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3 w-100">
-                <i class="bi bi-save"></i> Simpan Data
-            </button>
+            <div class="d-flex justify-content-between mt-4">
+                <a href="/idv-p1" class="btn btn-secondary">
+                    ← Kembali
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    Simpan Individu
+                </button>
+            </div>
         </form>
 
 

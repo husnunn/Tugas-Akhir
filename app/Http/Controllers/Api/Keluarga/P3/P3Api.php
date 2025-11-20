@@ -31,7 +31,7 @@ class P3Api extends Controller
             'id_buat' => Auth::user()->id,
             'id_update' => Auth::user()->id,
             'tgl_buat' => $today,
-            // 'tgl_update' => $today
+            'tgl_update' => $today
         ]);
 
         return response()->json([
@@ -50,6 +50,7 @@ class P3Api extends Controller
             'data' => $data
         ]);
     }
+
     public function update(Request $request, $id)
     {
         $today = Carbon::now();
@@ -69,6 +70,7 @@ class P3Api extends Controller
             'data' => $data
         ]);
     }
+    
     public function destroy($id)
     {
         KgP3M::findOrFail($id)->delete();
@@ -76,6 +78,17 @@ class P3Api extends Controller
         return response()->json([
             'status' => true,
             'message' => "Data P3 Berhasil Dihapus"
+        ]);
+    }
+
+    public function showByIdP2($id)
+    {
+        $data = KgP3M::where('id_kg_p2', $id)->first();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Data keluarga berdasarkan ID P2',
+            'data' => $data
         ]);
     }
 }

@@ -56,7 +56,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($data as $index => $item)
+                    @foreach ($data as $index => $item)
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $item->nama_lembaga }}</td>
@@ -73,20 +73,15 @@
                                 </form>
                             </td>
                         </tr>
-                    @empty
+                        {{-- @empty
                         <tr>
                             <td colspan="5">Belum ada user.</td>
-                        </tr>
-                    @endforelse
+                        </tr> --}}
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 @endsection
 @push('scripts')
-
-    <script>
-        let table = new DataTable('#dataTable', {
-            responsive: true
-        });
-    </script>
+@endpush

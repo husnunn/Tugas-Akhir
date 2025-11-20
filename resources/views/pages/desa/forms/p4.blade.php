@@ -69,7 +69,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($data as $item)
+                            @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->bulan_ke }}</td>
                                     <td>{{ $item->tgl_musyawarah }}</td>
@@ -93,7 +93,7 @@
                                 {{-- Modal Edit Data --}}
                                 <div class="modal fade" id="modalEditData{{ $item->id }}"
                                     aria-labelledby="modalEditDataLabel{{ $item->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="modalEditDataLabel{{ $item->id }}">Edit
@@ -146,11 +146,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            @empty
+                                {{-- @empty
                                 <tr>
                                     <td colspan="6">Belum ada Data Musyawarah.</td>
-                                </tr>
-                            @endforelse
+                                </tr> --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -159,7 +159,7 @@
     </div>
 
     <div class="modal fade" id="modalViewP4" aria-labelledby="modalViewP4Label" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalViewP4Label">View Data P4</h5>
@@ -180,9 +180,6 @@
 @push('scripts')
     {{-- STYLE INPUT FILE --}}
     <script>
-        let table = new DataTable('#dataTable', {
-            responsive: true
-        });
         document.querySelector('.custom-file-input').addEventListener('change', function(e) {
             var fileName = document.getElementById("fileUpload").files[0].name;
             var nextSibling = e.target.nextElementSibling
@@ -194,10 +191,10 @@
             selector: '#agendaMus',
             license_key: 'gpl',
             plugins: [
-                'a11ychecker', 'accordion', 'advlist', 'anchor', 'autolink', 'autosave',
-                'charmap', 'code', 'codesample', 'directionality', 'emoticons', 'exportpdf',
-                'exportword', 'fullscreen', 'help', 'image', 'importcss', 'importword',
-                'insertdatetime', 'link', 'lists', 'markdown', 'math', 'media', 'nonbreaking',
+                'accordion', 'advlist', 'anchor', 'autolink', 'autosave',
+                'charmap', 'code', 'codesample', 'directionality', 'emoticons',
+                'fullscreen', 'help', 'image', 'importcss',
+                'insertdatetime', 'link', 'lists', 'media', 'nonbreaking',
                 'pagebreak', 'preview', 'quickbars', 'save', 'searchreplace', 'table',
                 'visualblocks', 'visualchars', 'wordcount'
             ],
@@ -244,3 +241,4 @@
             });
         });
     </script>
+@endpush

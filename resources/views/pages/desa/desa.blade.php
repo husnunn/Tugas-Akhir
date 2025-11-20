@@ -4,9 +4,18 @@
     <div class="container">
 
         {{-- Tombol Tambah Desa --}}
+        {{-- <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalcoba">
+            + Tambah Desa
+        </button> --}}
+        {{-- @if ($desa)
+            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalcoba" disabled>
+            + Tambah Desa
+        </button>
+        @else --}}
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalcoba">
             + Tambah Desa
         </button>
+        {{-- @endif --}}
         {{-- <a href="/coba">Halaman COBA</a> --}}
 
 
@@ -293,6 +302,10 @@
                                                 <i class="bi bi-trash"></i> Hapus
                                             </button>
                                         </form>
+                                        <a href="{{ route('desa.export.pdf', $d->id_survey) }}"
+                                            class="btn btn-danger btn-sm">
+                                            <i class="fas fa-file-pdf"></i> Download PDF
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -372,6 +385,24 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="mb-3">
+                                    <label>Twitter</label>
+                                    <input type="url" name="url_twitter" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label>Instagram</label>
+                                    <input type="url" name="url_instagram" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label>Youtube</label>
+                                    <input type="url" name="url_youtube" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
                                     <label>Balai Desa<span class="text-danger">*</span></label>
                                     <select name="balai_desa" class="form-control shadow-sm" required>
                                         <option value="1">Ada Layak</option>
@@ -396,24 +427,6 @@
                                         <option value="1">Di Dalam Desa</option>
                                         <option value="2">Di Luar Desa</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="mb-3">
-                                    <label>Twitter</label>
-                                    <input type="url" name="url_twitter" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="mb-3">
-                                    <label>Instagram</label>
-                                    <input type="url" name="url_instagram" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="mb-3">
-                                    <label>Youtube</label>
-                                    <input type="url" name="url_youtube" class="form-control">
                                 </div>
                             </div>
                             <div class="col-sm-4">
@@ -556,7 +569,7 @@
 
     {{-- Modal Edit Desa --}}
     @foreach ($desa as $d)
-        <div class="modal fade" id="modalEditDesa{{ $d->id }}"
+        <div class="modal fade modal-edit" id="modalEditDesa{{ $d->id }}"
             aria-labelledby="modalEditDesaLabel{{ $d->id }}" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -608,7 +621,7 @@
                                         </select>
                                     </div>
                                 </div>
-                           
+
                                 <div class="col-sm-4">
                                     <div class="mb-3">
                                         <label>Email Desa</label>
@@ -921,7 +934,19 @@
         toggleRequired(false, 'input[name="akhir_pukul"]');
 
         // {{-- Script untuk form tambah --}}
+        $('#modalcoba').on('shown.bs.modal', function() {
+            $(".select2").select2({
+                width: '100%',
+                dropdownParent: $('#modalcoba')
+            });
+            ambilProvinsi(); // load provinsi pertama kali
+        });
+
         function ambilProvinsi() {
+            //   $(".select2").select2({
+            //     width: '100%',
+            //     dropdownParent: $('#modalcoba')
+            // });
             $.ajax({
                 url: "{{ URL::to('provinces') }}",
                 method: "get",
@@ -1024,15 +1049,14 @@
         // {{-- Script untuk form edit --}}
 
         $(document).ready(function() {
-            $(".select2").select2({
-                width: '100%',
-                dropdownParent: $('#modalcoba')
-            });
 
             // Saat modal edit dibuka
-            $('.modal').on('shown.bs.modal', function() {
+            $('.modal-edit').on('shown.bs.modal', function() {
                 let modal = $(this);
-
+                modal.find(".select2").select2({
+                    width: '100%',
+                    dropdownParent: modal
+                });
                 let prov = modal.find('.provinsi');
                 let kab = modal.find('.kabupaten');
                 let kec = modal.find('.kecamatan');
@@ -1050,7 +1074,8 @@
                     $.each(resProv, function(i, p) {
                         let selected = (p.kode == valProv) ? 'selected' : '';
                         prov.append(
-                            `<option value="${p.kode}" ${selected}>${p.nama}</option>`);
+                            `<option value="${p.kode}" ${selected}>${p.nama}</option>`
+                        );
                     });
 
                     // Jika sudah ada provinsi lama → lanjut load kabupaten
@@ -1062,7 +1087,8 @@
                 // 2️⃣ Fungsi load kabupaten
                 function loadKabupaten(kodeProv) {
                     $.getJSON(`/kabupaten/${kodeProv}`, function(resKab) {
-                        kab.empty().append('<option value="">-- Pilih Kabupaten --</option>');
+                        kab.empty().append(
+                            '<option value="">-- Pilih Kabupaten --</option>');
                         $.each(resKab, function(i, k) {
                             let selected = (k.kode == valKab) ? 'selected' : '';
                             kab.append(
@@ -1079,9 +1105,11 @@
                 // 3️⃣ Fungsi load kecamatan
                 function loadKecamatan(kodeKab) {
                     $.getJSON(`/kecamatan/${kodeKab}`, function(resKec) {
-                        kec.empty().append('<option value="">-- Pilih Kecamatan --</option>');
+                        kec.empty().append(
+                            '<option value="">-- Pilih Kecamatan --</option>');
                         $.each(resKec, function(i, kc) {
-                            let selected = (kc.kode == valKec) ? 'selected' : '';
+                            let selected = (kc.kode == valKec) ? 'selected' :
+                                '';
                             kec.append(
                                 `<option value="${kc.kode}" ${selected}>${kc.nama}</option>`
                             );
@@ -1096,7 +1124,8 @@
                 // 4️⃣ Fungsi load desa
                 function loadDesa(kodeKec) {
                     $.getJSON(`/desa/${kodeKec}`, function(resDes) {
-                        des.empty().append('<option value="">-- Pilih Desa --</option>');
+                        des.empty().append(
+                            '<option value="">-- Pilih Desa --</option>');
                         $.each(resDes, function(i, d) {
                             let selected = (d.kode == valDes) ? 'selected' : '';
                             des.append(
