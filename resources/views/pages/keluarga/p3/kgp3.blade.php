@@ -23,7 +23,7 @@
             </div>
             {{-- ====== Tombol Aksi ====== --}}
             <div class="d-flex justify-content-between mt-4">
-                <a href="/kg-p2" class="btn btn-secondary">
+                <a href="{{ url('/kg-p2') }}" class="btn btn-secondary">
                     ← Kembali
                 </a>
                 @if ($data->isNotEmpty())

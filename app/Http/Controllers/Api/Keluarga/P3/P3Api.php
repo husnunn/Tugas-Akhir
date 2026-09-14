@@ -50,6 +50,16 @@ class P3Api extends Controller
             'data' => $data
         ]);
     }
+    public function showByIdP2($id)
+    {
+        $data = KgP3M::where('id_kg_p2', $id)->first();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Data keluarga berdasarkan ID P2',
+            'data' => $data
+        ]);
+    }
 
     public function update(Request $request, $id)
     {
@@ -70,7 +80,6 @@ class P3Api extends Controller
             'data' => $data
         ]);
     }
-    
     public function destroy($id)
     {
         KgP3M::findOrFail($id)->delete();
@@ -78,17 +87,6 @@ class P3Api extends Controller
         return response()->json([
             'status' => true,
             'message' => "Data P3 Berhasil Dihapus"
-        ]);
-    }
-
-    public function showByIdP2($id)
-    {
-        $data = KgP3M::where('id_kg_p2', $id)->first();
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Data keluarga berdasarkan ID P2',
-            'data' => $data
         ]);
     }
 }

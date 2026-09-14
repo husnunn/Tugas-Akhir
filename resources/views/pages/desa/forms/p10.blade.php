@@ -67,7 +67,7 @@
             </div>
             {{-- ====== Tombol Aksi ====== --}}
             <div class="d-flex justify-content-between mt-4">
-                <a href="{{ route('desa-p2.index') }}" class="btn btn-secondary">
+                <a href="{{ url('/desa') }}" class="btn btn-secondary">
                     ← Kembali
                 </a>
                 <button type="submit" class="btn btn-primary">Simpan Data</button>

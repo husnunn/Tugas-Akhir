@@ -34,6 +34,12 @@ class P3Controller extends Controller
 
             DB::beginTransaction();
 
+            $request->validate([
+                'nik_kades' => 'nullable|digits:16',
+                'nik_sekdes' => 'nullable|digits:16',
+                'nik_bendes' => 'nullable|digits:16',
+            ]);
+
             $p3 = P3::create([
                 'id' => "DSP3-" . strtotime(date("Y-m-d H:i:s")),
                 'id_survey' => $idSurvey,
@@ -73,6 +79,10 @@ class P3Controller extends Controller
                 'nama_kepsek_pelayanan' => $request->nama_kepsek_pelayanan,
                 'hp_kepsek_pelayanan' => $request->hp_kepsek_pelayanan,
                 'awal_jabatan_kepsek_pelayanan' => $request->awal_jabatan_kepsek_pelayanan,
+                'nik_kpl_bpd' => $request->nik_kpl_bpd,
+                'nama_kpl_bpd' => $request->nama_kpl_bpd,
+                'hp_kpl_bpd' => $request->hp_kpl_bpd,
+                'awal_jabatan_kpl_bpd' => $request->awal_jabatan_kpl_bpd,
                 'id_buat' => Auth::user()->id,
                 'tgl_buat' => now(),
             ]);
@@ -146,6 +156,11 @@ class P3Controller extends Controller
                 'nama_kepsek_pelayanan' => $request->nama_kepsek_pelayanan,
                 'hp_kepsek_pelayanan' => $request->hp_kepsek_pelayanan,
                 'awal_jabatan_kepsek_pelayanan' => $request->awal_jabatan_kepsek_pelayanan,
+
+                'nik_kpl_bpd' => $request->nik_kpl_bpd,
+                'nama_kpl_bpd' => $request->nama_kpl_bpd,
+                'hp_kpl_bpd' => $request->hp_kpl_bpd,
+                'awal_jabatan_kpl_bpd' => $request->awal_jabatan_kpl_bpd,
 
                 'id_update' => Auth::user()->id,
                 'tgl_update' => now(),

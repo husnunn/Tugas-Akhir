@@ -31,8 +31,9 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Desa</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalDesa ?? 0 }}</div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Desa / Data
+                                Seharusnya</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalDesa->count() ?? 0 }} / 1</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-home fa-2x text-gray-300"></i>
@@ -48,8 +49,9 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total RukunTetangga</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalRukunTetangga ?? 0 }}</div>
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total RT / Data
+                                Seharusnya</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalRukunTetangga ?? 0 }} / 50</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -58,15 +60,16 @@
                 </div>
             </div>
         </div>
-        
+
         {{-- Total Keluarga --}}
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Keluarga</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalKeluarga ?? 0 }}</div>
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Keluarga / Data
+                                Seharusnya</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalKeluarga ?? 0 }} / 700</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -82,8 +85,9 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Individu</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalIndividu ?? 0 }}</div>
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Individu / Data
+                                Seharusnya</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalIndividu ?? 0 }} / 1300</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-user fa-2x text-gray-300"></i>

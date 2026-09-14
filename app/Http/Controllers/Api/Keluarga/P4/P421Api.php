@@ -14,10 +14,9 @@ use Carbon\Carbon;
 
 class P421Api extends Controller
 {
-
     public function showByIdP2($id)
     {
-        $data = KgP421M::where('id_kg_p2', $id)->first();
+        $data = KgP421M::where('id_kg_p2', $id)->get();
 
         return response()->json([
             'status' => true,
@@ -45,12 +44,13 @@ class P421Api extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Internal server error',
-                // 'debug' => $idKgP2
             ], 500);
         }
     }
 
-    // CREATE / STORE
+    // =============================
+    // STORE (PERBAIKAN TOTAL)
+    // =============================
     public function store(Request $request)
     {
         $request->validate([
@@ -65,8 +65,20 @@ class P421Api extends Controller
             $userId = Auth::user()->id;
             $datap2 = KgP2M::find($idKgP2);
 
+            if (!$datap2) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data P2 tidak ditemukan'
+                ], 404);
+            }
+
+            // ============================
+            // 🔥 FIX UTAMA: GUNAKAN ID UNIK
+            // ============================
+            $uniqueId = "KGP421-" . strtoupper(bin2hex(random_bytes(6)));
+
             $data = KgP421M::create([
-                'id' => "KGP421-" . strtotime(date("Y-m-d H:i:s")),
+                'id' => $uniqueId,
                 'id_buat' => $userId,
                 'id_survey' => $datap2->id_survey,
                 'tgl_buat' => now(),
@@ -86,8 +98,9 @@ class P421Api extends Controller
                 'data' => $data
             ], 201);
         } catch (\Throwable $e) {
+
             DB::rollBack();
-            Log::error("P421 Store Error: {$e->getMessage()}");
+            Log::error("P421 Store Error: " . $e->getMessage());
 
             return response()->json([
                 'status' => false,
@@ -96,7 +109,9 @@ class P421Api extends Controller
         }
     }
 
-    // SHOW DETAIL
+    // =============================
+    // SHOW
+    // =============================
     public function show($id)
     {
         try {
@@ -115,7 +130,9 @@ class P421Api extends Controller
         }
     }
 
+    // =============================
     // UPDATE
+    // =============================
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
@@ -132,7 +149,10 @@ class P421Api extends Controller
 
             $data->update(array_merge(
                 $request->all(),
-                ['id_update' => Auth::user()->id, 'tgl_update' => Carbon::now()]
+                [
+                    'id_update' => Auth::user()->id,
+                    'tgl_update' => Carbon::now()
+                ]
             ));
 
             DB::commit();
@@ -143,8 +163,9 @@ class P421Api extends Controller
                 'data' => $data
             ]);
         } catch (\Throwable $e) {
+
             DB::rollBack();
-            Log::error("P421 Update Error: {$e->getMessage()}");
+            Log::error("P421 Update Error: " . $e->getMessage());
 
             return response()->json([
                 'status' => false,
@@ -153,7 +174,9 @@ class P421Api extends Controller
         }
     }
 
+    // =============================
     // DELETE
+    // =============================
     public function destroy($id)
     {
         DB::beginTransaction();
@@ -168,8 +191,9 @@ class P421Api extends Controller
                 'message' => 'Data P421 berhasil dihapus'
             ]);
         } catch (\Throwable $e) {
+
             DB::rollBack();
-            Log::error("P421 Delete Error: {$e->getMessage()}");
+            Log::error("P421 Delete Error: " . $e->getMessage());
 
             return response()->json([
                 'status' => false,

@@ -2,14 +2,6 @@
 
 @section('content')
     <div class="container">
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
 
         {{-- Tombol Tambah Survey --}}
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalTambahSurvey">
@@ -44,7 +36,7 @@
                                         <button type="button" class="btn btn-sm btn-warning btn-edit-survey"
                                             data-id="{{ $j->id }}" data-tgl_mulai="{{ $j->tgl_mulai }}"
                                             data-tgl_akhir="{{ $j->tgl_akhir }}" data-deskripsi="{{ $j->deskripsi }}"
-                                            data-toggle="modal" data-target="#modalEditSurvey">
+                                            data-toggle="modal" data-target="#modalEditSurvey{{ $j->id }}">
                                             Edit
                                         </button>
 
@@ -107,57 +99,44 @@
     </div>
 
     {{-- Modal Edit Survey --}}
-    <div class="modal fade" id="modalEditSurvey" tabindex="-1" aria-labelledby="modalEditSurveyLabel">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditSurveyLabel">Edit Survey</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="formEditSurvey" method="POST" action="">
-                        @csrf
-                        @method('PUT')
-                        <div class="mb-3">
-                            <label>Tanggal Mulai</label>
-                            <input type="date" name="tgl_mulai" id="edit_tgl_mulai" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Tanggal Akhir</label>
-                            <input type="date" name="tgl_akhir" id="edit_tgl_akhir" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Deskripsi</label>
-                            <input type="text" name="deskripsi" id="edit_deskripsi" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Simpan Perubahan</button>
-                    </form>
+    @foreach ($survey as $j)
+        <div class="modal fade" id="modalEditSurvey{{ $j->id }}" tabindex="-1"
+            aria-labelledby="modalEditSurveyLabel">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditSurveyLabel">Edit Survey</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formEditSurvey" method="POST" action="{{ route('survey.update', $j->id) }}">
+                            @csrf
+                            @method('PUT')
+                            <div class="mb-3">
+                                <label>Tanggal Mulai</label>
+                                <input type="date" value="{{ $j->tgl_mulai }}" name="tgl_mulai" id="edit_tgl_mulai"
+                                    class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label>Tanggal Akhir</label>
+                                <input type="date" value="{{ $j->tgl_akhir }}" name="tgl_akhir" id="edit_tgl_akhir"
+                                    class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label>Deskripsi</label>
+                                <input type="text" value="{{ $j->deskripsi }}" name="deskripsi" id="edit_deskripsi"
+                                    class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Simpan Perubahan</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endforeach
 
 @endsection
 @push('scripts')
-    {{-- Script untuk isi data di modal edit --}}
-    <script>
-        $(document).ready(function() {
-            $('#modalEditSurvey').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget); // Tombol yang diklik
-                var id = button.data('id'); // Ambil ID
-                var tglMulai = button.data('tgl_mulai');
-                var tglAkhir = button.data('tgl_akhir');
-                var deskripsi = button.data('deskripsi');
-
-                // Set action form
-                $('#formEditSurvey').attr('action', '/survey/' + id);
-
-                // Set value input
-                $('#edit_tgl_mulai').val(tglMulai);
-                $('#edit_tgl_akhir').val(tglAkhir);
-                $('#edit_deskripsi').val(deskripsi);
-            });
-        });
-    </script>
+@endpush

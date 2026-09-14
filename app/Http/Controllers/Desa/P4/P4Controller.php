@@ -7,9 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Desa\P4\P4;
-use Illuminate\Support\Str;
+use App\Support\PublicUploadPath;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class P4Controller extends Controller
 {
@@ -37,11 +36,17 @@ class P4Controller extends Controller
             $request->validate([
                 'dokumen_musyawarah' => 'required|file|mimes:pdf',
             ]);
-            if ($request->hasFile('dokumen_musyawarah')) {
+            // if ($request->hasFile('dokumen_musyawarah')) {
+            //     $file = $request->file('dokumen_musyawarah');
+            //     $filename = $idOtomatis . '.pdf';
+            //     $file->move(public_path('dokumen/musyawarah'), $filename);
+            // }
+         if ($request->hasFile('dokumen_musyawarah')) {
                 $file = $request->file('dokumen_musyawarah');
                 $filename = $idOtomatis . '.pdf';
-                // Simpan ke folder public/dokumen/musyawarah/
-                $file->move(public_path('dokumen/musyawarah'), $filename);
+                $uploadPath = PublicUploadPath::ensure('dokumen/musyawarah');
+
+				$file->move($uploadPath, $filename);
             }
             $p4 = P4::create([
                 'id' => $idOtomatis,
@@ -70,71 +75,61 @@ class P4Controller extends Controller
     }
 
     public function show($id)
-    {
-        $data = P4::findOrFail($id);
-        $filePath = public_path("dokumen/musyawarah/{$id}.pdf");
-        $fileExists = file_exists($filePath);
+{
+    $data = P4::findOrFail($id);
+
+    $filename = $id . '.pdf';
+
+    $uploadPath = PublicUploadPath::ensure('dokumen/musyawarah');
+    $filePath = $uploadPath . '/' . $filename;
+
+    return response()->json([
+        'id' => $data->id,
+        'agenda_musyawarah' => $data->agenda_musyawarah,
+        'file_exists' => file_exists($filePath),
+        'file_url' => asset('dokumen/musyawarah/' . $filename) . '?v=' . time(),
+    ]);
+}
 
 
-        return response()->json([
-            'id' => $data->id,
-            'agenda_musyawarah' => $data->agenda_musyawarah,
-            'file_exists' => $fileExists,
-            'file_url' => $fileExists ? asset("dokumen/musyawarah/{$id}.pdf") : null,
-        ]);
-    }
+public function update(Request $request, $id)
+{
+    $dataUtama = P4::findOrFail($id);
 
-    public function update(Request $request, $id)
-    {
-        $dataUtama = P4::findOrFail($id);
+    $request->validate([
+        'dokumen_musyawarah' => 'nullable|file|mimes:pdf',
+    ]);
 
-        // $request->validate([
-        //     'bulan_ke' => 'required|max:5',
-        //     'agenda_musyawarah' => 'required|string',
-        //     'tgl_musyawarah' => 'required|date',
-        //     'dokumen_musyawarah' => 'nullable|file|mimes:pdf',
-        // ]);
+    DB::beginTransaction();
 
-        try {
-            DB::beginTransaction();
+    $uploadPath = PublicUploadPath::ensure('dokumen/musyawarah');
 
-            $request->validate([
-                'dokumen_musyawarah' => 'nullable|file|mimes:pdf',
-            ]);
+    if ($request->hasFile('dokumen_musyawarah')) {
 
-            if ($request->hasFile('dokumen_musyawarah')) {
+        // filename selalu ID.pdf
+        $filename = $id . ".pdf";
+        $oldPath = $uploadPath . '/' . $filename;
 
-                if ($dataUtama->dokumen_musyawarah) {
-                    $oldPath = public_path('dokumen/musyawarah/' . $dataUtama->dokumen_musyawarah);
-
-                    if (file_exists($oldPath)) {
-                        unlink($oldPath); // hapus file
-                    }
-                }
-
-                $file = $request->file('dokumen_musyawarah');
-                $filename = $id . ".pdf";
-                $file->move(public_path('dokumen/musyawarah'), $filename);
-            }
-
-            // Update data utama
-            $dataUtama->update([
-                'bulan_ke' => $request->bulan_ke,
-                'agenda_musyawarah' => base64_encode($request->agenda_musyawarah),
-                'tgl_musyawarah' => $request->tgl_musyawarah,
-                // 'dokumen_musyawarah' => $filePath,
-                'id_update' => Auth::user()->id,
-                'tgl_update' => now(),
-            ]);
-
-            DB::commit();
-            return redirect()->back()->with('success', 'Data utama P4 berhasil diperbarui.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Gagal memperbarui P4: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Gagal memperbarui data.');
+        if (file_exists($oldPath)) {
+            unlink($oldPath);
         }
+
+        $request->file('dokumen_musyawarah')->move($uploadPath, $filename);
     }
+
+    $dataUtama->update([
+        'bulan_ke' => $request->bulan_ke,
+        'agenda_musyawarah' => base64_encode($request->agenda_musyawarah),
+        'tgl_musyawarah' => $request->tgl_musyawarah,
+        'id_update' => Auth::user()->id,
+        'tgl_update' => now(),
+    ]);
+
+    DB::commit();
+
+    return back()->with('success', 'Data utama P4 berhasil diperbarui.');
+}
+
 
 
     public function destroy($id)

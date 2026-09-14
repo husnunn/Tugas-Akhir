@@ -98,7 +98,7 @@
             </div>
 
             <div class="d-flex justify-content-between mt-4">
-                <a href="/idv-p1" class="btn btn-secondary">
+                <a href="{{ url('/idv-p1') }}" class="btn btn-secondary">
                     ← Kembali
                 </a>
                 <button type="submit" class="btn btn-primary">

@@ -9,7 +9,6 @@ use App\Models\Individu\P1\IdvP1M;
 use App\Models\Survey\Survey;
 use Illuminate\Support\Facades\Auth;
 
-
 class P1IdvApi extends Controller
 {
     public function index()
@@ -20,7 +19,7 @@ class P1IdvApi extends Controller
             ->whereDate('tgl_akhir', '>=', $today)
             ->first();
 
-        $data = IdvP1M::where('id_buat',  Auth::user()->id)
+        $data = IdvP1M::with('survey')
             ->orderBy('tgl_buat', 'DESC')
             ->get();
 
@@ -31,58 +30,51 @@ class P1IdvApi extends Controller
         ]);
     }
 
+
     public function store(Request $request)
     {
-        // Ambil tanggal hari ini
-        $today = Carbon::today()->toDateString();
+        $today = Carbon::now()->toDateString();
 
-        // Cari survey yang aktif di hari ini
         $survey = Survey::whereDate('tgl_mulai', '<=', $today)
             ->whereDate('tgl_akhir', '>=', $today)
             ->first();
 
         if (!$survey) {
-            return back()->with('error', 'Tidak ada survey aktif untuk hari ini.');
+            return response()->json([
+                'status' => false,
+                'message' => 'Tidak ada survey aktif untuk hari ini'
+            ], 400);
         }
 
-        // CEK NIK SUDAH ADA ATAU BELUM
-        $nikExists = IdvP1M::where('nik', $request->nik)->exists();
-
-        if ($nikExists) {
-            return back()->with('error', 'NIK sudah ada, tidak boleh sama.');
-        }
-
-        $today = Carbon::now();
-
-        // Simpan data
         $data = IdvP1M::create([
-            'id' => "IDVP1-" . strtotime(date("Y-m-d H:i:s")),
+            'id' => "IDVP1-" . strtotime(now()),
             'id_survey' => $survey->id,
-            'id_buat' => Auth::user()->id,
-            'id_update' => Auth::user()->id,
-            'tgl_buat' => $today,
-            'tgl_update' => $today,
+            'id_buat' => Auth::id(),
+            'id_update' => Auth::id(),
+            'tgl_buat' => now(),
+            'tgl_update' => now(),
+
             'no_kk' => $request->no_kk,
             'nik' => $request->nik,
             'nama' => $request->nama,
-            'jenis_kelamin' => $request->jenis_kelamin ?? null,
-            'tempat_lahir' => $request->tempat_lahir ?? '',
-            'tgl_lahir' => $request->tgl_lahir ?? null,
-            'status_pernikahan' => $request->status_pernikahan ?? null,
-            'agama' => $request->agama ?? null,
-            'suku_bangsa' => $request->suku_bangsa ?? '',
-            'warganegara' => $request->warganegara ?? null,
-            'no_hp' => $request->no_hp ?? '',
-            'no_wa' => $request->no_wa ?? '',
-            'url_email_pribadi' => $request->url_email_pribadi ?? '',
-            'url_facebook_pribadi' => $request->url_facebook_pribadi ?? '',
-            'url_twitter_pribadi' => $request->url_twitter_pribadi ?? '',
-            'url_instagram_pribadi' => $request->url_instagram_pribadi ?? '',
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tgl_lahir' => $request->tgl_lahir,
+            'status_pernikahan' => $request->status_pernikahan,
+            'agama' => $request->agama,
+            'suku_bangsa' => $request->suku_bangsa,
+            'warganegara' => $request->warganegara,
+            'no_hp' => $request->no_hp,
+            'no_wa' => $request->no_wa,
+            'url_email_pribadi' => $request->url_email_pribadi,
+            'url_facebook_pribadi' => $request->url_facebook_pribadi,
+            'url_twitter_pribadi' => $request->url_twitter_pribadi,
+            'url_instagram_pribadi' => $request->url_instagram_pribadi,
         ]);
 
         return response()->json([
             'status' => true,
-            'message' => 'Data Individu berhasil disimpan',
+            'message' => 'Data individu berhasil disimpan',
             'data' => $data
         ]);
     }
@@ -105,28 +97,63 @@ class P1IdvApi extends Controller
         ]);
     }
 
+
+    public function byP1($id)
+    {
+        return $this->show($id);
+    }
+
+
     public function update(Request $request, $id)
     {
-        $data = IdvP1M::find($id);
+        try {
+            $data = IdvP1M::find($id);
 
-        if (!$data) {
+            if (!$data) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ], 404);
+            }
+
+            $updateData = $request->only([
+                'no_kk',
+                'nik',
+                'nama',
+                'jenis_kelamin',
+                'tempat_lahir',
+                'tgl_lahir',
+                'status_pernikahan',
+                'agama',
+                'suku_bangsa',
+                'warganegara',
+                'no_hp',
+                'no_wa',
+                'url_email_pribadi',
+                'url_facebook_pribadi',
+                'url_twitter_pribadi',
+                'url_instagram_pribadi',
+            ]);
+
+            $updateData['id_update'] = Auth::id();
+            $updateData['tgl_update'] = now();
+
+            $data->update($updateData);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data Individu berhasil diperbarui',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Data tidak ditemukan'
-            ], 404);
+                'message' => $e->getMessage()
+            ], 500);
         }
-
-        $data->update(array_merge(
-            $request->all(),
-            ['id_update' => Auth::user()->id, 'tgl_update' => Carbon::now()]
-        ));
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Data Individu berhasil diperbarui',
-            'data' => $data
-        ]);
     }
+
+
 
     public function destroy($id)
     {
@@ -143,7 +170,7 @@ class P1IdvApi extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Data keluarga berhasil dihapus'
+            'message' => 'Data individu berhasil dihapus'
         ]);
     }
 }

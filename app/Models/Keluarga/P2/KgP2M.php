@@ -4,6 +4,7 @@ namespace App\Models\Keluarga\P2;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Survey\Survey;
+use App\Models\Wilayah;
 
 class KgP2M extends Model
 {
@@ -11,7 +12,6 @@ class KgP2M extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     public $timestamps = false;
-
     protected $fillable = [
         'id',
         'id_survey',
@@ -22,24 +22,22 @@ class KgP2M extends Model
         'rt',
         'rw',
         'nama_kpl_keluarga',
+        'nik_kk',
         'no_kk',
         'alamat',
         'no_hp',
         'telp_rumah',
-        'meteran_rumah',
-        'no_meteran',
-        'daya_meteran_rumah',
         'id_buat',
         'id_update',
         'tgl_buat',
-        'tgl_update',
+        'tgl_update'
     ];
 
     /**
      * Relasi ke tabel P3 (Deskripsi Keluarga)
      * Satu lokasi (P2) bisa punya banyak keluarga (P3)
      */
-    public function p3() 
+    public function p3()
     {
         return $this->hasMany(\App\Models\Keluarga\P3\KgP3M::class, 'id_kg_p2', 'id');
     }
@@ -81,5 +79,24 @@ class KgP2M extends Model
     public function survey()
     {
         return $this->belongsTo(Survey::class, 'id_survey');
+    }
+    public function provinsi()
+    {
+        return $this->belongsTo(Wilayah::class, 'kode_provinsi', 'kode');
+    }
+
+    public function kabupaten()
+    {
+        return $this->belongsTo(Wilayah::class, 'kode_kabupaten', 'kode');
+    }
+
+    public function kecamatan()
+    {
+        return $this->belongsTo(Wilayah::class, 'kode_kecamatan', 'kode');
+    }
+
+    public function desa()
+    {
+        return $this->belongsTo(Wilayah::class, 'kode_desa', 'kode');
     }
 }

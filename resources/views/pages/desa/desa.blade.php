@@ -3,23 +3,17 @@
 @section('content')
     <div class="container">
 
-        {{-- Tombol Tambah Desa --}}
-        {{-- <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalcoba">
-            + Tambah Desa
-        </button> --}}
-        {{-- @if ($desa)
-            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalcoba" disabled>
-            + Tambah Desa
-        </button>
-        @else --}}
-        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalcoba">
-            + Tambah Desa
-        </button>
-        {{-- @endif --}}
-        {{-- <a href="/coba">Halaman COBA</a> --}}
+        @if (!$surveyAktif || !$desaAktif->isEmpty())
+            <button class="btn btn-primary mb-3" disabled>
+                + Tambah Desa
+            </button>
+        @else
+            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalcoba">
+                + Tambah Desa
+            </button>
+        @endif
 
 
-        <!-- Data Desa -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Data Desa</h6>
@@ -37,6 +31,10 @@
                         </thead>
                         <tbody>
                             @foreach ($desa as $d)
+                                @php
+                                    $disabled = !$surveyAktif || $d->id_survey != $surveyAktif->id;
+                                @endphp
+
                                 <tr>
                                     <td>
                                         @if ($d->survey)
@@ -58,18 +56,18 @@
                                                     P3-P502
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('set.session', ['id' => $d->id, 'form' => 'p3']) }}"
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/set-session/' . $d->id . '/p3') }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P3
                                                         @if (\App\Models\Desa\P3\P3::where('id_survey', $d->id_survey)->exists())
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('desa-p3Pegawai.fromP2', $d->id_survey) }}">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/desa-p2/' . $d->id_survey . '/p3Pegawai') }}">
                                                         Pegawai
                                                         @if (
                                                             \App\Models\Desa\P3\PegawaiLainnya::whereHas('p3', function ($q) use ($d) {
@@ -78,9 +76,9 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('desa-p3Bpd.fromP2', $d->id_survey) }}">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/desa-p2/' . $d->id_survey . '/p3Bpd') }}">
                                                         BPD
                                                         @if (
                                                             \App\Models\Desa\P3\AnggotaBpd::whereHas('p3', function ($q) use ($d) {
@@ -89,25 +87,25 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('set.session', ['id' => $d->id, 'form' => 'p4']) }}">P4
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/set-session/' . $d->id . '/p4') }}">P4
                                                         @if (\App\Models\Desa\P4\P4::where('id_survey', $d->id_survey)->exists())
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('set.session', ['id' => $d->id, 'form' => 'p5']) }}"
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/set-session/' . $d->id . '/p5') }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P5
                                                         @if (\App\Models\Desa\P5\P5::where('id_survey', $d->id_survey)->exists())
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('desa-p501.fromP2', $d->id_survey) }}">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/desa-p2/' . $d->id_survey . '/p501') }}">
                                                         Peraturan Desa
                                                         @if (
                                                             \App\Models\Desa\P5\P501::whereHas('p5', function ($q) use ($d) {
@@ -116,9 +114,9 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('desa-p502.fromP2', $d->id_survey) }}">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/desa-p2/' . $d->id_survey . '/p502') }}">
                                                         Peraturan KepDes
                                                         @if (
                                                             \App\Models\Desa\P5\P502::whereHas('p5', function ($q) use ($d) {
@@ -139,9 +137,9 @@
                                                     P503-P8
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('desa-p503.fromP2', $d->id_survey) }}">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/desa-p2/' . $d->id_survey . '/p503') }}">
                                                         SK KepDes
                                                         @if (
                                                             \App\Models\Desa\P5\P503::whereHas('p5', function ($q) use ($d) {
@@ -150,45 +148,45 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('set.session', ['id' => $d->id, 'form' => 'p601']) }}"
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/set-session/' . $d->id . '/p601') }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P601
                                                         @if (\App\Models\Desa\P6\P601::where('id_survey', $d->id_survey)->exists())
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('set.session', ['id' => $d->id, 'form' => 'p602']) }}"
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/set-session/' . $d->id . '/p602') }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P602
                                                         @if (\App\Models\Desa\P6\P602::where('id_survey', $d->id_survey)->exists())
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('set.session', ['id' => $d->id, 'form' => 'p603']) }}"
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/set-session/' . $d->id . '/p603') }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P603
                                                         @if (\App\Models\Desa\P6\P603::where('id_survey', $d->id_survey)->exists())
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('set.session', ['id' => $d->id, 'form' => 'p7']) }}"
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/set-session/' . $d->id . '/p7') }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P7
                                                         @if (\App\Models\Desa\P7\P7::where('id_survey', $d->id_survey)->exists())
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('desa-p705.fromP2', $d->id_survey) }}">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/desa-p2/' . $d->id_survey . '/p705') }}">
                                                         P705
                                                         @if (
                                                             \App\Models\Desa\P7\P705::whereHas('p7', function ($q) use ($d) {
@@ -197,9 +195,9 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('set.session', ['id' => $d->id, 'form' => 'p8']) }}"
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/set-session/' . $d->id . '/p8') }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P8
                                                         @if (\App\Models\Desa\P8\P8::where('id_survey', $d->id_survey)->exists())
@@ -218,18 +216,18 @@
                                                     P9-P10
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('set.session', ['id' => $d->id, 'form' => 'p9']) }}"
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/set-session/' . $d->id . '/p9') }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P9
                                                         @if (\App\Models\Desa\P9\P9::where('id_survey', $d->id_survey)->exists())
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('desa-p914.fromP2', $d->id_survey) }}">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/desa-p2/' . $d->id_survey . '/p914') }}">
                                                         P914
                                                         @if (
                                                             \App\Models\Desa\P9\P914::whereHas('p9', function ($q) use ($d) {
@@ -238,9 +236,9 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('desa-p923.fromP2', $d->id_survey) }}">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/desa-p2/' . $d->id_survey . '/p923') }}">
                                                         P923
                                                         @if (
                                                             \App\Models\Desa\P9\P923::whereHas('p9', function ($q) use ($d) {
@@ -249,9 +247,9 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('desa-p932.fromP2', $d->id_survey) }}">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/desa-p2/' . $d->id_survey . '/p932') }}">
                                                         P932
                                                         @if (
                                                             \App\Models\Desa\P9\P932::whereHas('p9', function ($q) use ($d) {
@@ -260,9 +258,9 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('desa-p941.fromP2', $d->id_survey) }}">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/desa-p2/' . $d->id_survey . '/p941') }}">
                                                         P941
                                                         @if (
                                                             \App\Models\Desa\P9\P941::whereHas('p9', function ($q) use ($d) {
@@ -271,9 +269,9 @@
                                                             <i class="fas fa-check text-success ml-2"></i>
                                                         @endif
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('set.session', ['id' => $d->id, 'form' => 'p10']) }}"
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center {{ $disabled ? 'disabled-item' : '' }}"
+                                                        style="{{ $disabled ? 'pointer-events:none; opacity:0.6;' : '' }}"
+                                                        href="{{ url('/set-session/' . $d->id . '/p10') }}"
                                                         data-id="{{ $d->id }}"
                                                         data-id_survey="{{ $d->id_survey }}">P10
                                                         @if (\App\Models\Desa\P10\P10::where('id_survey', $d->id_survey)->exists())
@@ -288,7 +286,7 @@
                                     <td>
                                         <!-- Tombol Edit -->
                                         <button class="btn btn-warning btn-sm" data-toggle="modal"
-                                            data-target="#modalEditDesa{{ $d->id }}">
+                                            data-target="#modalEditDesa{{ $d->id }}" @disabled($disabled)>
                                             <i class="bi bi-pencil-square"></i> Edit
                                         </button>
 
@@ -297,12 +295,13 @@
                                             style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"
+                                            <button type="submit"
+                                                class="btn btn-danger btn-sm"@disabled($disabled)
                                                 onclick="return confirm('Yakin ingin menghapus data ini?')">
                                                 <i class="bi bi-trash"></i> Hapus
                                             </button>
                                         </form>
-                                        <a href="{{ route('desa.export.pdf', $d->id_survey) }}"
+                                        <a href="{{ url('/desa/export/pdf/' . $d->id_survey) }}"
                                             class="btn btn-danger btn-sm">
                                             <i class="fas fa-file-pdf"></i> Download PDF
                                         </a>
@@ -492,8 +491,8 @@
                             </div>
                             <div class="col-sm-3">
                                 <div class="mb-3">
-                                    <label>Topografi</label>
-                                    <select name="topografi" class="form-control shadow-sm">
+                                    <label>Topografi<span class="text-danger">*</span></label>
+                                    <select name="topografi" class="form-control shadow-sm" required>
                                         <option value="" selected disabled>-- Pilih Topografi --</option>
                                         <option value="1">Lereng/Puncak</option>
                                         <option value="2">Lembah</option>
@@ -547,9 +546,8 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="mb-3">
-                                    <label>Ketinggian Lokasi (m DPAL)<span class="text-danger">*</span></label>
-                                    <input type="number" step="0.01" name="ketinggian_lok" class="form-control"
-                                        required>
+                                    <label>Ketinggian Lokasi (m DPAL)</label>
+                                    <input type="number" step="0.01" name="ketinggian_lok" class="form-control">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -671,16 +669,21 @@
                                     <div class="mb-3">
                                         <label>Status Pemerintahan</label>
                                         <select name="status_pemerintahan" class="form-control shadow-sm">
-                                            <option value="1" {{ $d->status_pemerintahan == '1' ? 'selected' : '' }}>
+                                            <option value="1"
+                                                {{ $d->status_pemerintahan == '1' ? 'selected' : '' }}>
                                                 Desa
                                             </option>
-                                            <option value="2" {{ $d->status_pemerintahan == '2' ? 'selected' : '' }}>
+                                            <option value="2"
+                                                {{ $d->status_pemerintahan == '2' ? 'selected' : '' }}>
                                                 Nagari</option>
-                                            <option value="3" {{ $d->status_pemerintahan == '3' ? 'selected' : '' }}>
+                                            <option value="3"
+                                                {{ $d->status_pemerintahan == '3' ? 'selected' : '' }}>
                                                 Gampong</option>
-                                            <option value="4" {{ $d->status_pemerintahan == '4' ? 'selected' : '' }}>
+                                            <option value="4"
+                                                {{ $d->status_pemerintahan == '4' ? 'selected' : '' }}>
                                                 Kampung</option>
-                                            <option value="5" {{ $d->status_pemerintahan == '5' ? 'selected' : '' }}>
+                                            <option value="5"
+                                                {{ $d->status_pemerintahan == '5' ? 'selected' : '' }}>
                                                 Kelurahan</option>
                                         </select>
                                     </div>

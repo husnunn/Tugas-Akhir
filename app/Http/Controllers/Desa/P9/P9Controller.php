@@ -53,7 +53,8 @@ class P9Controller extends Controller
                 'twitter_bumdes' => $request->twitter_bumdes,
                 'alamat_desa' => $request->alamat_desa,
                 'yt_bumdes' => $request->yt_bumdes,
-                'modal_awal' => $request->modal_awal,
+                // 'modal_awal' => $request->modal_awal,
+                'modal_awal' => implode(',', $request->modal_awal),
                 'omset_setahun' => $request->omset_setahun,
                 'keuntungan_bersih' => $request->keuntungan_bersih,
                 'keuntungan_kotor' => $request->keuntungan_kotor,
@@ -76,13 +77,32 @@ class P9Controller extends Controller
     public function edit($id)
     {
         $dataUtama = P9::findOrFail($id);
+        $modal_awal = explode(',', $dataUtama->modal_awal);
         return view('pages.desa.forms.p9_edit', compact('dataUtama'));
     }
 
     public function update(Request $request, $id)
     {
         $dataUtama = P9::findOrFail($id);
-        $dataUtama->update($request->all());
+
+        $dataUtama->update([
+            'nama_bumdes'        => $request->nama_bumdes,
+            'email'              => $request->email,
+            'alamat_desa'        => $request->alamat_desa,
+            'web_bumdes'         => $request->web_bumdes,
+            'fb_bumdes'          => $request->fb_bumdes,
+            'twitter_bumdes'     => $request->twitter_bumdes,
+            'yt_bumdes'          => $request->yt_bumdes,
+
+            // 🔥 WAJIB → gabungkan array jadi string
+            'modal_awal'         => implode(',', $request->modal_awal),
+
+            'omset_setahun'      => $request->omset_setahun,
+            'keuntungan_kotor'   => $request->keuntungan_kotor,
+            'keuntungan_bersih'  => $request->keuntungan_bersih,
+            'aset_bumdes'        => $request->aset_bumdes,
+            'sumbangan_padesa'   => $request->sumbangan_padesa,
+        ]);
 
         return redirect()->back()->with('success', 'Data utama p9 berhasil diperbarui.');
     }

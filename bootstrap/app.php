@@ -12,7 +12,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // $middleware->api();
+    
+      $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
+
+        $middleware->group('api', [
+        \Illuminate\Http\Middleware\HandleCors::class,
+        \App\Http\Middleware\ForceAuthorizationFromQuery::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

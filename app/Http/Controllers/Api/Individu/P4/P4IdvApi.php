@@ -10,6 +10,9 @@ use Carbon\Carbon;
 
 class P4IdvApi extends Controller
 {
+    /**
+     * Tampilkan semua data P4
+     */
     public function index()
     {
         $data = IdvP4M::all();
@@ -19,22 +22,23 @@ class P4IdvApi extends Controller
             'data' => $data
         ]);
     }
+
+    /**
+     * Simpan data baru P4
+     */
     public function store(Request $request)
     {
         $today = Carbon::now();
 
-        // $validated = $request->validate([
-        //     'kondisi_pekerjaan' => 'required',
-        //     'pekerjaan_utama' => 'required',
-        //     'jsk' => 'required',
-        // ]);
-
         $data = IdvP4M::create([
-            'id' => "IDVP4-" . strtotime(date("Y-m-d H:i:s")),
+            'id' => "IDVP4-" . strtotime(now()),
             'id_individu_p1' => $request->id_individu_p1,
+
+            // Kolom disabilitas
             'tunanetra' => $request->tunanetra,
             'tunarungu' => $request->tunarungu,
             'tunawicara' => $request->tunawicara,
+            'tunarungu_wicara' => $request->{"tunarungu_wicara"}, // ← tambahkan ini
             'tunadaksa' => $request->tunadaksa,
             'tunagrahita' => $request->tunagrahita,
             'tunalaras' => $request->tunalaras,
@@ -42,6 +46,7 @@ class P4IdvApi extends Controller
             'cacat_ganda' => $request->cacat_ganda,
             'dipasung' => $request->dipasung,
 
+            // Metadata
             'id_buat' => Auth::user()->id,
             'id_update' => Auth::user()->id,
             'tgl_buat' => $today,
@@ -54,24 +59,33 @@ class P4IdvApi extends Controller
             'data' => $data
         ]);
     }
+
+    /**
+     * Tampilkan data berdasarkan ID
+     */
     public function show($id)
     {
         $data = IdvP4M::findOrFail($id);
 
         return response()->json([
             'status' => true,
-            'message' => 'Data Individu P4 berhasil di Tampilkan',
+            'message' => 'Data Individu P4 berhasil ditampilkan',
             'data' => $data
         ]);
     }
 
+    /**
+     * Update data P4
+     */
     public function update(Request $request, $id)
     {
         $today = Carbon::now();
+
         $data = IdvP4M::where('id', $id)->update([
             'tunanetra' => $request->tunanetra,
             'tunarungu' => $request->tunarungu,
             'tunawicara' => $request->tunawicara,
+            'tunarungu_wicara' => $request->{"tunarungu_wicara"}, // ← tambahkan ini
             'tunadaksa' => $request->tunadaksa,
             'tunagrahita' => $request->tunagrahita,
             'tunalaras' => $request->tunalaras,
@@ -79,29 +93,33 @@ class P4IdvApi extends Controller
             'cacat_ganda' => $request->cacat_ganda,
             'dipasung' => $request->dipasung,
 
-            // 'id_buat' => Auth::user()->id,
             'id_update' => Auth::user()->id,
-            // 'tgl_buat' => $today,
             'tgl_update' => $today
         ]);
 
         return response()->json([
             'status' => true,
-            'message' => 'Data Individu P4 berhasil di update',
+            'message' => 'Data Individu P4 berhasil diupdate',
             'data' => $data
         ]);
     }
 
+    /**
+     * Hapus data
+     */
     public function destroy($id)
     {
         IdvP4M::findOrFail($id)->delete();
 
         return response()->json([
             'status' => true,
-            'message' => "Data Individu P4 Berhasil Dihapus"
+            'message' => "Data Individu P4 berhasil dihapus"
         ]);
     }
 
+    /**
+     * Tampilkan data berdasarkan ID P1
+     */
     public function showByIdP1($id)
     {
         $data = IdvP4M::where('id_individu_p1', $id)->first();

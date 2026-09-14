@@ -29,6 +29,16 @@
     <!-- CSS Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+    <style>
+        .link-dp{
+            color: rgb(228, 228, 228) !important;
+        }
+        .link-dp:hover {
+            background: transparent !important;
+            color: white !important;
+            transition: all
+        }
+    </style>
 
 </head>
 
@@ -112,7 +122,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="{{ url('/login') }}">Logout</a>
                 </div>
             </div>
         </div>
@@ -157,7 +167,7 @@
         });
     </script>
 
-@stack('scripts')
+    @stack('scripts')
 </body>
 
 </html>

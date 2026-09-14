@@ -3,11 +3,6 @@
 @section('content')
     <div class="container">
 
-        {{-- Tombol Tambah individu --}}
-        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modaltambahindividu">
-            + Tambah Individu
-        </button>
-        {{-- <a href="/coba">Halaman COBA</a> --}}
 
         <!-- Data individu -->
         <div class="card shadow mb-4">
@@ -22,7 +17,6 @@
                                 <th>Tanggal Survey</th>
                                 <th>Nama </th>
                                 <th>NIK </th>
-                                <th>Tambah Data</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -37,110 +31,10 @@
                                         @else
                                             <em>Tidak ada survey aktif</em>
                                         @endif
-                                        {{-- kjhshdjkshd --}}
                                     </td>
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ $item->nik }}</td>
                                     <td>
-                                        {{-- P3-P4 --}}
-                                        <div class="btn-group" role="group"
-                                            aria-label="Button group with nested dropdown">
-                                            <div class="btn-group" role="group">
-                                                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm"
-                                                    data-toggle="dropdown" aria-expanded="false">
-                                                    P2-P5
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('session.setidv', ['id' => $item->id, 'form' => 'idvp2']) }}"
-                                                        data-id="{{ $item->id }}"
-                                                        data-id_survey="{{ $item->id_survey }}">
-                                                        P2
-                                                        @if (
-                                                            \App\Models\individu\P2\IdvP2M::whereHas('individuP1', function ($q) use ($item) {
-                                                                $q->where('id_survey', $item->id_survey);
-                                                            })->exists())
-                                                            <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('session.setidv', ['id' => $item->id, 'form' => 'idvp204']) }}"
-                                                        data-id="{{ $item->id }}"
-                                                        data-id_survey="{{ $item->id_survey }}">
-                                                        P204
-                                                        @if (
-                                                            \App\Models\individu\P2\IdvP204M::whereHas('individuP1', function ($q) use ($item) {
-                                                                $q->where('id_survey', $item->id_survey);
-                                                            })->exists())
-                                                            <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('session.setidv', ['id' => $item->id, 'form' => 'idvp4']) }}"
-                                                        data-id="{{ $item->id }}"
-                                                        data-id_survey="{{ $item->id_survey }}">
-                                                        P4
-                                                        @if (
-                                                            \App\Models\individu\P4\IdvP4M::whereHas('individuP1', function ($q) use ($item) {
-                                                                $q->where('id_survey', $item->id_survey);
-                                                            })->exists())
-                                                            <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('session.setidv', ['id' => $item->id, 'form' => 'idvp401']) }}"
-                                                        data-id="{{ $item->id }}"
-                                                        data-id_survey="{{ $item->id_survey }}">
-                                                        P401
-                                                        @if (
-                                                            \App\Models\individu\P4\IdvP401M::whereHas('individuP1', function ($q) use ($item) {
-                                                                $q->where('id_survey', $item->id_survey);
-                                                            })->exists())
-                                                            <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('session.setidv', ['id' => $item->id, 'form' => 'idvp402']) }}"
-                                                        data-id="{{ $item->id }}"
-                                                        data-id_survey="{{ $item->id_survey }}">
-                                                        P402
-                                                        @if (
-                                                            \App\Models\individu\P4\IdvP402M::whereHas('individuP1', function ($q) use ($item) {
-                                                                $q->where('id_survey', $item->id_survey);
-                                                            })->exists())
-                                                            <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('session.setidv', ['id' => $item->id, 'form' => 'idvp5']) }}"
-                                                        data-id="{{ $item->id }}"
-                                                        data-id_survey="{{ $item->id_survey }}">
-                                                        P5
-                                                        @if (
-                                                            \App\Models\individu\P5\IdvP5M::whereHas('individuP1', function ($q) use ($item) {
-                                                                $q->where('id_survey', $item->id_survey);
-                                                            })->exists())
-                                                            <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <!-- Tombol Edit -->
-                                        <button class="btn btn-warning btn-sm" data-toggle="modal"
-                                            data-target="#modalEditindividu{{ $item->id }}">
-                                            <i class="bi bi-pencil-square"></i> Edit
-                                        </button>
-
                                         <!-- Tombol Hapus -->
                                         <form action="{{ route('idv-p1.destroy', $item->id) }}" method="POST"
                                             style="display:inline;">

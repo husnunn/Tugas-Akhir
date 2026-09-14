@@ -2,14 +2,6 @@
 
 @section('content')
     <div class="container">
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
 
         {{-- Tombol Tambah Jabatan --}}
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalTambahJabatan">
@@ -39,7 +31,7 @@
                                     <td>
                                         <button type="button" class="btn btn-sm btn-warning btn-edit-jabatan"
                                             data-id="{{ $j->id }}" data-nama_jabatan="{{ $j->nama_jabatan }}"
-                                            data-toggle="modal" data-target="#modalEditJabatan">
+                                            data-toggle="modal" data-target="#modalEditJabatan{{ $j->id }}">
                                             Edit
                                         </button>
 
@@ -98,50 +90,56 @@
     </div>
 
     {{-- Modal Edit Jabatan --}}
-    <div class="modal fade" id="modalEditJabatan" tabindex="-1" aria-labelledby="modalEditJabatanLabel">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditJabatanLabel">Edit Jabatan</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
+    @foreach ($jabatan as $j)
+        <div class="modal fade" id="modalEditJabatan{{ $j->id }}" tabindex="-1"
+            aria-labelledby="modalEditJabatanLabel">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditJabatanLabel">Edit Jabatan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <div class="modal-body">
-                        <form id="formEditJabatan" action="" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="mb-3">
-                                <label>ID Jabatan</label>
-                                <input type="text" name="id" id="edit_id" class="form-control" required readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label>Nama Jabatan</label>
-                                <input type="text" name="nama_jabatan" id="edit_nama_jabatan" class="form-control"
-                                    required>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Simpan Perubahan</button>
-                        </form>
+                        <div class="modal-body">
+                            <form id="formEditJabatan{{ $j->id }}" action="{{ route('jabatan.update', $j->id) }}" method="POST">
+    @csrf
+    @method('PUT')
+
+    <div class="mb-3">
+        <label>ID Jabatan</label>
+        <input type="text" name="id" value="{{ $j->id }}" class="form-control" required readonly>
+    </div>
+
+    <div class="mb-3">
+        <label>Nama Jabatan</label>
+        <input type="text" name="nama_jabatan" value="{{ $j->nama_jabatan }}" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Simpan Perubahan</button>
+</form>
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
+    @endforeach
 @endsection
 @push('scripts')
-    <script>
-        $(document).ready(function() {
-            $('#modalEditJabatan').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget);
-                var id = button.data('id');
-                var namaJabatan = button.data('nama_jabatan');
-                console.log('ID:', id, 'Nama:', namaJabatan); // harus keluar saat klik edit
-                $('#formEditJabatan').attr('action', '/jabatan/' + id);
-                $('#edit_id').val(id); // <-- TAMBAHKAN INI
-                $('#edit_nama_jabatan').val(namaJabatan);
+//     <script>
+//         $(document).ready(function() {
+//             $('#modalEditJabatan').on('show.bs.modal', function(event) {
+//                 var button = $(event.relatedTarget);
+//                 var id = button.data('id');
+//                 var namaJabatan = button.data('nama_jabatan');
+//                 console.log('ID:', id, 'Nama:', namaJabatan); // harus keluar saat klik edit
+//                 $('#formEditJabatan').attr('action', '/jabatan/' + id);
+//                 $('#edit_id').val(id); // <-- TAMBAHKAN INI
+//                 $('#edit_nama_jabatan').val(namaJabatan);
 
-            });
-        });
-    </script>
+//             });
+//         });
+//     </script>
+    @endpush

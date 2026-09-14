@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Desa\P5\P502;
 use App\Models\Desa\P5\P5;
+use App\Models\Desa\DesaP2;
+use App\Support\PublicUploadPath;
 use Illuminate\Support\Facades\Log;
 
 class P502Controller extends Controller
@@ -23,8 +25,13 @@ class P502Controller extends Controller
 
     public function store(Request $request)
     {
-        $idDesaP5 = $request->id_desa_p5; // hidden input dari form
-        $idSurvey = session('id_survey'); // bisa juga ambil dari relasi kalau perlu
+        $idDesaP5 = $request->id_desa_p5;
+        $p5 = P5::findOrFail($idDesaP5);
+        $idSurvey = $p5->id_survey ?? session('id_survey');
+
+        if (! $idSurvey) {
+            return redirect()->back()->with('error', 'Survey belum dipilih. Silakan buka form dari menu Desa terlebih dahulu.');
+        }
 
         try {
             DB::beginTransaction();
@@ -32,11 +39,12 @@ class P502Controller extends Controller
                 'dokumen_peraturan_kepdes' => 'required|file|mimes:pdf',
             ]);
             $idOtomatis = "DSP502-" . strtotime(date("Y-m-d H:i:s"));
-            if ($request->hasFile('dokumen_peraturan_kepdes')) {
+         if ($request->hasFile('dokumen_peraturan_kepdes')) {
                 $file = $request->file('dokumen_peraturan_kepdes');
                 $filename = $idOtomatis . '.pdf';
-                // Simpan ke folder public/dokumen/musyawarah/
-                $file->move(public_path('dokumen/p5/peraturan_kepdes'), $filename);
+                $uploadPath = PublicUploadPath::ensure('dokumen/p5/dokumen_peraturan_kepdes');
+
+				$file->move($uploadPath, $filename);
             }
 
             P502::create([
@@ -68,20 +76,23 @@ class P502Controller extends Controller
             'dokumen_peraturan_kepdes' => 'nullable|file|mimes:pdf',
         ]);
 
-        if ($request->hasFile('dokumen_peraturan_kepdes')) {
+        $uploadPath = PublicUploadPath::ensure('dokumen/p5/dokumen_peraturan_kepdes');
 
-            if ($dataUtama->dokumen_peraturan_kepdes) {
-                $oldPath = public_path('dokumen/p5/peraturan_kepdes/' . $dataUtama->dokumen_peraturan_kepdes);
+    if ($request->hasFile('dokumen_peraturan_kepdes')) {
 
-                if (file_exists($oldPath)) {
-                    unlink($oldPath); // hapus file
-                }
-            }
+        // Nama file PDF = ID (tanpa simpan ke DB)
+        $filename = $id . ".pdf";
+        $oldPath = $uploadPath . '/' . $filename;
 
-            $file = $request->file('dokumen_peraturan_kepdes');
-            $filename = $id . ".pdf";
-            $file->move(public_path('dokumen/p5/peraturan_kepdes'), $filename);
+        // Hapus file lama jika ada
+        if (file_exists($oldPath)) {
+            unlink($oldPath);
         }
+
+        // Upload file baru
+        $file = $request->file('dokumen_peraturan_kepdes');
+        $file->move($uploadPath, $filename);
+    }
         $dataUtama->update($request->all());
 
         return redirect()->back()->with('success', 'Data utama P502 berhasil diperbarui.');
@@ -95,10 +106,18 @@ class P502Controller extends Controller
 
     public function fromP2($id_survey)
     {
-        $p5 = \App\Models\Desa\P5\P5::where('id_survey', $id_survey)->first();
+        $p5 = P5::where('id_survey', $id_survey)->first();
 
         if (!$p5) {
             return redirect()->back()->with('error', 'Data P5 belum dibuat untuk desa ini.');
+        }
+
+        $p2 = DesaP2::where('id_survey', $id_survey)->first();
+        if ($p2) {
+            session([
+                'id_survey' => $p2->id_survey,
+                'id_desa' => $p2->id,
+            ]);
         }
 
         return redirect()->route('desa-p502.index', $p5->id);

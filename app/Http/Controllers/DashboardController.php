@@ -40,6 +40,23 @@ class DashboardController extends Controller
         $surveyAktif = Survey::whereDate('tgl_mulai', '<=', $today)
             ->whereDate('tgl_akhir', '>=', $today)
             ->first();
+		$desaAktif = $surveyAktif
+            ? DesaP2::with('survey')->where('id_survey', $surveyAktif->id)->get()
+            : collect();
+        if (!$surveyAktif) {
+            return view('pages.dashboard', [
+                'totalDesa' => $desaAktif,
+                'totalKeluarga' => KgP2M::count(),
+                'totalIndividu' => IdvP1M::count(),
+
+                'progressSurvey' => 0,
+                'progressP' => array_fill(0, 9, 0), // semua progress 0
+                'surveyAktif' => 'Tidak Ada Survey Aktif',
+                'mulai' => '-',
+                'batas' => '-',
+                'statusSurvey' => 'Tidak Aktif',
+            ]);
+        }
 
         $skorp2 = SkorDesaP2::first();
         $totalP2 = collect($skorp2)->sum();
@@ -81,7 +98,12 @@ class DashboardController extends Controller
         $totalP6Final = $totalP601 + $totalP602 + $totalP603;
 
         $skorp7 = DB::table('skor_desa_p7')->first();
-        $totalP7 = collect($skorp7)->sum();
+        $totalP7 = $skorp7 ? collect($skorp7)->sum() : 0;
+
+        $p705 = P705::where('id_survey', $surveyAktif->id)->exists();
+        $totalP705 = $p705 ? 20 : 0;
+
+        $totalFinalP7 = $totalP7 + $totalP705;
 
         $p8 = P8::where('id_survey', $surveyAktif->id)->exists();
         $totalP8 = $p8 ? 100 : 0;
@@ -100,16 +122,15 @@ class DashboardController extends Controller
             $totalP4,
             $totalP5Final,
             $totalP6Final,
-            $totalP7,
+            $totalFinalP7,
             $totalP8,
             $totalP9,
             $totalP10,
         ];
-
-
+		
 
         return view('pages.dashboard', [
-            'totalDesa' => DesaP2::count(),
+            'totalDesa' => $desaAktif,
             'totalKeluarga' => KgP2M::count(),
             'totalIndividu' => IdvP1M::count(),
 

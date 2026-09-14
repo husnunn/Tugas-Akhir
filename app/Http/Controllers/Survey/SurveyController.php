@@ -40,7 +40,7 @@ class SurveyController extends Controller
 
         return redirect()->back()->with('success', 'Survey berhasil ditambahkan!');
     }
- 
+
     public function show(string $id)
     {
         $survey = Survey::findOrFail($id);
@@ -49,22 +49,26 @@ class SurveyController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $survey = Survey::findOrFail($id);
+        try {
+            $survey = Survey::findOrFail($id);
 
-        $request->validate([
-            'deskripsi' => 'sometimes|required|string',
-        ]);
+            // $request->validate([
+            //     'deskripsi' => 'sometimes|required|string',
+            // ]);
 
-        $survey->update(array_merge(
-            $request->all(),
-            [
-                'tgl_update' => now(),
-                'id_update' => Auth::user()->id
-            ]
-        ));
+            $survey->update(array_merge(
+                $request->all(),
+                [
+                    'tgl_update' => now(),
+                    'id_update' => Auth::user()->id
+                ]
+            ));
 
-        return redirect()->route('survey.index')
-            ->with('success', 'Survey berhasil diupdate!');
+            return redirect()->route('survey.index')
+                ->with('success', 'Survey berhasil diupdate!');
+        } catch (\Throwable $e) {
+            return back()->with('error', $e);
+        }
     }
 
     public function destroy(string $id)

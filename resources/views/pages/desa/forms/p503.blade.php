@@ -31,7 +31,7 @@
             </div>
             {{-- ====== Tombol Aksi ====== --}}
             <div class="d-flex justify-content-between mt-4">
-                <a href="/desa" class="btn btn-secondary">
+                <a href="{{ url('/desa') }}" class="btn btn-secondary">
                     ← Kembali
                 </a>
                 <button type="submit" class="btn btn-primary">
@@ -91,17 +91,15 @@
                                             </div>
                                             <div class="modal-body">
                                                 {{-- === PREVIEW PDF (jika file ada) === --}}
-                                                @php
-                                                    $filePath = public_path(
-                                                        'dokumen/p5/sk_kepdes/' . $item->id . '.pdf',
-                                                    );
+                                               @php
+                                                    $filePath = public_path('dokumen/p5/sk_kepdes/' . $item->id . '.pdf');
                                                 @endphp
 
                                                 @if (file_exists($filePath))
                                                     <div class="mb-3">
                                                         <h6>Dokumen Saat Ini:</h6>
 
-                                                        <a href="{{ asset('dokumen/p5/sk_kepdes/' . $item->id . '.pdf') }}"
+                                                        <a href="{{ asset('dokumen/p5/sk_kepdes/' . $item->id . '.pdf'). '?v=' . time() }}"
                                                             target="_blank" class="btn btn-sm btn-info mt-2">
                                                             Lihat / Download Dokumen
                                                         </a>

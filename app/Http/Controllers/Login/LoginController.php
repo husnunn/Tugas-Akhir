@@ -44,6 +44,13 @@ class LoginController extends Controller
                 : response()->json(['status' => false, 'message' => $errorMsg], 401);
         }
 
+        if (!$user->jabatan || strtolower($user->jabatan->nama_jabatan) !== 'admin') {
+            $errorMsg = 'Akses ditolak. Hanya admin yang dapat login.';
+            return $isWebRequest
+                ? back()->withErrors(['username' => $errorMsg])->withInput()
+                : response()->json(['status' => false, 'message' => $errorMsg], 403);
+        }
+
         if ($user->status === 'N') {
             $errorMsg = 'Akun Anda tidak aktif. Hubungi admin.';
             return $isWebRequest
@@ -52,19 +59,19 @@ class LoginController extends Controller
         }
 
         // 🚫 Cek apakah user sudah login di tempat lain
-        if ($user->is_logged_in) {
-            $errorMsg = 'Akun ini sedang aktif di perangkat lain.';
-            return $isWebRequest
-                ? back()->withErrors(['username' => $errorMsg])->withInput()
-                : response()->json(['status' => false, 'message' => $errorMsg], 403);
-        }
+        // if ($user->is_logged_in) {
+        //     $errorMsg = 'Akun ini sedang aktif di perangkat lain.';
+        //     return $isWebRequest
+        //         ? back()->withErrors(['username' => $errorMsg])->withInput()
+        //         : response()->json(['status' => false, 'message' => $errorMsg], 403);
+        // }
 
         // ✅ Tandai user sudah login
         $user->is_logged_in = true;
         $user->save();
 
         if ($isWebRequest) {
-            Auth::login($user);
+            Auth::login($user, true);
             return redirect()->intended('/dashboard');
         }
 

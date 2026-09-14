@@ -3,12 +3,6 @@
 @section('content')
     <div class="container">
 
-        {{-- Tombol Tambah Keluarga --}}
-        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modaltambahkeluarga">
-            + Tambah Keluarga
-        </button>
-        {{-- <a href="/coba">Halaman COBA</a> --}}
-
 
         <!-- Data Keluarga -->
         <div class="card shadow mb-4">
@@ -22,7 +16,6 @@
                             <tr>
                                 <th>Tanggal Survey</th>
                                 <th>Nama Kepala Keluarga</th>
-                                <th>Tambah Data</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -41,86 +34,11 @@
                                     </td>
                                     <td>{{ $item->nama_kpl_keluarga }}</td>
                                     <td>
-                                        {{-- P3-P4 --}}
-                                        <div class="btn-group" role="group"
-                                            aria-label="Button group with nested dropdown">
-                                            <div class="btn-group" role="group">
-                                                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm"
-                                                    data-toggle="dropdown" aria-expanded="false">
-                                                    P3-P424
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('setkg.session', ['id' => $item->id, 'form' => 'kgp3']) }}"
-                                                        data-id="{{ $item->id }}"
-                                                        data-id_survey="{{ $item->id_survey }}">
-                                                        P3
-                                                        @if ($item->p3->isNotEmpty())
-                                                            <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('setkg.session', ['id' => $item->id, 'form' => 'kgp4']) }}"
-                                                        data-id="{{ $item->id }}"
-                                                        data-id_survey="{{ $item->id_survey }}">
-                                                        P4
-                                                        @if ($item->p4->isNotEmpty())
-                                                            <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('setkg.session', ['id' => $item->id, 'form' => 'kgp421']) }}"
-                                                        data-id="{{ $item->id }}"
-                                                        data-id_survey="{{ $item->id_survey }}">
-                                                        P421
-                                                        @if ($item->p421->isNotEmpty())
-                                                            <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('setkg.session', ['id' => $item->id, 'form' => 'kgp422']) }}"
-                                                        data-id="{{ $item->id }}"
-                                                        data-id_survey="{{ $item->id_survey }}">
-                                                        P422
-                                                        @if ($item->p422->isNotEmpty())
-                                                            <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('setkg.session', ['id' => $item->id, 'form' => 'kgp423']) }}"
-                                                        data-id="{{ $item->id }}"
-                                                        data-id_survey="{{ $item->id_survey }}">
-                                                        P423
-                                                        @if ($item->p423->isNotEmpty())
-                                                            <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                        style="display: flex; justify-content: space-between"
-                                                        href="{{ route('setkg.session', ['id' => $item->id, 'form' => 'kgp424']) }}"
-                                                        data-id="{{ $item->id }}"
-                                                        data-id_survey="{{ $item->id_survey }}">
-                                                        P424
-                                                        @if ($item->p424->isNotEmpty())
-                                                            <i class="fas fa-check text-success ml-2"></i>
-                                                        @endif
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td>
                                         <!-- Tombol Edit -->
-                                        <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                        <!-- <button class="btn btn-warning btn-sm" data-toggle="modal"
                                             data-target="#modalEditKeluarga{{ $item->id }}">
                                             <i class="bi bi-pencil-square"></i> Edit
-                                        </button>
+                                        </button> -->
 
                                         <!-- Tombol Hapus -->
                                         <form action="{{ route('kg-p2.destroy', $item->id) }}" method="POST"

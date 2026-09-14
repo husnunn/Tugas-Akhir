@@ -1,10 +1,10 @@
 <?php
- 
+
 namespace App\Models\Desa;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Survey\Survey;
-
+use App\Models\Wilayah;
 
 class DesaP2 extends Model
 {
@@ -60,5 +60,23 @@ class DesaP2 extends Model
     {
         return $this->belongsTo(Survey::class, 'id_survey');
     }
-    
+    public function provinsi()
+    {
+        return $this->belongsTo(Wilayah::class, 'kode_provinsi', 'kode');
+    }
+
+    public function kabupaten()
+    {
+        return $this->belongsTo(Wilayah::class, 'kode_kabupaten', 'kode');
+    }
+
+    public function kecamatan()
+    {
+        return $this->belongsTo(Wilayah::class, 'kode_kecamatan', 'kode');
+    }
+
+    public function desa()
+    {
+        return $this->belongsTo(Wilayah::class, 'kode_desa', 'kode');
+    }
 }

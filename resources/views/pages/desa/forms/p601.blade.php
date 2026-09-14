@@ -34,7 +34,7 @@
             </div>
             {{-- ====== Tombol Aksi ====== --}}
             <div class="d-flex justify-content-between mt-4">
-                <a href="/desa" class="btn btn-secondary">
+                <a href="{{ url('/desa') }}" class="btn btn-secondary">
                     ← Kembali
                 </a>
                 <button type="submit" class="btn btn-primary">
@@ -63,7 +63,7 @@
                             @foreach ($data as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>    ($item->anggaran_pendapatan, 0, ',', '.') }}</td>
+                                    <td>Rp. {{number_format($item->anggaran_pendapatan, 0, ',', '.') }}</td>
                                     <td>Rp.{{ number_format($item->pades, 0, ',', '.') }}</td>
                                     <td>Rp.{{ number_format($item->alokasi_dana_desa, 0, ',', '.') }}</td>
                                     <td>

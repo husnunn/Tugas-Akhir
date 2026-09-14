@@ -38,7 +38,7 @@
             </div>
             {{-- ====== Tombol Aksi ====== --}}
             <div class="d-flex justify-content-between mt-4">
-                <a href="/desa" class="btn btn-secondary">
+                <a href="{{ url('/desa') }}" class="btn btn-secondary">
                     ← Kembali
                 </a>
                 <button type="submit" class="btn btn-primary">
@@ -82,6 +82,8 @@
                                         </button>
                                         <form action="{{ route('desa-p705.destroy', $item->id) }}" method="POST"
                                             class="d-inline" onsubmit="return confirm('Hapus Data ini?')">
+                                            @csrf
+                                            @method('DELETE')
                                             <button class="btn btn-danger btn-sm">Hapus</button>
                                         </form>
                                     </td>

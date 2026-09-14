@@ -32,7 +32,7 @@
             </div>
             {{-- ====== Tombol Aksi ====== --}}
             <div class="d-flex justify-content-between mt-4">
-                <a href="/desa" class="btn btn-secondary">
+                <a href="{{ url('/desa') }}" class="btn btn-secondary">
                     ← Kembali
                 </a>
                 <button type="submit" class="btn btn-primary">
@@ -92,20 +92,20 @@
                                             </div>
                                             <div class="modal-body">
                                                 {{-- === PREVIEW PDF (jika file ada) === --}}
-                                                @php
-                                                    $filePath = public_path(
-                                                        'dokumen/p5/peraturan_desa/' . $item->id . '.pdf',
-                                                    );
+                                                                                               @php
+                                                    $filePath = public_path('dokumen/p5/peraturan_desa/' . $item->id . '.pdf');
                                                 @endphp
 
                                                 @if (file_exists($filePath))
                                                     <div class="mb-3">
                                                         <h6>Dokumen Saat Ini:</h6>
 
-                                                        <a href="{{ asset('dokumen/p5/peraturan_desa/' . $item->id . '.pdf') }}"
-                                                            target="_blank" class="btn btn-sm btn-info mt-2">
-                                                            Lihat / Download Dokumen
-                                                        </a>
+                                                        <a href="{{ asset('dokumen/p5/peraturan_desa/' . $item->id . '.pdf') . '?v=' . time() }}"
+    target="_blank"
+    class="btn btn-sm btn-info mt-2">
+    Lihat / Download Dokumen
+</a>
+
                                                     </div>
                                                 @else
                                                     <p class="text-danger">Dokumen belum diunggah.</p>
@@ -134,12 +134,16 @@
                                                         <div class="col-sm">
                                                             {{-- <label for="fileUpload" class="font-weight-bold">Unggah Dokumen</label> --}}
                                                             <div class="custom-file">
-                                                                <input type="file" class="custom-file-input"
-                                                                    id="fileUpload" name="dokumen_peraturan_desa">
-                                                                <label class="custom-file-label"
-                                                                    for="dokumen_peraturan_desa">Upload
-                                                                    Dokumen</label>
-                                                            </div>
+    															<input type="file"
+       class="custom-file-input edit-file-input"
+       id="edit_dokumen_peraturan_desa"
+       name="edit_dokumen_peraturan_desa">
+
+<label class="custom-file-label" for="edit_dokumen_peraturan_desa">
+    Upload Dokumen
+</label>
+
+															</div>
                                                         </div>
                                                     </div>
                                                     <button class="btn btn-primary">Simpan Perubahan</button>
@@ -161,12 +165,25 @@
     </div>
 @endsection
 @push('scripts')
-    {{-- STYLE INPUT FILE --}}
-    <script>
-        document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-            var fileName = document.getElementById("fileUpload").files[0].name;
-            var nextSibling = e.target.nextElementSibling
-            nextSibling.innerText = fileName
-        })
-    </script>
+<script>
+
+// --- Untuk Form Tambah ---
+const addInput = document.getElementById('fileUpload');
+if (addInput) {
+    addInput.addEventListener('change', function(e){
+        let fileName = e.target.files[0].name;
+        e.target.nextElementSibling.innerText = fileName;
+    });
+}
+
+// --- Untuk Form Edit ---
+document.querySelectorAll('.edit-file-input').forEach(function(input){
+    input.addEventListener('change', function(e){
+        let fileName = e.target.files[0].name;
+        e.target.nextElementSibling.innerText = fileName;
+    });
+});
+
+</script>
 @endpush
+

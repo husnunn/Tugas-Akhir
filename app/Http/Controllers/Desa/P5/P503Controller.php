@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Desa\P5\P503;
 use App\Models\Desa\P5\P5;
+use App\Models\Desa\DesaP2;
+use App\Support\PublicUploadPath;
 use Illuminate\Support\Facades\Log;
 
 class P503Controller extends Controller
@@ -23,8 +25,13 @@ class P503Controller extends Controller
 
     public function store(Request $request)
     {
-        $idDesaP5 = $request->id_desa_p5; // hidden input dari form
-        $idSurvey = session('id_survey'); // bisa juga ambil dari relasi kalau perlu
+        $idDesaP5 = $request->id_desa_p5;
+        $p5 = P5::findOrFail($idDesaP5);
+        $idSurvey = $p5->id_survey ?? session('id_survey');
+
+        if (! $idSurvey) {
+            return redirect()->back()->with('error', 'Survey belum dipilih. Silakan buka form dari menu Desa terlebih dahulu.');
+        }
 
         try {
             DB::beginTransaction();
@@ -32,12 +39,15 @@ class P503Controller extends Controller
                 'dokumen_sk_kepdes' => 'required|file|mimes:pdf',
             ]);
             $idOtomatis = "DSP503-" . strtotime(date("Y-m-d H:i:s"));
-            if ($request->hasFile('dokumen_sk_kepdes')) {
+
+         if ($request->hasFile('dokumen_sk_kepdes')) {
                 $file = $request->file('dokumen_sk_kepdes');
                 $filename = $idOtomatis . '.pdf';
-                // Simpan ke folder public/dokumen/musyawarah/
-                $file->move(public_path('dokumen/p5/sk_kepdes'), $filename);
+                $uploadPath = PublicUploadPath::ensure('dokumen/p5/sk_kepdes');
+
+				$file->move($uploadPath, $filename);
             }
+
             P503::create([
                 'id' => $idOtomatis,
                 'id_desa_p5' => $idDesaP5,
@@ -61,26 +71,27 @@ class P503Controller extends Controller
 
     public function update(Request $request, $id)
     {
-        $dataUtama = P503::findOrFail($id);
-        $request->validate([
-            'dokumen_sk_kepdes' => 'nullable|file|mimes:pdf',
-        ]);
+        $dataUtama = P503::findOrFail($id);    
+    $request->validate([
+        'dokumen_sk_kepdes' => 'nullable|file|mimes:pdf',
+    ]);
 
-        if ($request->hasFile('dokumen_sk_kepdes')) {
+    // SAMA dengan STORE
+    $uploadPath = PublicUploadPath::ensure('dokumen/p5/sk_kepdes');
 
-            if ($dataUtama->dokumen_sk_kepdes) {
-                $oldPath = public_path('dokumen/p5/sk_kepdes/' . $dataUtama->dokumen_sk_kepdes);
+    if ($request->hasFile('dokumen_sk_kepdes')) {
 
-                if (file_exists($oldPath)) {
-                    unlink($oldPath); // hapus file
-                }
-            }
+        $filename = $id . ".pdf";
+        $oldFile = $uploadPath . '/' . $filename;
 
-            $file = $request->file('dokumen_sk_kepdes');
-            $filename = $id . ".pdf";
-            $file->move(public_path('dokumen/p5/sk_kepdes'), $filename);
+        if (file_exists($oldFile)) {
+            unlink($oldFile);
         }
-        $dataUtama->update($request->all());
+
+        $request->file('dokumen_sk_kepdes')->move($uploadPath, $filename);
+    }
+
+    $dataUtama->update($request->except('dokumen_sk_kepdes'));
 
         return redirect()->back()->with('success', 'Data utama P503 berhasil diperbarui.');
     }
@@ -93,10 +104,18 @@ class P503Controller extends Controller
 
     public function fromP2($id_survey)
     {
-        $p5 = \App\Models\Desa\P5\P5::where('id_survey', $id_survey)->first();
+        $p5 = P5::where('id_survey', $id_survey)->first();
 
         if (!$p5) {
             return redirect()->back()->with('error', 'Data P5 belum dibuat untuk desa ini.');
+        }
+
+        $p2 = DesaP2::where('id_survey', $id_survey)->first();
+        if ($p2) {
+            session([
+                'id_survey' => $p2->id_survey,
+                'id_desa' => $p2->id,
+            ]);
         }
 
         return redirect()->route('desa-p503.index', $p5->id);

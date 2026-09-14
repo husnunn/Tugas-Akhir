@@ -37,8 +37,8 @@ class KgP423M extends Model
      * Relasi ke master tenaga kesehatan
      * (Bidan, Dokter, Perawat, dll)
      */
-    public function masterNakes()
+    public function masterTenkes()
     {
-        return $this->belongsTo(\App\Models\Master\MasterNakesm::class, 'id_master_tenkes', 'id');
+        return $this->belongsTo(\App\Models\Master\MasterTenkesM::class, 'id_master_tenkes', 'id');
     }
 }

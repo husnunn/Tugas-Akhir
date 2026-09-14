@@ -28,10 +28,24 @@
                 </div>
             </div>
 
+            <h5>Modal Awal</h5>
+            <div class="row mb-3">
+                <div class="col-sm">
+                    <input type="number" name="modal_awal[]" class="form-control mb-2" placeholder="Modal Awal Dari Pemdes"
+                        required>
+                </div>
+                <div class="col-sm">
+                    <input type="number" name="modal_awal[]" class="form-control mb-2"
+                        placeholder="Modal Awal Dari Warga Desa" required>
+                </div>
+                <div class="col-sm">
+                    <input type="number" name="modal_awal[]" class="form-control mb-2"
+                        placeholder="Modal Awal Dari Pihak Lain" required>
+                </div>
+            </div>
+
             <h5>Keuangan Bumdes</h5>
             <div class="row mb-3">
-                <div class="col-sm"><input type="number" name="modal_awal" class="form-control mb-2"
-                        placeholder="Modal Awal" required></div>
                 <div class="col-sm"><input type="number" name="omset_setahun" class="form-control mb-2"
                         placeholder="Omset Tahun Lalu" required></div>
                 <div class="col-sm"><input type="number" name="keuntungan_kotor" class="form-control mb-2"
@@ -48,7 +62,7 @@
 
             {{-- ====== Tombol Aksi ====== --}}
             <div class="d-flex justify-content-between mt-4">
-                <a href="{{ route('desa-p2.index') }}" class="btn btn-secondary">
+                <a href="{{ url('/desa') }}" class="btn btn-secondary">
                     ← Kembali
                 </a>
                 <button type="submit" class="btn btn-primary">Simpan Data</button>
@@ -149,25 +163,50 @@
                                                             <input type="text" name="yt_bumdes"
                                                                 value="{{ $item->yt_bumdes }}" class="form-control mb-2">
                                                         </div>
-                                                        <div class="col-sm-3">
+                                                        {{-- <div class="col-sm-3">
                                                             <label>Modal Awal</label>
                                                             <input type="number" name="modal_awal"
                                                                 value="{{ $item->modal_awal }}" class="form-control mb-2"
                                                                 required>
+                                                        </div> --}}
+                                                        @php
+                                                            $modal = explode(',', $item->modal_awal);
+                                                        @endphp
+
+                                                        <div class="col-sm-4">
+                                                            <label>Modal Awal Dari Pemdes</label>
+                                                            <input type="number" name="modal_awal[]"
+                                                                value="{{ $modal[0] ?? '' }}" class="form-control mb-2"
+                                                                required>
                                                         </div>
-                                                        <div class="col-sm-3">
+
+                                                        <div class="col-sm-4">
+                                                            <label>Modal Awal Dari Warga Desa</label>
+                                                            <input type="number" name="modal_awal[]"
+                                                                value="{{ $modal[1] ?? '' }}" class="form-control mb-2"
+                                                                required>
+                                                        </div>
+
+                                                        <div class="col-sm-4">
+                                                            <label>Modal Awal Dari Pihak Lain</label>
+                                                            <input type="number" name="modal_awal[]"
+                                                                value="{{ $modal[2] ?? '' }}" class="form-control mb-2"
+                                                                required>
+                                                        </div>
+
+                                                        <div class="col-sm-4">
                                                             <label>Omset Setahun</label>
                                                             <input type="number" name="omset_setahun"
                                                                 value="{{ $item->omset_setahun }}"
                                                                 class="form-control mb-2" required>
                                                         </div>
-                                                        <div class="col-sm-3">
+                                                        <div class="col-sm-4">
                                                             <label>Keuntungan Kotor</label>
                                                             <input type="number" name="keuntungan_kotor"
                                                                 value="{{ $item->keuntungan_kotor }}"
                                                                 class="form-control mb-2" required>
                                                         </div>
-                                                        <div class="col-sm-3">
+                                                        <div class="col-sm-4">
                                                             <label>Keuntungan Bersih</label>
                                                             <input type="number" name="keuntungan_bersih"
                                                                 value="{{ $item->keuntungan_bersih }}"
@@ -192,7 +231,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            {{-- @empty
+                                {{-- @empty
                                 <tr>
                                     <td colspan="5">Belum ada Data Bumdes.</td>
                                 </tr> --}}
@@ -203,7 +242,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 @push('scripts')
 @endpush

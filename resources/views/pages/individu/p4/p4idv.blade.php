@@ -92,7 +92,7 @@
             </div>
 
             <div class="d-flex justify-content-between mt-4">
-                <a href="{{ route('idv-p1.index') }}" class="btn btn-secondary">← Kembali</a>
+                <a href="{{ url('/idv-p1') }}" class="btn btn-secondary">← Kembali</a>
 
                 @if ($data->isNotEmpty())
                     <button type="submit" class="btn btn-primary" disabled>

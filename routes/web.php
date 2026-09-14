@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Formulir\FormulirIdvController;
+use App\Http\Controllers\Api\Formulir\FormulirKgController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -31,6 +33,8 @@ use App\Http\Controllers\Desa\P9\P923Controller;
 use App\Http\Controllers\Desa\P9\P932Controller;
 use App\Http\Controllers\Desa\P9\P941Controller;
 use App\Http\Controllers\Desa\P10\P10Controller;
+use App\Http\Controllers\FormulirController;
+use App\Http\Controllers\RT\P2RtController;
 use App\Http\Controllers\Keluarga\P2\P2KgController;
 use App\Http\Controllers\Keluarga\P3\P3KgController;
 use App\Http\Controllers\Keluarga\P4\P4KgController;
@@ -45,6 +49,21 @@ use App\Http\Controllers\Individu\P4\P401IdvController;
 use App\Http\Controllers\Individu\P4\P402IdvController;
 use App\Http\Controllers\Individu\P4\P4IdvController;
 use App\Http\Controllers\Individu\P5\P5IdvController;
+use App\Http\Controllers\Laporan\LaporanController;
+use App\Http\Controllers\Master\MasterApstController;
+use App\Http\Controllers\Master\MasterBencanaAlamRTController;
+use App\Http\Controllers\Master\MasterFaskesController;
+use App\Http\Controllers\Master\MasterGunaSumberRTController;
+use App\Http\Controllers\Master\MasterJenisIndustriRTController;
+use App\Http\Controllers\Master\MasterLingkunganRTController;
+use App\Http\Controllers\Master\MasterOperatorSinyalRTController;
+use App\Http\Controllers\Master\MasterPendidikanController;
+use App\Http\Controllers\Master\MasterPenghasilanController;
+use App\Http\Controllers\Master\MasterPenyakitController;
+use App\Http\Controllers\Master\MasterSaranaEkonomiRTController;
+use App\Http\Controllers\Master\MasterSarkesController;
+use App\Http\Controllers\Master\MasterTenkesController;
+use App\Http\Controllers\Master\MasterTvRadioRTController;
 
 Route::get('/', [LoginController::class, 'showLogin'])->name('login');
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
@@ -62,10 +81,22 @@ Route::middleware('auth')->group(function () {
     // Survey
     Route::resource('survey', SurveyController::class);
     Route::get('/survey/aktif', [SurveyController::class, 'getSurveyAktif']);
+    // MASTER
     Route::resource('lembaga', MasterLembagaController::class);
-    // Jabatan
-    // Route::resource('jabatan', JabatanController::class);
-    // Route::put('/jabatan/{id}', [JabatanController::class, 'update'])->name('jabatan.update');
+    Route::resource('bencana', MasterBencanaAlamRTController::class);
+    Route::resource('gunasumber', MasterGunaSumberRTController::class);
+    Route::resource('jenisindustri', MasterJenisIndustriRTController::class);
+    Route::resource('lingkungan', MasterLingkunganRTController::class);
+    Route::resource('operatorsinyal', MasterOperatorSinyalRTController::class);
+    Route::resource('saranaekonomi', MasterSaranaEkonomiRTController::class);
+    Route::resource('tvradio', MasterTvRadioRTController::class);
+    Route::resource('apst', MasterApstController::class);
+    Route::resource('faskes', MasterFaskesController::class);
+    Route::resource('pendidikan', MasterPendidikanController::class);
+    Route::resource('penghasilan', MasterPenghasilanController::class);
+    Route::resource('penyakit', MasterPenyakitController::class);
+    Route::resource('sarkes', MasterSarkesController::class);
+    Route::resource('tenkes', MasterTenkesController::class);
 
     // Jabatan
     Route::get('/jabatan', [JabatanController::class, 'index'])->name('jabatan.index');         // tampil list
@@ -107,9 +138,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/setkg-session/{id}/{form}', [SessionController::class, 'setkg'])->name('setkg.session');
     // Kirim id_survey dan id_individu
     Route::get('/session/setidv/{id}/{form}', [SessionController::class, 'setidv'])->name('session.setidv');
-    
+
     Route::get('/desa/export/pdf/{id_survey}', [\App\Http\Controllers\Desa\ExportPdfController::class, 'export'])
-    ->name('desa.export.pdf');
+        ->name('desa.export.pdf');
 
     // DESA P3
     Route::resource('/desa-p3', P3Controller::class);
@@ -201,7 +232,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/desa-p941/{id}', [P941Controller::class, 'destroy'])->name('desa-p941.destroy');
     // P10
     Route::resource('desa-p10', P10Controller::class);
-
+	Route::resource('data-rt', P2RtController::class);
     // KG P2
     Route::get('/kg-p2', [P2KgController::class, 'index'])->name('kg-p2.index');
     Route::post('/kg-p2/store', [P2KgController::class, 'store'])->name('kg-p2.store');
@@ -239,7 +270,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/kg-p424/{id}', [P424KgController::class, 'update'])->name('kg-p424.update');
     Route::delete('/kg-p424/{id}', [P424KgController::class, 'destroy'])->name('kg-p424.destroy');
 
- 
+
 
     // INDIVIDU P1 
     Route::get('/idv-p1', [P1IdvController::class, 'index'])->name('idv-p1.index');
@@ -276,4 +307,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/idv-p5/store', [P5IdvController::class, 'store'])->name('idv-p5.store');
     Route::put('/idv-p5/{id}', [P5IdvController::class, 'update'])->name('idv-p5.update');
     Route::delete('/idv-p5/{id}', [P5IdvController::class, 'destroy'])->name('idv-p5.destroy');
+
+
+
+    // LAPORAN
+    Route::resource('/laporan', LaporanController::class);
+    Route::get('/laporan-rekap/download', [LaporanController::class, 'download'])->name('laporan.download');
+
+
 });

@@ -26,7 +26,6 @@ class ApiController extends Controller
             "id_jabatan" => "required|string",
             "status" => "required|string",
             "password" => "required|confirmed",
-            "foto" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
         ]);
 
         if ($validator->fails()) {
@@ -38,12 +37,6 @@ class ApiController extends Controller
             return response()->json($response, 401);
         }
 
-        $fotoPath = null;
-        if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('foto_users', 'public');
-            // akan tersimpan di storage/app/public/foto_users
-        }
-
         $id = strtotime(date("Y-m-d H:i:s"));
         User::create([
             "id" => $id,
@@ -53,7 +46,7 @@ class ApiController extends Controller
             "id_jabatan" => $request->id_jabatan,
             "status" => $request->status,
             "password" => bcrypt($request->password),
-            "foto" => $fotoPath,
+            "alamat" => $request->alamat,
         ]);
 
         return response()->json([
@@ -102,12 +95,12 @@ class ApiController extends Controller
             ], 403);
         }
 
-        if ($user->is_logged_in) {
-            return response()->json([
-                "status" => false,
-                "message" => "User ini sudah login di perangkat lain.",
-            ], 403);
-        }
+        // if ($user->is_logged_in) {
+        //     return response()->json([
+        //         "status" => false,
+        //         "message" => "User ini sudah login di perangkat lain.",
+        //     ], 403);
+        // }
 
         // 🔥 Set user sebagai sedang login
         $user->is_logged_in = true;
@@ -126,6 +119,7 @@ class ApiController extends Controller
                 "nama" => $user->nama ?? null,
                 "jabatan" => $user->jabatan ? $user->jabatan->nama_jabatan : null,
                 "status" => $user->status,
+                "alamat" => $user->alamat,
             ]
         ]);
     }
@@ -133,12 +127,25 @@ class ApiController extends Controller
 
     public function getdatauser()
     {
-        $userData = Auth::user();
-        return response()->json([
-            "status" => true,
-            "message" => "Data User",
-            "data" => $userData
-        ]);
+             try {
+            $userData = Auth::user()->load('jabatan');
+
+            return response()->json([
+                "status" => true,
+                "message" => "Data User",
+                "data" => $userData,
+            'nama_jabatan' => optional($userData->jabatan)->nama_jabatan,
+            ], 200);
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                "status" => false,
+                "message" => "Terjadi kesalahan saat mengambil data user",
+                "error" => $th->getMessage(),
+                "line" => $th->getLine(),
+                "file" => $th->getFile()
+            ], 500);
+        }
     }
 
     public function logout(Request $request)

@@ -5,11 +5,30 @@ namespace App\Http\Controllers\Desa;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Desa\DesaP2;
+use App\Models\Desa\P10\P10;
+use App\Models\Desa\P3\AnggotaBpd;
+use App\Models\Desa\P3\P3;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Survey\Survey;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use App\Models\Desa\P3\PegawaiLainnya;
+use App\Models\Desa\P4\P4;
+use App\Models\Desa\P5\P5;
+use App\Models\Desa\P5\P501;
+use App\Models\Desa\P5\P502;
+use App\Models\Desa\P5\P503;
+use App\Models\Desa\P6\P601;
+use App\Models\Desa\P6\P602;
+use App\Models\Desa\P6\P603;
+use App\Models\Desa\P7\P7;
+use App\Models\Desa\P7\P705;
+use App\Models\Desa\P8\P8;
+use App\Models\Desa\P9\P9;
+use App\Models\Desa\P9\P914;
+use App\Models\Desa\P9\P923;
+use App\Models\Desa\P9\P932;
+use App\Models\Desa\P9\P941;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -17,16 +36,22 @@ class DesaController extends Controller
 {
     public function index()
     {
-        $today = Carbon::today();
+        $today = Carbon::now('Asia/Jakarta');
 
-        // Ambil survey yang sedang aktif hari ini
         $survey = Survey::whereDate('tgl_mulai', '<=', $today)
             ->whereDate('tgl_akhir', '>=', $today)
             ->get();
+
+        $surveyAktif = Survey::whereDate('tgl_mulai', '<=', $today)
+            ->whereDate('tgl_akhir', '>=', $today)
+            ->first();
         // $desa = DesaP2::all();
         $desa = DesaP2::with('survey')->get();
+        $desaAktif = $surveyAktif
+            ? DesaP2::with('survey')->where('id_survey', $surveyAktif->id)->get()
+            : collect();
         $pegawai = PegawaiLainnya::where('id_desa_p3', session('id_desa_p3'))->get();
-        return view('pages.desa.desa', compact('desa', 'survey', 'pegawai'));
+        return view('pages.desa.desa', compact('desa', 'desaAktif', 'survey', 'pegawai', 'surveyAktif'));
     }
 
     public function show_survey()
@@ -99,14 +124,23 @@ class DesaController extends Controller
                 'tgl_buat' => now(),
                 'tgl_update' => now(),
 
-                // Data dari form
                 'kode_provinsi' => $request->kode_provinsi,
                 'kode_kabupaten' => $request->kode_kabupaten,
                 'kode_kecamatan' => $request->kode_kecamatan,
                 'kode_desa' => $request->kode_desa,
-
-                // Otomatis isi nama desa
                 'nama_desa' => $namaDesa,
+                'jml_rw' => $request->jml_rw,
+                'jml_rt' => $request->jml_rt,
+                'luas_wilayah' => $request->luas_wilayah,
+                'lokasi_desa' => $request->lokasi_desa,
+                'topografi' => $request->topografi,
+                'balai_desa' => $request->balai_desa,
+                'kepemilikan' => $request->kepemilikan,
+                'lokasi_balai_desa' => $request->lokasi_balai_desa,
+                'tempat_pemerintah_desa' => $request->tempat_pemerintah_desa,
+                'jam_kerja' => $request->jam_kerja,
+                'lintang' => $request->lintang,
+                'bujur' => $request->bujur,
 
             ]);
 
@@ -201,23 +235,37 @@ class DesaController extends Controller
     public function destroy(string $id)
     {
         $p2 = DesaP2::findOrFail($id);
+        $id_survey = $p2->id_survey;
 
-        // Ambil semua kolom kecuali primary key dan id_survey
-        $dataP2 = $p2->toArray();
-        unset($dataP2['id'], $dataP2['id_survey']);
+        $tables = [
+            P3::class,
+            P4::class,
+            P5::class,
+            P601::class,
+            P602::class,
+            P603::class,
+            P7::class,
+            P8::class,
+            P9::class,
+            P10::class,
+        ];
 
-        // Cek apakah semua nilainya NULL atau kosong
-        $isEmpty = true;
-        foreach ($dataP2 as $value) {
-            if (!is_null($value) && $value !== '') {
-                $isEmpty = false;
-                break;
+        foreach ($tables as $model) {
+            $exists = $model::where('id_survey', $id_survey)->exists();
+
+            if ($exists) {
+                $tableName = (new $model)->getTable();
+                return back()->with('error', "Data tidak dapat dihapus karena masih ada isian pada tabel $tableName.");
             }
         }
 
-        // Kalau ada isi → blok hapus
-        if (!$isEmpty) {
-            return back()->with('error', 'Data Desa P2 tidak dapat dihapus karena masih memiliki data isian.');
+        $today = Carbon::today();
+        $isSurveyActive = Survey::whereDate('tgl_mulai', '<=', $today)
+            ->whereDate('tgl_akhir', '>=', $today)
+            ->exists();
+
+        if (!$isSurveyActive) {
+            return back()->with('error', 'Data Desa P2 tidak dapat dihapus karena Survey Tidak Aktif.');
         }
 
         // Kalau kosong → hapus aman

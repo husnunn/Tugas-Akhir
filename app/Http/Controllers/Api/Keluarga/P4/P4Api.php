@@ -62,6 +62,7 @@ class P4Api extends Controller
     // INSERT
     public function store(Request $request)
     {
+
         DB::beginTransaction();
 
         try {
@@ -69,6 +70,7 @@ class P4Api extends Controller
                 'id_kg_p2' => 'required',
                 'tempat_tinggal_yg_ditempati' => 'required',
                 'status_lahan_tempat_tinggal_yg_ditempati' => 'required',
+    'daya_meteran_rumah' => 'nullable',
             ]);
 
             $datap2 = KgP2M::find($request->id_kg_p2);
@@ -81,7 +83,7 @@ class P4Api extends Controller
 
             $data = KgP4M::create([
                 'id' => "KGP4-" . strtotime(date("Y-m-d H:i:s")),
-                'id_buat' => Auth::user()->id ?? 'SYSTEM',
+                'id_buat' => Auth::user()->id,
                 'id_survey' => $datap2->id_survey,
                 'tgl_buat' => now(),
                 'tgl_update' => now(),
@@ -109,6 +111,10 @@ class P4Api extends Controller
                 'rumah_di_bantaran_sungai' => $request->rumah_di_bantaran_sungai,
                 'rumah_dilereng_bukit_gunung' => $request->rumah_dilereng_bukit_gunung,
                 'secara_keseluruhan_kondisi_rumah' => $request->secara_keseluruhan_kondisi_rumah,
+                'meteran_rumah' => $request->meteran_rumah,
+                'no_meteran' => $request->no_meteran,
+                'daya_meteran_rumah' => $request->daya_meteran_rumah,
+                'atas_nama' => $request->atas_nama,
                 'blt_dana_desa' => $request->blt_dana_desa,
                 'pkh' => $request->pkh,
                 'bst' => $request->bst,

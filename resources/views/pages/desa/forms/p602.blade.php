@@ -35,7 +35,7 @@
             </div>
             {{-- ====== Tombol Aksi ====== --}}
             <div class="d-flex justify-content-between mt-4">
-                <a href="/desa" class="btn btn-secondary">
+                <a href="{{ url('/desa') }}" class="btn btn-secondary">
                     ← Kembali
                 </a>
                 <button type="submit" class="btn btn-primary">
@@ -63,7 +63,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data as $index=>$item)
+                            @foreach ($data as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>Rp.{{ number_format($item->anggaran_pengeluaran, 0, ',', '.') }}</td>
@@ -77,6 +77,8 @@
                                         </button>
                                         <form action="{{ route('desa-p602.destroy', $item->id) }}" method="POST"
                                             class="d-inline" onsubmit="return confirm('Hapus Data ini?')">
+                                            @csrf
+                                            @method('DELETE')
                                             <button class="btn btn-danger btn-sm">Hapus</button>
                                         </form>
                                     </td>
@@ -129,7 +131,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            {{-- @empty
+                                {{-- @empty
                                 <tr>
                                     <td colspan="6">Belum ada Data.</td>
                                 </tr> --}}

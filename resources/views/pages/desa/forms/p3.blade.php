@@ -158,29 +158,48 @@
                                 name="awal_jabatan_kepsek_kesejahteraan" class="form-control"></div>
                     </div>
                 </div>
-                <!-- Kepala BPD -->
+                <!-- Kepala Seksi Pelayanan -->
                 <div class="row">
                     <div class="col-sm">
-                        <div class="mb-3"><label>NIK Kepala Seksi Pelayanan</label><input type="text" name="nik_kepsek_pelayanan"
-                                class="form-control" maxlength="20"></div>
+                        <div class="mb-3"><label>NIK Kepala Seksi Pelayanan</label><input type="text"
+                                name="nik_kepsek_pelayanan" class="form-control" maxlength="20"></div>
                     </div>
                     <div class="col-sm">
-                        <div class="mb-3"><label>Nama Kepala Seksi Pelayanan</label><input type="text" name="nama_kepsek_pelayanan"
-                                class="form-control" maxlength="100"></div>
+                        <div class="mb-3"><label>Nama Kepala Seksi Pelayanan</label><input type="text"
+                                name="nama_kepsek_pelayanan" class="form-control" maxlength="100"></div>
                     </div>
                     <div class="col-sm">
-                        <div class="mb-3"><label>Nomer HP Kepala Pelayanan</label><input type="text" name="hp_kepsek_pelayanan"
-                                class="form-control" maxlength="20"></div>
+                        <div class="mb-3"><label>Nomer HP Kepala Pelayanan</label><input type="text"
+                                name="hp_kepsek_pelayanan" class="form-control" maxlength="20"></div>
                     </div>
                     <div class="col-sm">
                         <div class="mb-3"><label>Awal Jabatan Kepala Seksi Pelayanan</label><input type="date"
                                 name="awal_jabatan_kepsek_pelayanan" class="form-control"></div>
                     </div>
                 </div>
+                <!-- Kepala BPD -->
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="mb-3"><label>NIK Kepala BPD</label><input type="text" name="nik_kpl_bpd"
+                                class="form-control" maxlength="20"></div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="mb-3"><label>Nama Kepala BPD</label><input type="text" name="nama_kpl_bpd"
+                                class="form-control" maxlength="100"></div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="mb-3"><label>Nomer HP Kepala BPD</label><input type="text" name="hp_kpl_bpd"
+                                class="form-control" maxlength="20"></div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="mb-3"><label>Awal Jabatan Kepala BPD</label><input type="date"
+                                name="awal_jabatan_kpl_bpd" class="form-control"></div>
+                    </div>
+                </div>
 
                 {{-- ====== Tombol Aksi ====== --}}
                 <div class="d-flex justify-content-between mt-4">
-                    <a href="/desa" class="btn btn-secondary">
+                    <a href="{{ url('/desa') }}" class="btn btn-secondary">
                         ← Kembali
                     </a>
                     <button type="submit" class="btn btn-primary">
@@ -610,25 +629,28 @@
                                                                     class="form-control"></div>
                                                         </div>
                                                     </div>
-                                                    <!-- Kepala BPD -->
+                                                    <!-- Kepala Seksi Pelayanan -->
                                                     <div class="row">
                                                         <div class="col-sm">
-                                                            <div class="mb-3"><label>NIK Kepala Seksi Pelayanan</label><input
-                                                                    type="text" name="nik_kepsek_pelayanan"
-                                                                    value="{{ $item->nik_kepsek_pelayanan }}" class="form-control"
-                                                                    maxlength="20"></div>
+                                                            <div class="mb-3"><label>NIK Kepala Seksi
+                                                                    Pelayanan</label><input type="text"
+                                                                    name="nik_kepsek_pelayanan"
+                                                                    value="{{ $item->nik_kepsek_pelayanan }}"
+                                                                    class="form-control" maxlength="20"></div>
                                                         </div>
                                                         <div class="col-sm">
-                                                            <div class="mb-3"><label>Nama Kepala Seksi Pelayanan</label><input
-                                                                    type="text" name="nama_kepsek_pelayanan"
+                                                            <div class="mb-3"><label>Nama Kepala Seksi
+                                                                    Pelayanan</label><input type="text"
+                                                                    name="nama_kepsek_pelayanan"
                                                                     value="{{ $item->nama_kepsek_pelayanan }}"
                                                                     class="form-control" maxlength="100"></div>
                                                         </div>
                                                         <div class="col-sm">
-                                                            <div class="mb-3"><label>Nomer HP Kepala Pelayanan</label><input
-                                                                    type="text" name="hp_kepsek_pelayanan"
-                                                                    value="{{ $item->hp_kepsek_pelayanan }}" class="form-control"
-                                                                    maxlength="20"></div>
+                                                            <div class="mb-3"><label>Nomer HP Kepala
+                                                                    Pelayanan</label><input type="text"
+                                                                    name="hp_kepsek_pelayanan"
+                                                                    value="{{ $item->hp_kepsek_pelayanan }}"
+                                                                    class="form-control" maxlength="20"></div>
                                                         </div>
                                                         <div class="col-sm">
                                                             <div class="mb-3"><label>Awal Jabatan Kepala
@@ -636,6 +658,30 @@
                                                                     name="awal_jabatan_kepsek_pelayanan"
                                                                     value="{{ $item->awal_jabatan_kepsek_pelayanan }}"
                                                                     class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Kepala BPD -->
+                                                    <div class="row">
+                                                        <div class="col-sm">
+                                                            <div class="mb-3"><label>NIK Kepala BPD</label><input
+                                                                    type="text" name="nik_kpl_bpd" value="{{ $item->nik_kpl_bpd }}"
+                                                                    class="form-control" maxlength="20"></div>
+                                                        </div>
+                                                        <div class="col-sm">
+                                                            <div class="mb-3"><label>Nama Kepala BPD</label><input
+                                                                    type="text" name="nama_kpl_bpd" value="{{ $item->nama_kpl_bpd }}"
+                                                                    class="form-control" maxlength="100"></div>
+                                                        </div>
+                                                        <div class="col-sm">
+                                                            <div class="mb-3"><label>Nomer HP Kepala BPD</label><input
+                                                                    type="text" name="hp_kpl_bpd" value="{{ $item->hp_kpl_bpd }}" class="form-control"
+                                                                    maxlength="20"></div>
+                                                        </div>
+                                                        <div class="col-sm">
+                                                            <div class="mb-3"><label>Awal Jabatan Kepala
+                                                                    BPD</label><input type="date"
+                                                                    name="awal_jabatan_kpl_bpd" value="{{ $item->awal_jabatan_kpl_bpd }}" class="form-control">
                                                             </div>
                                                         </div>
                                                     </div>

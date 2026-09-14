@@ -13,6 +13,8 @@ class User extends Authenticatable // Ubah ini!
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'user';
+    protected $primaryKey = 'id';
+    public $incrementing = false; // kalau id kamu pakai timestamp manual
 
     protected $fillable = [
         'id',
@@ -22,7 +24,7 @@ class User extends Authenticatable // Ubah ini!
         'id_jabatan',
         'status',
         'password',
-        'foto',
+        'alamat',
         'id_buat',
         'is_logged_in'
     ];
@@ -41,6 +43,6 @@ class User extends Authenticatable // Ubah ini!
 
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class, 'id_jabatan', 'id'); 
+        return $this->belongsTo(Jabatan::class, 'id_jabatan', 'id');
     }
 }

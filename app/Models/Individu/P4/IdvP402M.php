@@ -24,12 +24,15 @@ class IdvP402M extends Model
         'tgl_buat',
         'tgl_update',
     ];
- 
+
+    // Relasi ke P1
     public function individuP1()
     {
         return $this->belongsTo(IdvP1M::class, 'id_individu_p1', 'id');
     }
-       public function masterSarkes()
+
+    // Relasi ke master sarkes
+    public function masterSarkes()
     {
         return $this->belongsTo(MasterSarkesM::class, 'id_master_sarkes', 'id');
     }

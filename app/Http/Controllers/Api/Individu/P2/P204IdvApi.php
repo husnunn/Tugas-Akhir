@@ -7,15 +7,20 @@ use App\Models\Individu\P2\IdvP204M;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\Master\MasterPenghasilanM;
 
 class P204IdvApi extends Controller
 {
     public function index()
     {
-        $data = IdvP204M::all();
+        $data = IdvP204M::with([
+            'individuP1',
+            'masterPenghasilan'
+        ])->get();
 
         return response()->json([
             'status' => true,
+            'message' => 'Data P204 berhasil dimuat',
             'data' => $data
         ]);
     }
@@ -96,12 +101,30 @@ class P204IdvApi extends Controller
 
     public function showByIdP1($id)
     {
-        $data = IdvP204M::where('id_individu_p1', $id)->first();
+        $data = IdvP204M::with(['individuP1', 'masterPenghasilan'])
+            ->where('id_individu_p1', $id)
+            ->get();
 
         return response()->json([
             'status' => true,
-            'message' => 'Data Individu P204 berdasarkan ID P1',
+            'message' => 'Data P204 berhasil dimuat',
             'data' => $data
         ]);
+    }
+    public function deleteAllByP1($id_individu_p1)
+    {
+        try {
+            \App\Models\Individu\P2\IdvP204M::where('id_individu_p1', $id_individu_p1)->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Semua data P204 berhasil dihapus.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal menghapus data: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

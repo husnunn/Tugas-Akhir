@@ -32,7 +32,7 @@
     <div class="container">
         <div class="login-container">
             <div class="login-header">
-                <img src="https://via.placeholder.com/80" alt="Logo">
+                <img src="{{asset('template/img/logo_jombang.png')}}" alt="Logo">
                 <h2>Login Sistem</h2>
                 <p class="text-muted">Silakan masuk dengan akun Anda</p>
             </div>
@@ -83,11 +83,11 @@
 
                 <div class="mt-3 text-center">
                     @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}">Lupa Password?</a>
+                        <a href="{{ url('/forgot-password') }}">Lupa Password?</a>
                     @endif
                     <br>
                     @if (Route::has('register'))
-                        Belum punya akun? <a href="{{ route('register') }}">Daftar disini</a>
+                        Belum punya akun? <a href="{{ url('/register') }}">Daftar disini</a>
                     @endif
                 </div>
             </form>
